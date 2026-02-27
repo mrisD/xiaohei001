@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <material name="green">
+        <color rgba="0 0.5 0 1" />
+    </material>
+
+    <material name="grey">
+        <color rgba="0.5 0.5 0.5 1" />
+    </material>
+
+    <xacro:property name="j1_min" value="-1.57" /> 
+    <xacro:property name="j1_max" value="1.57" /> 
+    <xacro:property name="j2_min" value="-1.57" /> 
+    <xacro:property name="j2_max" value="1.57" /> 
+    <xacro:property name="j3_min" value="-2.356" /> 
+    <xacro:property name="j3_max" value="0.785" /> 
+    <xacro:property name="j4_min" value="-1.57" /> 
+    <xacro:property name="j4_max" value="1.57" /> 
+    <xacro:property name="j5_min" value="-3.14" /> 
+    <xacro:property name="j5_max" value="3.14" /> 
+</robot>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <xacro:include filename="common_properties.xacro" />
+    <xacro:include filename="mobile_base.xacro" />
+    <!-- <xacro:include filename="arm1.xacro" /> -->
+    <!-- <xacro:include filename="gripper.xacro" /> -->
+    <xacro:include filename="left_arm.urdf" />
+    <xacro:include filename="right_arm.urdf" />
+
+     <xacro:include filename="dock_robot.ros2_control.xacro" />
+     <!-- <xacro:my_robot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/> -->
+
+     <!-- <joint name="gripper_base_joint" type="fixed">
+        <parent link="left_arm_link" />
+        <child link="gripper_base_link" />
+        <origin xyz="0 0 0" rpy="-1.57 0 0" />
+    </joint> -->
+
+    <joint name="left_arm_joint" type="fixed">
+        <parent link="left_arm_link" />
+        <child link="arm_base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+    <joint name="right_arm_joint" type="fixed">
+        <parent link="right_arm_link" />
+        <child link="right_arm_base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+
+    
+</robot>

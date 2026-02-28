@@ -5,6 +5,7 @@
 
     <xacro:include filename="common_properties.xacro" />
     <xacro:include filename="mobile_base.xacro" />
+    <xacro:include filename="mobile_base_gazebo.xacro" />
     <!-- <xacro:include filename="arm1.xacro" /> -->
     <!-- <xacro:include filename="gripper.xacro" /> -->
     <xacro:include filename="left_arm.urdf" />

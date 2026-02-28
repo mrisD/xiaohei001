@@ -41,6 +41,8 @@
             </geometry>
             <origin xyz="0 0 ${base_height/2}" rpy="0 0 0" />
         </collision>
+        <xacro:box_inertia m="5.0" x="${base_length}" y="${base_width}" z="${base_height}" 
+                            o_xyz="0 0 ${base_height/2}" o_rpy="0 0 0" />
     </link>
 
     
@@ -59,6 +61,8 @@
             </geometry>
             <origin xyz="0 0 ${lift_height/2}" rpy="0 0 0" />
         </collision>
+        <xacro:box_inertia m="2.0" x="${lift_length}" y="${lift_width}" z="${lift_height}" 
+                            o_xyz="0 0 ${lift_height/2}" o_rpy="0 0 0" />
     </link>
 
     <link name="controller_link">
@@ -75,6 +79,8 @@
             </geometry>
             <origin xyz="0 0 ${controller_height/2}" rpy="0 0 0" />
         </collision>
+        <xacro:box_inertia m="2.0" x="${controller_length}" y="${controller_width}" z="${controller_height}" 
+                            o_xyz="0 0 ${controller_height/2}" o_rpy="0 0 0" />
     </link>
 
     <link name="head_link">
@@ -91,6 +97,7 @@
             </geometry>
             <origin xyz="0 0 ${head_length/2}" rpy="0 0 0" />
         </collision>
+        <xacro:cylinder_inertia m="0.5" r="${head_radius}" l="${head_length}" o_xyz="0 0 ${head_length/2}" o_rpy="0 0 0" />
     </link>
 
     <link name="left_arm_link">
@@ -115,6 +122,8 @@
             </geometry>
             <origin xyz="0 0 0" rpy="${pi/2.0} 0 0" />
         </collision>
+        <xacro:cylinder_inertia m="1.0" r="${wheel_radius}" l="${wheel_length}"
+                                    o_xyz="0 0 0" o_rpy="${pi / 2.0} 0 0" />
     </link>
 
     <link name="left_wheel_link">
@@ -131,6 +140,8 @@
             </geometry>
             <origin xyz="0 0 0" rpy="${pi/2.0} 0 0" />
         </collision>
+        <xacro:cylinder_inertia m="1.0" r="${wheel_radius}" l="${wheel_length}"
+                                    o_xyz="0 0 0" o_rpy="${pi / 2.0} 0 0" />
     </link>
 
     <link name ="left_caster_wheel_link">
@@ -148,6 +159,7 @@
             <origin xyz="0 0 0" rpy="0 0 0" />
             <material name="grey" />
         </collision>
+        <xacro:sphere_inertia m="0.5" r="${caster_wheel_length}" o_xyz="0 0 0" o_rpy="0 0 0" />
     </link>
 
     <link name ="right_caster_wheel_link">
@@ -165,6 +177,7 @@
             <origin xyz="0 0 0" rpy="0 0 0" />
             <material name="grey" />
         </collision>
+        <xacro:sphere_inertia m="0.5" r="${caster_wheel_length}" o_xyz="0 0 0" o_rpy="0 0 0" />
     </link>
 
     

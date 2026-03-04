@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import arm urdf file -->
+    <xacro:include filename="$(find dock_robot_description)/urdf/dock_robot.urdf.xacro" />
+
+    <!--添加Gazebo所需的专有标签-->
+    <gazebo>
+        <!--添加world-joint使机械臂固定在仿真场景中-->
+        <!-- <joint name="world_joint" type="fixed">
+            <parent>world</parent>
+            <child>base_link</child>
+        </joint> -->
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <parameters>$(find dock_robot_moveit_config)/config/ros2_controllers.yaml</parameters>
+        </plugin>
+    </gazebo>
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="my_robot.gazebo.ros2_control.xacro" />
+
+    <xacro:my_robot_ros2_control name="GazeboSimSystem"
+        initial_positions_file="$(arg initial_positions_file)" />
+
+</robot>

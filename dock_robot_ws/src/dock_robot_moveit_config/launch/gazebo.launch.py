@@ -14,6 +14,10 @@ def generate_launch_description():
         MoveItConfigsBuilder("my_robot", package_name="dock_robot_moveit_config")
         .robot_description('config/my_robot.gazebo.urdf.xacro')
         .robot_description_semantic('config/my_robot.srdf')
+        .planning_scene_monitor(
+            publish_robot_description=True,           # 在这里设置
+            publish_robot_description_semantic=True   # 在这里设置
+        )
         .to_moveit_configs()
     )
     # 启动Gazebo

@@ -1,0 +1,968 @@
+/move_group:
+  ros__parameters:
+    body:
+      kinematics_solver: null
+    chomp:
+      enable_failure_recovery: true
+      jiggle_fraction: 0.05
+      planning_plugin: chomp_interface/CHOMPPlanner
+      request_adapters: default_planner_request_adapters/AddTimeOptimalParameterization
+        default_planner_request_adapters/ResolveConstraintFrames default_planner_request_adapters/FixWorkspaceBounds
+        default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision
+        default_planner_request_adapters/FixStartStatePathConstraints
+      ridge_factor: 0.01
+      start_state_max_bounds_error: 0.1
+    default_planning_pipeline: ompl
+    left_arm:
+      kinematics_solver: null
+    mobile:
+      kinematics_solver: null
+    moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
+    moveit_manage_controllers: true
+    moveit_simple_controller_manager:
+      body_controller:
+        action_ns: follow_joint_trajectory
+        default: true
+        joints:
+        - base_lift_joint
+        type: FollowJointTrajectory
+      controller_names:
+      - left_arm_controller
+      - right_arm_controller
+      - mobile_controller
+      - body_controller
+      left_arm_controller:
+        action_ns: follow_joint_trajectory
+        default: true
+        joints:
+        - joint1
+        - joint2
+        - joint3
+        - joint4
+        - joint5
+        type: FollowJointTrajectory
+      mobile_controller:
+        action_ns: follow_joint_trajectory
+        default: true
+        joints:
+        - base_left_wheel_joint
+        - base_right_wheel_joint
+        type: FollowJointTrajectory
+      right_arm_controller:
+        action_ns: follow_joint_trajectory
+        default: true
+        joints:
+        - jointR1
+        - jointR2
+        - jointR3
+        - jointR4
+        - jointR5
+        type: FollowJointTrajectory
+    ompl:
+      jiggle_fraction: 0.05
+      planner_configs:
+        AnytimePathShortening:
+          hybridize: 1
+          max_hybrid_paths: 24
+          num_planners: 4
+          planners: ''
+          shortcut: 1
+          type: geometric::AnytimePathShortening
+        BFMT:
+          balanced: 0
+          cache_cc: 1
+          extended_fmt: 1
+          heuristics: 1
+          nearest_k: 1
+          num_samples: 1000
+          optimality: 1
+          radius_multiplier: 1.0
+          type: geometric::BFMT
+        BKPIECE:
+          border_fraction: 0.9
+          failed_expansion_score_factor: 0.5
+          min_valid_path_fraction: 0.5
+          range: 0.0
+          type: geometric::BKPIECE
+        BiEST:
+          range: 0.0
+          type: geometric::BiEST
+        BiTRRT:
+          cost_threshold: 1.0e+300
+          frountier_node_ratio: 0.1
+          frountier_threshold: 0.0
+          init_temperature: 100
+          range: 0.0
+          temp_change_factor: 0.1
+          type: geometric::BiTRRT
+        EST:
+          goal_bias: 0.05
+          range: 0.0
+          type: geometric::EST
+        FMT:
+          cache_cc: 1
+          extended_fmt: 1
+          heuristics: 0
+          nearest_k: 1
+          num_samples: 1000
+          radius_multiplier: 1.1
+          type: geometric::FMT
+        KPIECE:
+          border_fraction: 0.9
+          failed_expansion_score_factor: 0.5
+          goal_bias: 0.05
+          min_valid_path_fraction: 0.5
+          range: 0.0
+          type: geometric::KPIECE
+        LBKPIECE:
+          border_fraction: 0.9
+          min_valid_path_fraction: 0.5
+          range: 0.0
+          type: geometric::LBKPIECE
+        LBTRRT:
+          epsilon: 0.4
+          goal_bias: 0.05
+          range: 0.0
+          type: geometric::LBTRRT
+        LazyPRM:
+          range: 0.0
+          type: geometric::LazyPRM
+        LazyPRMstar:
+          type: geometric::LazyPRMstar
+        PDST:
+          type: geometric::PDST
+        PRM:
+          max_nearest_neighbors: 10
+          type: geometric::PRM
+        PRMstar:
+          type: geometric::PRMstar
+        ProjEST:
+          goal_bias: 0.05
+          range: 0.0
+          type: geometric::ProjEST
+        RRT:
+          goal_bias: 0.05
+          range: 0.0
+          type: geometric::RRT
+        RRTConnect:
+          range: 0.0
+          type: geometric::RRTConnect
+        RRTstar:
+          delay_collision_checking: 1
+          goal_bias: 0.05
+          range: 0.0
+          type: geometric::RRTstar
+        SBL:
+          range: 0.0
+          type: geometric::SBL
+        SPARS:
+          dense_delta_fraction: 0.001
+          max_failures: 1000
+          sparse_delta_fraction: 0.25
+          stretch_factor: 3.0
+          type: geometric::SPARS
+        SPARStwo:
+          dense_delta_fraction: 0.001
+          max_failures: 5000
+          sparse_delta_fraction: 0.25
+          stretch_factor: 3.0
+          type: geometric::SPARStwo
+        STRIDE:
+          degree: 16
+          estimated_dimension: 0.0
+          goal_bias: 0.05
+          max_degree: 18
+          max_pts_per_leaf: 6
+          min_degree: 12
+          min_valid_path_fraction: 0.2
+          range: 0.0
+          type: geometric::STRIDE
+          use_projected_distance: 0
+        TRRT:
+          frountierNodeRatio: 0.1
+          frountier_threshold: 0.0
+          goal_bias: 0.05
+          init_temperature: 1.0e-05
+          k_constant: 0.0
+          max_states_failed: 10
+          min_temperature: 1.0e-09
+          range: 0.0
+          temp_change_factor: 2.0
+          type: geometric::TRRT
+      planning_plugin: ompl_interface/OMPLPlanner
+      request_adapters: default_planner_request_adapters/AddTimeOptimalParameterization
+        default_planner_request_adapters/ResolveConstraintFrames default_planner_request_adapters/FixWorkspaceBounds
+        default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision
+        default_planner_request_adapters/FixStartStatePathConstraints
+      start_state_max_bounds_error: 0.1
+    pilz_industrial_motion_planner:
+      capabilities: pilz_industrial_motion_planner/MoveGroupSequenceAction pilz_industrial_motion_planner/MoveGroupSequenceService
+      default_planner_config: PTP
+      planning_plugin: pilz_industrial_motion_planner/CommandPlanner
+      request_adapters: ''
+    planning_pipelines:
+    - pilz_industrial_motion_planner
+    - ompl
+    - chomp
+    publish_geometry_updates: true
+    publish_planning_scene: true
+    publish_robot_description: false
+    publish_robot_description_semantic: false
+    publish_state_updates: true
+    publish_transforms_updates: true
+    qos_overrides:
+      /clock:
+        subscription:
+          depth: 1
+          durability: volatile
+          history: keep_last
+          reliability: best_effort
+      /parameter_events:
+        publisher:
+          depth: 1000
+          durability: volatile
+          history: keep_last
+          reliability: reliable
+    right_arm:
+      kinematics_solver: null
+    robot_description: "<?xml version=\"1.0\" ?><!-- ===================================================================================\
+      \ --><!-- |    This document was autogenerated by xacro from /home/zhul/\u6587\
+      \u6863/dock_arm_wheel_robot/dock_robot_ws/install/dock_robot_moveit_config/share/dock_robot_moveit_config/config/my_robot.gazebo.urdf.xacro\
+      \ | --><!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED              \
+      \                   | --><!-- ===================================================================================\
+      \ --><robot name=\"my_robot\"><material name=\"green\"><color rgba=\"0 0.5 0\
+      \ 1\"/></material><material name=\"grey\"><color rgba=\"0.5 0.5 0.5 1\"/></material><!--\
+      \ <xacro:property name=\"base_length\" value=\"0.6\" /> \n    <xacro:property\
+      \ name=\"base_width\" value=\"0.4\" /> \n    <xacro:property name=\"base_height\"\
+      \ value=\"0.2\" />  --><link name=\"base_footprint\"/><link name=\"base_link\"\
+      ><visual><geometry><box size=\"0.412 0.323 0.162\"/></geometry><origin rpy=\"\
+      0 0 0\" xyz=\"0 0 0.081\"/><material name=\"green\"/></visual><collision><geometry><box\
+      \ size=\"0.412 0.323 0.162\"/></geometry><origin rpy=\"0 0 0\" xyz=\"0 0 0.081\"\
+      /></collision><inertial><mass value=\"5.0\"/><origin rpy=\"0 0 0\" xyz=\"0 0\
+      \ 0.081\"/><inertia ixx=\"0.054405416666666664\" ixy=\"0\" ixz=\"0\" iyy=\"\
+      0.08166166666666666\" iyz=\"0\" izz=\"0.11419708333333334\">\n            </inertia></inertial></link><link\
+      \ name=\"lift_link\"><visual><geometry><box size=\"0.144 0.144 0.465\"/></geometry><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0.2325\"/><material name=\"grey\"/></visual><collision><geometry><box\
+      \ size=\"0.144 0.144 0.465\"/></geometry><origin rpy=\"0 0 0\" xyz=\"0 0 0.2325\"\
+      /></collision><inertial><mass value=\"2.0\"/><origin rpy=\"0 0 0\" xyz=\"0 0\
+      \ 0.2325\"/><inertia ixx=\"0.0394935\" ixy=\"0\" ixz=\"0\" iyy=\"0.0394935\"\
+      \ iyz=\"0\" izz=\"0.006911999999999999\">\n            </inertia></inertial></link><link\
+      \ name=\"controller_link\"><visual><geometry><box size=\"0.14 0.14 0.315\"/></geometry><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0.1575\"/><material name=\"green\"/></visual><collision><geometry><box\
+      \ size=\"0.14 0.14 0.315\"/></geometry><origin rpy=\"0 0 0\" xyz=\"0 0 0.1575\"\
+      /></collision><inertial><mass value=\"2.0\"/><origin rpy=\"0 0 0\" xyz=\"0 0\
+      \ 0.1575\"/><inertia ixx=\"0.019804166666666668\" ixy=\"0\" ixz=\"0\" iyy=\"\
+      0.019804166666666668\" iyz=\"0\" izz=\"0.006533333333333334\">\n           \
+      \ </inertia></inertial></link><link name=\"head_link\"><visual><geometry><cylinder\
+      \ length=\"0.1\" radius=\"0.04\"/></geometry><origin rpy=\"0 0 0\" xyz=\"0 0\
+      \ 0.05\"/><material name=\"grey\"/></visual><collision><geometry><cylinder length=\"\
+      0.1\" radius=\"0.04\"/></geometry><origin rpy=\"0 0 0\" xyz=\"0 0 0.05\"/></collision><inertial><mass\
+      \ value=\"0.5\"/><origin rpy=\"0 0 0\" xyz=\"0 0 0.05\"/><inertia ixx=\"0.0006166666666666666\"\
+      \ ixy=\"0\" ixz=\"0\" iyy=\"0.0006166666666666666\" iyz=\"0\" izz=\"0.0004\"\
+      /></inertial></link><link name=\"left_arm_link\"><!-- <origin xyz=\"0 0.05 0.05\"\
+      \ rpy=\"0 0 0\" /> --></link><link name=\"right_arm_link\"><!-- <origin xyz=\"\
+      0 -0.05 0.05\" rpy=\"0 0 0\" /> --></link><link name=\"right_wheel_link\"><visual><geometry><cylinder\
+      \ length=\"0.05\" radius=\"0.1\"/></geometry><origin rpy=\"1.5707963267948966\
+      \ 0 0\" xyz=\"0 0 0\"/><material name=\"grey\"/></visual><collision><geometry><cylinder\
+      \ length=\"0.05\" radius=\"0.1\"/></geometry><origin rpy=\"1.5707963267948966\
+      \ 0 0\" xyz=\"0 0 0\"/></collision><inertial><mass value=\"1.0\"/><origin rpy=\"\
+      1.5707963267948966 0 0\" xyz=\"0 0 0\"/><inertia ixx=\"0.002708333333333334\"\
+      \ ixy=\"0\" ixz=\"0\" iyy=\"0.002708333333333334\" iyz=\"0\" izz=\"0.005000000000000001\"\
+      /></inertial></link><link name=\"left_wheel_link\"><visual><geometry><cylinder\
+      \ length=\"0.05\" radius=\"0.1\"/></geometry><origin rpy=\"1.5707963267948966\
+      \ 0 0\" xyz=\"0 0 0\"/><material name=\"grey\"/></visual><collision><geometry><cylinder\
+      \ length=\"0.05\" radius=\"0.1\"/></geometry><origin rpy=\"1.5707963267948966\
+      \ 0 0\" xyz=\"0 0 0\"/></collision><inertial><mass value=\"1.0\"/><origin rpy=\"\
+      1.5707963267948966 0 0\" xyz=\"0 0 0\"/><inertia ixx=\"0.002708333333333334\"\
+      \ ixy=\"0\" ixz=\"0\" iyy=\"0.002708333333333334\" iyz=\"0\" izz=\"0.005000000000000001\"\
+      /></inertial></link><link name=\"left_caster_wheel_link\"><visual><geometry><sphere\
+      \ radius=\"0.05\"/></geometry><origin rpy=\"0 0 0\" xyz=\"0 0 0\"/><material\
+      \ name=\"grey\"/></visual><collision><geometry><sphere radius=\"0.05\"/></geometry><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><material name=\"grey\"/></collision><inertial><mass\
+      \ value=\"0.5\"/><origin rpy=\"0 0 0\" xyz=\"0 0 0\"/><inertia ixx=\"0.0005000000000000001\"\
+      \ ixy=\"0\" ixz=\"0\" iyy=\"0.0005000000000000001\" iyz=\"0\" izz=\"0.0005000000000000001\"\
+      /></inertial></link><link name=\"right_caster_wheel_link\"><visual><geometry><sphere\
+      \ radius=\"0.05\"/></geometry><origin rpy=\"0 0 0\" xyz=\"0 0 0\"/><material\
+      \ name=\"grey\"/></visual><collision><geometry><sphere radius=\"0.05\"/></geometry><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><material name=\"grey\"/></collision><inertial><mass\
+      \ value=\"0.5\"/><origin rpy=\"0 0 0\" xyz=\"0 0 0\"/><inertia ixx=\"0.0005000000000000001\"\
+      \ ixy=\"0\" ixz=\"0\" iyy=\"0.0005000000000000001\" iyz=\"0\" izz=\"0.0005000000000000001\"\
+      /></inertial></link><joint name=\"base_joint\" type=\"fixed\"><parent link=\"\
+      base_footprint\"/><child link=\"base_link\"/><origin rpy=\"0 0 0\" xyz=\"0 0\
+      \ 0.1\"/></joint><joint name=\"base_right_wheel_joint\" type=\"continuous\"\
+      ><parent link=\"base_link\"/><child link=\"right_wheel_link\"/><!-- <origin\
+      \ xyz=\"${-base_length/4} ${-base_width/2-wheel_length/2} 0\" rpy=\"0 0 0\"\
+      \ /> --><origin rpy=\"0 0 0\" xyz=\"-0.103 -0.08075 0\"/><axis xyz=\"0 1 0\"\
+      /></joint><joint name=\"base_left_wheel_joint\" type=\"continuous\"><parent\
+      \ link=\"base_link\"/><child link=\"left_wheel_link\"/><!-- <origin xyz=\"${-base_length/4}\
+      \ ${base_width/2+wheel_length/2} 0\" rpy=\"0 0 0\" /> --><origin rpy=\"0 0 0\"\
+      \ xyz=\"-0.103 0.08075 0\"/><axis xyz=\"0 1 0\"/></joint><joint name=\"base_left_caster_wheel_joint\"\
+      \ type=\"fixed\"><parent link=\"base_link\"/><child link=\"left_caster_wheel_link\"\
+      /><origin rpy=\"0 0 0\" xyz=\"0.1 0.08075 -0.05\"/></joint><joint name=\"base_right_caster_wheel_joint\"\
+      \ type=\"fixed\"><parent link=\"base_link\"/><child link=\"right_caster_wheel_link\"\
+      /><origin rpy=\"0 0 0\" xyz=\"0.1 -0.08075 -0.05\"/></joint><joint name=\"base_lift_joint\"\
+      \ type=\"prismatic\"><parent link=\"base_link\"/><child link=\"lift_link\"/><axis\
+      \ xyz=\"0 0 1\"/><origin rpy=\"0 0 0\" xyz=\"0 0 0.162\"/><limit effort=\"100.0\"\
+      \ lower=\"0\" upper=\"2.2\" velocity=\"100.0\"/></joint><joint name=\"lift_controller_joint\"\
+      \ type=\"fixed\"><parent link=\"lift_link\"/><child link=\"controller_link\"\
+      /><origin rpy=\"0 0 0\" xyz=\"0 0 0.465\"/></joint><joint name=\"controller_head_joint\"\
+      \ type=\"fixed\"><parent link=\"controller_link\"/><child link=\"head_link\"\
+      /><origin rpy=\"0 0 0\" xyz=\"0 0 0.315\"/></joint><joint name=\"head_left_arm_joint\"\
+      \ type=\"fixed\"><parent link=\"head_link\"/><child link=\"left_arm_link\"/><origin\
+      \ rpy=\" 0 0 1.5707963267948966\" xyz=\"0 0.05 0.05\"/></joint><joint name=\"\
+      head_right_arm_joint\" type=\"fixed\"><parent link=\"head_link\"/><child link=\"\
+      right_arm_link\"/><origin rpy=\"0 0 -1.5707963267948966\" xyz=\"0 -0.05 0.05\"\
+      /></joint><gazebo reference=\"left_caster_wheel_link\"><mu1 value=\"0.1\"/><mu2\
+      \ value=\"0.1\"/></gazebo><gazebo reference=\"right_caster_wheel_link\"><mu1\
+      \ value=\"0.1\"/><mu2 value=\"0.1\"/></gazebo><gazebo><plugin filename=\"gz-sim-diff-drive-system\"\
+      \ name=\"gz::sim::systems::DiffDrive\"><left_joint>base_left_wheel_joint</left_joint><right_joint>base_right_wheel_joint</right_joint><wheel_separation>0.1615</wheel_separation><wheel_radius>0.1</wheel_radius><frame_id>odom</frame_id><child_frame_id>base_footprint</child_frame_id>`\n\
+      \        </plugin></gazebo><gazebo><plugin filename=\"gz-sim-joint-state-publisher-system\"\
+      \ name=\"gz::sim::systems::JointStatePublisher\"><joint_name>base_left_wheel_joint</joint_name><joint_name>base_right_wheel_joint</joint_name><joint_name>base_lift_joint</joint_name><joint_name>joint1</joint_name><joint_name>joint2</joint_name><joint_name>joint3</joint_name><joint_name>joint4</joint_name><joint_name>joint5</joint_name><joint_name>jointR1</joint_name><joint_name>jointR2</joint_name><joint_name>jointR3</joint_name><joint_name>jointR4</joint_name><joint_name>jointR5</joint_name></plugin></gazebo><link\
+      \ name=\"arm_base_link\"><inertial><origin rpy=\"0 0 0\" xyz=\"0.0053754 0.0059093\
+      \ 0.010606\"/><mass value=\"0.00025831\"/><inertia ixx=\"1.9622E-08\" ixy=\"\
+      7.094E-13\" ixz=\"5.6839E-14\" iyy=\"1.0818E-08\" iyz=\"-6.7031E-09\" izz=\"\
+      1.208E-08\"/></inertial><visual><origin rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh\
+      \ filename=\"package://dock_robot_description/meshes/arm_base_link.stl\"/></geometry><material\
+      \ name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/arm_base_link.stl\"\
+      /></geometry></collision></link><link name=\"Link1\"><inertial><origin rpy=\"\
+      0 0 0\" xyz=\"0.062577 -1.889E-07 0.0079206\"/><mass value=\"0.038334\"/><inertia\
+      \ ixx=\"2.6762E-05\" ixy=\"4.7455E-10\" ixz=\"-6.7318E-06\" iyy=\"3.6277E-05\"\
+      \ iyz=\"-1.0331E-10\" izz=\"4.3593E-05\"/></inertial><visual><origin rpy=\"\
+      0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link1.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link1.stl\"\
+      /></geometry></collision></link><joint name=\"joint1\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.041 0.00071917 0.0010978\"/><parent link=\"arm_base_link\"\
+      /><child link=\"Link1\"/><axis xyz=\"-1 0 0\"/><limit effort=\"100\" lower=\"\
+      -3.14\" upper=\"3.14\" velocity=\"100\"/></joint><link name=\"Link2\"><inertial><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.059365 -0.00027802 0.0050394\"/><mass value=\"0.054118\"\
+      /><inertia ixx=\"5.0316E-05\" ixy=\"1.8378E-07\" ixz=\"1.8775E-05\" iyy=\"9.6102E-05\"\
+      \ iyz=\"-7.8236E-08\" izz=\"7.8468E-05\"/></inertial><visual><origin rpy=\"\
+      0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link2.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link2.stl\"\
+      /></geometry></collision></link><joint name=\"joint2\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.0925 0 0.002\"/><parent link=\"Link1\"/><child link=\"\
+      Link2\"/><axis xyz=\"0 0 -1\"/><limit effort=\"100\" lower=\"-3.14\" upper=\"\
+      3.14\" velocity=\"100\"/></joint><link name=\"Link3\"><inertial><origin rpy=\"\
+      0 0 0\" xyz=\"0.094743 -0.00035376 0.003123\"/><mass value=\"0.048598\"/><inertia\
+      \ ixx=\"1.9717E-05\" ixy=\"1.1518E-07\" ixz=\"-7.8005E-06\" iyy=\"7.0026E-05\"\
+      \ iyz=\"6.4487E-08\" izz=\"7.2793E-05\"/></inertial><visual><origin rpy=\"0\
+      \ 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link3.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link3.stl\"\
+      /></geometry></collision></link><joint name=\"joint3\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.1061 -0.00043737 -0.002\"/><parent link=\"Link2\"/><child\
+      \ link=\"Link3\"/><axis xyz=\"-0.99999 0.0041222 0\"/><limit effort=\"100\"\
+      \ lower=\"-3.14\" upper=\"3.14\" velocity=\"100\"/></joint><link name=\"Link4\"\
+      ><inertial><origin rpy=\"0 0 0\" xyz=\"0.12663 -0.0010771 0.0080226\"/><mass\
+      \ value=\"0.10134\"/><inertia ixx=\"7.9356E-05\" ixy=\"3.7094E-06\" ixz=\"3.4733E-05\"\
+      \ iyy=\"0.00043506\" iyz=\"-3.9474E-07\" izz=\"0.00042903\"/></inertial><visual><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link4.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link4.stl\"\
+      /></geometry></collision></link><joint name=\"joint4\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.1535 -0.00071297 -0.0067995\"/><parent link=\"Link3\"\
+      /><child link=\"Link4\"/><axis xyz=\"-4.8622E-05 -0.011795 -0.99993\"/><limit\
+      \ effort=\"100\" lower=\"-3.14\" upper=\"3.14\" velocity=\"100\"/></joint><link\
+      \ name=\"Link5\"><inertial><origin rpy=\"0 0 0\" xyz=\"-0.28168 0.0020951 0.0058534\"\
+      /><mass value=\"0.24266\"/><inertia ixx=\"0.00017885\" ixy=\"4.1491E-05\" ixz=\"\
+      0.00014877\" iyy=\"0.0072568\" iyz=\"-1.1037E-06\" izz=\"0.0072411\"/></inertial><visual><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link5.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"1 1 1 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link5.stl\"\
+      /></geometry></collision></link><joint name=\"joint5\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.23199 -0.0020901 0.0049137\"/><parent link=\"Link4\"\
+      /><child link=\"Link5\"/><axis xyz=\"0.99996 -0.0092582 6.0584E-05\"/><limit\
+      \ effort=\"100\" lower=\"-3.14\" upper=\"3.14\" velocity=\"100\"/></joint><link\
+      \ name=\"right_arm_base_link\"><inertial><origin rpy=\"0 0 0\" xyz=\"0.0053754\
+      \ 0.0059093 0.010606\"/><mass value=\"0.00025831\"/><inertia ixx=\"1.9622E-08\"\
+      \ ixy=\"7.094E-13\" ixz=\"5.6839E-14\" iyy=\"1.0818E-08\" iyz=\"-6.7031E-09\"\
+      \ izz=\"1.208E-08\"/></inertial><visual><origin rpy=\"0 0 0\" xyz=\"0 0 0\"\
+      /><geometry><mesh filename=\"package://dock_robot_description/meshes/right_arm_base_link.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/right_arm_base_link.stl\"\
+      /></geometry></collision></link><link name=\"Link1R\"><inertial><origin rpy=\"\
+      0 0 0\" xyz=\"0.062577 -1.889E-07 0.0079206\"/><mass value=\"0.038334\"/><inertia\
+      \ ixx=\"2.6762E-05\" ixy=\"4.7455E-10\" ixz=\"-6.7318E-06\" iyy=\"3.6277E-05\"\
+      \ iyz=\"-1.0331E-10\" izz=\"4.3593E-05\"/></inertial><visual><origin rpy=\"\
+      0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link1R.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link1R.stl\"\
+      /></geometry></collision></link><joint name=\"jointR1\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.041 0.00071917 0.0010978\"/><parent link=\"right_arm_base_link\"\
+      /><child link=\"Link1R\"/><axis xyz=\"-1 0 0\"/><limit effort=\"100\" lower=\"\
+      -3.14\" upper=\"3.14\" velocity=\"100\"/></joint><link name=\"Link2R\"><inertial><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.059365 -0.00027802 0.0050394\"/><mass value=\"0.054118\"\
+      /><inertia ixx=\"5.0316E-05\" ixy=\"1.8378E-07\" ixz=\"1.8775E-05\" iyy=\"9.6102E-05\"\
+      \ iyz=\"-7.8236E-08\" izz=\"7.8468E-05\"/></inertial><visual><origin rpy=\"\
+      0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link2R.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link2R.stl\"\
+      /></geometry></collision></link><joint name=\"jointR2\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.0925 0 0.002\"/><parent link=\"Link1R\"/><child link=\"\
+      Link2R\"/><axis xyz=\"0 0 -1\"/><limit effort=\"100\" lower=\"-3.14\" upper=\"\
+      3.14\" velocity=\"100\"/></joint><link name=\"Link3R\"><inertial><origin rpy=\"\
+      0 0 0\" xyz=\"0.094743 -0.00035376 0.003123\"/><mass value=\"0.048598\"/><inertia\
+      \ ixx=\"1.9717E-05\" ixy=\"1.1518E-07\" ixz=\"-7.8005E-06\" iyy=\"7.0026E-05\"\
+      \ iyz=\"6.4487E-08\" izz=\"7.2793E-05\"/></inertial><visual><origin rpy=\"0\
+      \ 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link3R.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link3R.stl\"\
+      /></geometry></collision></link><joint name=\"jointR3\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.1061 -0.00043737 -0.002\"/><parent link=\"Link2R\"/><child\
+      \ link=\"Link3R\"/><axis xyz=\"-0.99999 0.0041222 0\"/><limit effort=\"100\"\
+      \ lower=\"-3.14\" upper=\"3.14\" velocity=\"100\"/></joint><link name=\"Link4R\"\
+      ><inertial><origin rpy=\"0 0 0\" xyz=\"0.12663 -0.0010771 0.0080226\"/><mass\
+      \ value=\"0.10134\"/><inertia ixx=\"7.9356E-05\" ixy=\"3.7094E-06\" ixz=\"3.4733E-05\"\
+      \ iyy=\"0.00043506\" iyz=\"-3.9474E-07\" izz=\"0.00042903\"/></inertial><visual><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link4R.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"0.79216 0.81961 0.93333 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link4R.stl\"\
+      /></geometry></collision></link><joint name=\"jointR4\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.1535 -0.00071297 -0.0067995\"/><parent link=\"Link3R\"\
+      /><child link=\"Link4R\"/><axis xyz=\"-4.8622E-05 -0.011795 -0.99993\"/><limit\
+      \ effort=\"100\" lower=\"-3.14\" upper=\"3.14\" velocity=\"100\"/></joint><link\
+      \ name=\"Link5R\"><inertial><origin rpy=\"0 0 0\" xyz=\"-0.28168 0.0020951 0.0058534\"\
+      /><mass value=\"0.24266\"/><inertia ixx=\"0.00017885\" ixy=\"4.1491E-05\" ixz=\"\
+      0.00014877\" iyy=\"0.0072568\" iyz=\"-1.1037E-06\" izz=\"0.0072411\"/></inertial><visual><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link5R.stl\"\
+      /></geometry><material name=\"\"><color rgba=\"1 1 1 1\"/></material></visual><collision><origin\
+      \ rpy=\"0 0 0\" xyz=\"0 0 0\"/><geometry><mesh filename=\"package://dock_robot_description/meshes/Link5R.stl\"\
+      /></geometry></collision></link><joint name=\"jointR5\" type=\"revolute\"><origin\
+      \ rpy=\"0 0 0\" xyz=\"0.23199 -0.0020901 0.0049137\"/><parent link=\"Link4R\"\
+      /><child link=\"Link5R\"/><axis xyz=\"0.99996 -0.0092582 6.0584E-05\"/><limit\
+      \ effort=\"100\" lower=\"-3.14\" upper=\"3.14\" velocity=\"100\"/></joint><!--\
+      \ <xacro:my_robot_ros2_control name=\"FakeSystem\" initial_positions_file=\"\
+      $(arg initial_positions_file)\"/> --><!-- <joint name=\"gripper_base_joint\"\
+      \ type=\"fixed\">\n        <parent link=\"left_arm_link\" />\n        <child\
+      \ link=\"gripper_base_link\" />\n        <origin xyz=\"0 0 0\" rpy=\"-1.57 0\
+      \ 0\" />\n    </joint> --><joint name=\"left_arm_joint\" type=\"fixed\"><parent\
+      \ link=\"left_arm_link\"/><child link=\"arm_base_link\"/><origin rpy=\"0 0 0\"\
+      \ xyz=\"0 0 0\"/></joint><joint name=\"right_arm_joint\" type=\"fixed\"><parent\
+      \ link=\"right_arm_link\"/><child link=\"right_arm_base_link\"/><origin rpy=\"\
+      0 0 0\" xyz=\"0 0 0\"/></joint><!--\u6DFB\u52A0Gazebo\u6240\u9700\u7684\u4E13\
+      \u6709\u6807\u7B7E--><gazebo><!--\u6DFB\u52A0world-joint\u4F7F\u673A\u68B0\u81C2\
+      \u56FA\u5B9A\u5728\u4EFF\u771F\u573A\u666F\u4E2D--><!-- <joint name=\"world_joint\"\
+      \ type=\"fixed\">\n            <parent>world</parent>\n            <child>base_link</child>\n\
+      \        </joint> --><plugin filename=\"gz_ros2_control-system\" name=\"gz_ros2_control::GazeboSimROS2ControlPlugin\"\
+      ><parameters>/home/zhul/\u6587\u6863/dock_arm_wheel_robot/dock_robot_ws/install/dock_robot_moveit_config/share/dock_robot_moveit_config/config/ros2_controllers.yaml</parameters></plugin></gazebo><ros2_control\
+      \ name=\"GazeboSimSystem\" type=\"system\"><hardware><!-- By default, set up\
+      \ controllers for simulation. This won't work on real hardware --><plugin>gz_ros2_control/GazeboSimSystem</plugin><param\
+      \ name=\"calculate_dynamics\">true</param></hardware><joint name=\"joint1\"\
+      ><command_interface name=\"position\"/><state_interface name=\"position\"><param\
+      \ name=\"initial_value\">1.5708</param></state_interface><state_interface name=\"\
+      velocity\"/></joint><joint name=\"joint2\"><command_interface name=\"position\"\
+      /><state_interface name=\"position\"><param name=\"initial_value\">-1.5708</param></state_interface><state_interface\
+      \ name=\"velocity\"/></joint><joint name=\"joint3\"><command_interface name=\"\
+      position\"/><state_interface name=\"position\"><param name=\"initial_value\"\
+      >-0.7854</param></state_interface><state_interface name=\"velocity\"/></joint><joint\
+      \ name=\"joint4\"><command_interface name=\"position\"/><state_interface name=\"\
+      position\"><param name=\"initial_value\">1.5708</param></state_interface><state_interface\
+      \ name=\"velocity\"/></joint><joint name=\"joint5\"><command_interface name=\"\
+      position\"/><state_interface name=\"position\"><param name=\"initial_value\"\
+      >0</param></state_interface><state_interface name=\"velocity\"/></joint><joint\
+      \ name=\"jointR1\"><command_interface name=\"position\"/><state_interface name=\"\
+      position\"><param name=\"initial_value\">1.5708</param></state_interface><state_interface\
+      \ name=\"velocity\"/></joint><joint name=\"jointR2\"><command_interface name=\"\
+      position\"/><state_interface name=\"position\"><param name=\"initial_value\"\
+      >-1.5708</param></state_interface><state_interface name=\"velocity\"/></joint><joint\
+      \ name=\"jointR3\"><command_interface name=\"position\"/><state_interface name=\"\
+      position\"><param name=\"initial_value\">-2.3562</param></state_interface><state_interface\
+      \ name=\"velocity\"/></joint><joint name=\"jointR4\"><command_interface name=\"\
+      position\"/><state_interface name=\"position\"><param name=\"initial_value\"\
+      >-1.5708</param></state_interface><state_interface name=\"velocity\"/></joint><joint\
+      \ name=\"jointR5\"><command_interface name=\"position\"/><state_interface name=\"\
+      position\"><param name=\"initial_value\">0</param></state_interface><state_interface\
+      \ name=\"velocity\"/></joint><joint name=\"base_left_wheel_joint\"><command_interface\
+      \ name=\"velocity\"/><state_interface name=\"position\"><param name=\"initial_value\"\
+      >0</param></state_interface><state_interface name=\"velocity\"/></joint><joint\
+      \ name=\"base_right_wheel_joint\"><command_interface name=\"velocity\"/><state_interface\
+      \ name=\"position\"><param name=\"initial_value\">0</param></state_interface><state_interface\
+      \ name=\"velocity\"/></joint><joint name=\"base_lift_joint\"><command_interface\
+      \ name=\"position\"/><state_interface name=\"position\"><param name=\"initial_value\"\
+      >0</param></state_interface><state_interface name=\"velocity\"/></joint></ros2_control></robot>"
+    robot_description_kinematics:
+      body:
+        kinematics_solver: null
+        kinematics_solver_ik_links: null
+        kinematics_solver_search_resolution: null
+        kinematics_solver_timeout: null
+      left_arm:
+        kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+        kinematics_solver_ik_links: null
+        kinematics_solver_search_resolution: 0.005
+        kinematics_solver_timeout: 0.005
+      mobile:
+        kinematics_solver: null
+        kinematics_solver_ik_links: null
+        kinematics_solver_search_resolution: null
+        kinematics_solver_timeout: null
+      right_arm:
+        kinematics_solver: kdl_kinematics_plugin/KDLKinematicsPlugin
+        kinematics_solver_ik_links: null
+        kinematics_solver_search_resolution: 0.005
+        kinematics_solver_timeout: 0.005
+    robot_description_planning:
+      cartesian_limits:
+        max_rot_vel: 1.57
+        max_trans_acc: 2.25
+        max_trans_dec: -5.0
+        max_trans_vel: 1.0
+      default_acceleration_scaling_factor: 10.0.1
+      default_velocity_scaling_factor: 10.0.1
+      joint_limits:
+        base_left_wheel_joint:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 10.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        base_lift_joint:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        base_right_wheel_joint:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 10.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        joint1:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        joint2:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        joint3:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        joint4:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        joint5:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        jointR1:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        jointR2:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        jointR3:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        jointR4:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+        jointR5:
+          angle_wraparound: false
+          has_acceleration_limits: true
+          has_deceleration_limits: false
+          has_effort_limits: false
+          has_jerk_limits: null
+          has_position_limits: false
+          has_soft_limits: false
+          has_velocity_limits: true
+          k_position: .nan
+          k_velocity: .nan
+          max_acceleration: 10.0
+          max_effort: .nan
+          max_jerk: .nan
+          max_position: null
+          max_velocity: 100.0
+          min_position: null
+          min_velocity: .nan
+          soft_lower_limit: .nan
+          soft_upper_limit: .nan
+    robot_description_semantic: "<?xml version=\"1.0\" ?><!-- ===================================================================================\
+      \ --><!-- |    This document was autogenerated by xacro from /home/zhul/\u6587\
+      \u6863/dock_arm_wheel_robot/dock_robot_ws/install/dock_robot_moveit_config/share/dock_robot_moveit_config/config/my_robot.srdf\
+      \ | --><!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED              \
+      \                   | --><!-- ===================================================================================\
+      \ --><!--This does not replace URDF, and is not an extension of URDF.\n    This\
+      \ is a format for representing semantic information about the robot structure.\n\
+      \    A URDF file must exist for this robot as well, where the joints and the\
+      \ links that are referenced are defined\n--><robot name=\"my_robot\"><!--GROUPS:\
+      \ Representation of a set of joints and links. This can be useful for specifying\
+      \ DOF to plan for, defining arms, end effectors, etc--><!--LINKS: When a link\
+      \ is specified, the parent joint of that link (if it exists) is automatically\
+      \ included--><!--JOINTS: When a joint is specified, the child link of that joint\
+      \ (which will always exist) is automatically included--><!--CHAINS: When a chain\
+      \ is specified, all the links along the chain (including endpoints) are included\
+      \ in the group. Additionally, all the joints that are parents to included links\
+      \ are also included. This means that joints along the chain and the parent joint\
+      \ of the base link are included in the group--><!--SUBGROUPS: Groups can also\
+      \ be formed by referencing to already defined group names--><group name=\"left_arm\"\
+      ><joint name=\"left_arm_joint\"/><joint name=\"joint1\"/><joint name=\"joint2\"\
+      /><joint name=\"joint3\"/><joint name=\"joint4\"/><joint name=\"joint5\"/></group><group\
+      \ name=\"right_arm\"><joint name=\"right_arm_joint\"/><joint name=\"jointR1\"\
+      /><joint name=\"jointR2\"/><joint name=\"jointR3\"/><joint name=\"jointR4\"\
+      /><joint name=\"jointR5\"/></group><group name=\"mobile\"><joint name=\"base_joint\"\
+      /><joint name=\"base_left_wheel_joint\"/><joint name=\"base_right_wheel_joint\"\
+      /><joint name=\"base_right_caster_wheel_joint\"/><joint name=\"base_left_caster_wheel_joint\"\
+      /></group><group name=\"body\"><joint name=\"base_lift_joint\"/><joint name=\"\
+      lift_controller_joint\"/><joint name=\"controller_head_joint\"/><joint name=\"\
+      head_left_arm_joint\"/><joint name=\"head_right_arm_joint\"/></group><!--GROUP\
+      \ STATES: Purpose: Define a named state for a particular group, in terms of\
+      \ joint values. This is useful to define states like 'folded arms'--><group_state\
+      \ group=\"left_arm\" name=\"left_arm_home\"><joint name=\"joint1\" value=\"\
+      -1.5\"/><joint name=\"joint2\" value=\"1.5\"/><joint name=\"joint3\" value=\"\
+      0\"/><joint name=\"joint4\" value=\"0\"/><joint name=\"joint5\" value=\"0\"\
+      /></group_state><group_state group=\"left_arm\" name=\"left_arm_pose1\"><joint\
+      \ name=\"joint1\" value=\"-1.5\"/><joint name=\"joint2\" value=\"0.9888\"/><joint\
+      \ name=\"joint3\" value=\"1.3011\"/><joint name=\"joint4\" value=\"-1.0235\"\
+      /><joint name=\"joint5\" value=\"0.5031\"/></group_state><group_state group=\"\
+      right_arm\" name=\"right_arm_home\"><joint name=\"jointR1\" value=\"1.5\"/><joint\
+      \ name=\"jointR2\" value=\"-1.5\"/><joint name=\"jointR3\" value=\"0\"/><joint\
+      \ name=\"jointR4\" value=\"0\"/><joint name=\"jointR5\" value=\"0\"/></group_state><group_state\
+      \ group=\"right_arm\" name=\"right_arm_pose1\"><joint name=\"jointR1\" value=\"\
+      1.5\"/><joint name=\"jointR2\" value=\"-1.5\"/><joint name=\"jointR3\" value=\"\
+      1.6828\"/><joint name=\"jointR4\" value=\"0.4684\"/><joint name=\"jointR5\"\
+      \ value=\"0.7807\"/></group_state><group_state group=\"mobile\" name=\"mobile_home\"\
+      ><joint name=\"base_left_wheel_joint\" value=\"0\"/><joint name=\"base_right_wheel_joint\"\
+      \ value=\"0\"/></group_state><group_state group=\"mobile\" name=\"body_home\"\
+      ><joint name=\"base_left_wheel_joint\" value=\"0\"/><joint name=\"base_right_wheel_joint\"\
+      \ value=\"0\"/></group_state><group_state group=\"body\" name=\"body_mid\"><joint\
+      \ name=\"base_lift_joint\" value=\"1.1\"/></group_state><group_state group=\"\
+      body\" name=\"body_home\"><joint name=\"base_lift_joint\" value=\"0\"/></group_state><group_state\
+      \ group=\"body\" name=\"body_high\"><joint name=\"base_lift_joint\" value=\"\
+      2.2\"/></group_state><!--DISABLE COLLISIONS: By default it is assumed that any\
+      \ link of the robot could potentially come into collision with any other link\
+      \ in the robot. This tag disables collision checking between a specified pair\
+      \ of links. --><disable_collisions link1=\"Link1\" link2=\"Link1R\" reason=\"\
+      Never\"/><disable_collisions link1=\"Link1\" link2=\"Link2\" reason=\"Adjacent\"\
+      /><disable_collisions link1=\"Link1\" link2=\"Link2R\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link1\" link2=\"Link3\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link1\" link2=\"Link3R\" reason=\"Never\"/><disable_collisions link1=\"Link1\"\
+      \ link2=\"arm_base_link\" reason=\"Adjacent\"/><disable_collisions link1=\"\
+      Link1\" link2=\"base_link\" reason=\"Never\"/><disable_collisions link1=\"Link1\"\
+      \ link2=\"controller_link\" reason=\"Never\"/><disable_collisions link1=\"Link1\"\
+      \ link2=\"head_link\" reason=\"Never\"/><disable_collisions link1=\"Link1\"\
+      \ link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link1\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link1\" link2=\"lift_link\" reason=\"Never\"/><disable_collisions link1=\"Link1\"\
+      \ link2=\"right_arm_base_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link1\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link1\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link1R\" link2=\"Link2\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link1R\" link2=\"Link2R\" reason=\"Adjacent\"/><disable_collisions link1=\"\
+      Link1R\" link2=\"Link3\" reason=\"Never\"/><disable_collisions link1=\"Link1R\"\
+      \ link2=\"Link3R\" reason=\"Never\"/><disable_collisions link1=\"Link1R\" link2=\"\
+      arm_base_link\" reason=\"Never\"/><disable_collisions link1=\"Link1R\" link2=\"\
+      base_link\" reason=\"Never\"/><disable_collisions link1=\"Link1R\" link2=\"\
+      controller_link\" reason=\"Never\"/><disable_collisions link1=\"Link1R\" link2=\"\
+      head_link\" reason=\"Never\"/><disable_collisions link1=\"Link1R\" link2=\"\
+      left_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"Link1R\"\
+      \ link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"Link1R\"\
+      \ link2=\"lift_link\" reason=\"Never\"/><disable_collisions link1=\"Link1R\"\
+      \ link2=\"right_arm_base_link\" reason=\"Adjacent\"/><disable_collisions link1=\"\
+      Link1R\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link1R\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2\" link2=\"Link2R\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link2\" link2=\"Link3\" reason=\"Adjacent\"/><disable_collisions link1=\"Link2\"\
+      \ link2=\"base_link\" reason=\"Never\"/><disable_collisions link1=\"Link2\"\
+      \ link2=\"controller_link\" reason=\"Never\"/><disable_collisions link1=\"Link2\"\
+      \ link2=\"head_link\" reason=\"Never\"/><disable_collisions link1=\"Link2\"\
+      \ link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link2\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link2\" link2=\"lift_link\" reason=\"Never\"/><disable_collisions link1=\"Link2\"\
+      \ link2=\"right_arm_base_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link2\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"Link3R\" reason=\"Adjacent\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"arm_base_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"base_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"controller_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"head_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"lift_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link2R\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link3\" link2=\"Link4\" reason=\"Adjacent\"/><disable_collisions link1=\"\
+      Link3\" link2=\"Link5\" reason=\"Never\"/><disable_collisions link1=\"Link3\"\
+      \ link2=\"base_link\" reason=\"Never\"/><disable_collisions link1=\"Link3\"\
+      \ link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link3\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link3\" link2=\"lift_link\" reason=\"Never\"/><disable_collisions link1=\"Link3\"\
+      \ link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link3\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link3R\" link2=\"Link4R\" reason=\"Adjacent\"/><disable_collisions link1=\"\
+      Link3R\" link2=\"Link5R\" reason=\"Never\"/><disable_collisions link1=\"Link3R\"\
+      \ link2=\"base_link\" reason=\"Never\"/><disable_collisions link1=\"Link3R\"\
+      \ link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link3R\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link3R\" link2=\"lift_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link3R\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link3R\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link4\" link2=\"Link5\" reason=\"Adjacent\"/><disable_collisions link1=\"\
+      Link4\" link2=\"base_link\" reason=\"Never\"/><disable_collisions link1=\"Link4\"\
+      \ link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link4\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      Link4\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link4\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link4R\" link2=\"Link5R\" reason=\"Adjacent\"/><disable_collisions\
+      \ link1=\"Link4R\" link2=\"base_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link4R\" link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link4R\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link4R\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link4R\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5\" link2=\"base_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5\" link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5R\" link2=\"base_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5R\" link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5R\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5R\" link2=\"right_caster_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"Link5R\" link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"arm_base_link\" link2=\"base_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"arm_base_link\" link2=\"controller_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"arm_base_link\" link2=\"head_link\" reason=\"Adjacent\"/><disable_collisions\
+      \ link1=\"arm_base_link\" link2=\"left_caster_wheel_link\" reason=\"Never\"\
+      /><disable_collisions link1=\"arm_base_link\" link2=\"left_wheel_link\" reason=\"\
+      Never\"/><disable_collisions link1=\"arm_base_link\" link2=\"lift_link\" reason=\"\
+      Never\"/><disable_collisions link1=\"arm_base_link\" link2=\"right_arm_base_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"arm_base_link\" link2=\"right_caster_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"arm_base_link\" link2=\"right_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"base_link\" link2=\"controller_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"base_link\" link2=\"head_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"base_link\" link2=\"left_caster_wheel_link\"\
+      \ reason=\"Adjacent\"/><disable_collisions link1=\"base_link\" link2=\"left_wheel_link\"\
+      \ reason=\"Adjacent\"/><disable_collisions link1=\"base_link\" link2=\"lift_link\"\
+      \ reason=\"Adjacent\"/><disable_collisions link1=\"base_link\" link2=\"right_arm_base_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"base_link\" link2=\"right_caster_wheel_link\"\
+      \ reason=\"Adjacent\"/><disable_collisions link1=\"base_link\" link2=\"right_wheel_link\"\
+      \ reason=\"Adjacent\"/><disable_collisions link1=\"controller_link\" link2=\"\
+      head_link\" reason=\"Adjacent\"/><disable_collisions link1=\"controller_link\"\
+      \ link2=\"left_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      controller_link\" link2=\"left_wheel_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"controller_link\" link2=\"lift_link\" reason=\"Adjacent\"/><disable_collisions\
+      \ link1=\"controller_link\" link2=\"right_arm_base_link\" reason=\"Never\"/><disable_collisions\
+      \ link1=\"controller_link\" link2=\"right_caster_wheel_link\" reason=\"Never\"\
+      /><disable_collisions link1=\"controller_link\" link2=\"right_wheel_link\" reason=\"\
+      Never\"/><disable_collisions link1=\"head_link\" link2=\"left_caster_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"head_link\" link2=\"left_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"head_link\" link2=\"lift_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"head_link\" link2=\"right_arm_base_link\"\
+      \ reason=\"Adjacent\"/><disable_collisions link1=\"head_link\" link2=\"right_caster_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"head_link\" link2=\"right_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"left_caster_wheel_link\" link2=\"\
+      left_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"left_caster_wheel_link\"\
+      \ link2=\"lift_link\" reason=\"Never\"/><disable_collisions link1=\"left_caster_wheel_link\"\
+      \ link2=\"right_arm_base_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      left_caster_wheel_link\" link2=\"right_caster_wheel_link\" reason=\"Never\"\
+      /><disable_collisions link1=\"left_caster_wheel_link\" link2=\"right_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"left_wheel_link\" link2=\"lift_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"left_wheel_link\" link2=\"right_arm_base_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"left_wheel_link\" link2=\"right_caster_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"left_wheel_link\" link2=\"right_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"lift_link\" link2=\"right_arm_base_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"lift_link\" link2=\"right_caster_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"lift_link\" link2=\"right_wheel_link\"\
+      \ reason=\"Never\"/><disable_collisions link1=\"right_arm_base_link\" link2=\"\
+      right_caster_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"right_arm_base_link\"\
+      \ link2=\"right_wheel_link\" reason=\"Never\"/><disable_collisions link1=\"\
+      right_caster_wheel_link\" link2=\"right_wheel_link\" reason=\"Never\"/></robot>"
+    use_sim_time: true
+

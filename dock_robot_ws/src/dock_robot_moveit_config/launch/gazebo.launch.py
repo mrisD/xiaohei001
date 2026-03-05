@@ -65,7 +65,7 @@ def generate_launch_description():
         package="rviz2",
         executable="rviz2",
         output="log",
-        arguments=["-d", packagepath+'/config/moveit.rviz',],
+        arguments=["-d", packagepath+'/config/moveit2.rviz',],
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,

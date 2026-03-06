@@ -19,7 +19,7 @@
     <xacro:property name="j5_min" value="-3.14" /> 
     <xacro:property name="j5_max" value="3.14" /> 
 
-     <xacro:macro name="box_inertia" params="m x y z o_xyz o_rpy">
+    <xacro:macro name="box_inertia" params="m x y z o_xyz o_rpy">
         <inertial>
             <mass value="${m}" />
                 <origin xyz="${o_xyz}" rpy="${o_rpy}" />

@@ -4,7 +4,7 @@ from launch_ros.actions import Node
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-
+from launch.actions import TimerAction
 def generate_launch_description():
     packagepath = get_package_share_directory('dock_robot_moveit_config')
     print(packagepath)
@@ -14,6 +14,8 @@ def generate_launch_description():
         MoveItConfigsBuilder("my_robot", package_name="dock_robot_moveit_config")
         .robot_description('config/my_robot.gazebo.urdf.xacro')
         .robot_description_semantic('config/my_robot.srdf')
+        .robot_description_kinematics('config/kinematics.yaml')
+        
         .planning_scene_monitor(
             publish_robot_description=True,           # 在这里设置
             publish_robot_description_semantic=True   # 在这里设置
@@ -107,6 +109,23 @@ def generate_launch_description():
                     {'use_sim_time': True}],
     )
 
+    # 延迟启动move_group
+    delayed_move_group_node = TimerAction(
+        period=1.0,  # 延迟5秒
+        actions=[move_group_node]
+    )
+
+    # test_moveit_node = Node(
+    #     package="dock_robot_commander_cpp",
+    #     executable="test_moveit",
+    #     output="screen",
+    # )
+
+    # delayed_test_moveit_node = TimerAction(
+    #     period=15.0,  # 延迟5秒
+    #     actions=[test_moveit_node]
+    # )
+
     return LaunchDescription([
         gazebo_node,
         robot_to_gazebo_node,
@@ -115,7 +134,8 @@ def generate_launch_description():
         rviz_node,
         # ros2_control_node,
         controller_spawner_node,
-        move_group_node
+        delayed_move_group_node,
+        # delayed_test_moveit_node
     ])
 
 

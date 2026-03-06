@@ -17,6 +17,7 @@ int main(int argc,char** argv)
     left_arm.setMaxVelocityScalingFactor(1.0);
     left_arm.setMaxAccelerationScalingFactor(1.0);
 
+
     // //Named Goal
     // left_arm.setStartStateToCurrentState();
     // left_arm.setNamedTarget("left_arm_pose1");
@@ -70,6 +71,7 @@ int main(int argc,char** argv)
     left_arm.setStartStateToCurrentState();
     left_arm.setPoseTarget(target_pose);
     moveit::planning_interface::MoveGroupInterface::Plan plan1;
+    
     bool success1 = (left_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
     if(success1)
     {
@@ -78,6 +80,33 @@ int main(int argc,char** argv)
     else
     {
         std::cout<<"规划失败"<<std::endl;
+    }
+
+    rclcpp::sleep_for(std::chrono::seconds(6));
+
+    //Cartesian Path
+    std::vector<geometry_msgs::msg::Pose> waypoints;
+    geometry_msgs::msg::PoseStamped pose1=left_arm.getCurrentPose();
+    //pose1=target_pose.pose;
+
+    std::cout<<"执行 getCurrentPose"<<pose1.pose.position.x<<std::endl;
+    std::cout<<"执行 getCurrentPose"<<pose1.pose.position.y<<std::endl;
+    std::cout<<"执行 getCurrentPose"<<pose1.pose.position.z<<std::endl;
+    std::cout<<"执行 getCurrentPose"<< left_arm.getEndEffectorLink()<<std::endl;
+
+
+    pose1.header.frame_id="arm_base_link";
+    std::cout<<"执行 getCurrentPose"<<pose1.header.frame_id<<std::endl;
+    pose1.pose.position.x += -0.01;
+    waypoints.push_back(pose1.pose);
+
+    moveit_msgs::msg::RobotTrajectory trajectory;
+    double fraction=left_arm.computeCartesianPath(waypoints,0.01,0.01,trajectory);
+
+    std::cout<<"fraction"<< fraction<<std::endl;
+    if(fraction == 1)
+    {
+        left_arm.execute(trajectory);
     }
 
     rclcpp::shutdown();

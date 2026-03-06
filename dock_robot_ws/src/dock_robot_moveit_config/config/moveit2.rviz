@@ -5,6 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /RobotModel1
+        - /RobotModel1/Links1
+        - /RobotModel1/Links1/Link51
       Splitter Ratio: 0.5
     Tree Height: 411
   - Class: rviz_common/Help
@@ -66,118 +68,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          Link1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link1R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link2R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link3R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link4R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link5R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          base_footprint:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          controller_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          head_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_arm_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          left_caster_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          lift_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          right_arm_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          right_arm_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          right_caster_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          right_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
         Loop Animation: true
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
@@ -224,118 +114,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          Link1:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link1R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link2R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link3R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link4R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link5:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          Link5R:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          arm_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          base_footprint:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          controller_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          head_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_arm_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          left_caster_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          left_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          lift_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          right_arm_base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          right_arm_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          right_caster_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          right_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
         Robot Alpha: 0.5
         Show Robot Collision: false
         Show Robot Visual: true
@@ -402,7 +180,7 @@ Visualization Manager:
         Link5:
           Alpha: 1
           Show Axes: false
-          Show Trail: false
+          Show Trail: true
           Value: true
         Link5R:
           Alpha: 1
@@ -479,6 +257,97 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        Link1:
+          Value: true
+        Link1R:
+          Value: true
+        Link2:
+          Value: true
+        Link2R:
+          Value: true
+        Link3:
+          Value: true
+        Link3R:
+          Value: true
+        Link4:
+          Value: true
+        Link4R:
+          Value: true
+        Link5:
+          Value: true
+        Link5R:
+          Value: true
+        arm_base_link:
+          Value: true
+        base_footprint:
+          Value: true
+        base_link:
+          Value: true
+        controller_link:
+          Value: true
+        head_link:
+          Value: true
+        left_arm_link:
+          Value: true
+        left_caster_wheel_link:
+          Value: true
+        left_wheel_link:
+          Value: true
+        lift_link:
+          Value: true
+        odom:
+          Value: true
+        right_arm_base_link:
+          Value: true
+        right_arm_link:
+          Value: true
+        right_caster_wheel_link:
+          Value: true
+        right_wheel_link:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        odom:
+          base_footprint:
+            base_link:
+              left_caster_wheel_link:
+                {}
+              left_wheel_link:
+                {}
+              lift_link:
+                controller_link:
+                  head_link:
+                    left_arm_link:
+                      arm_base_link:
+                        Link1:
+                          Link2:
+                            Link3:
+                              Link4:
+                                Link5:
+                                  {}
+                    right_arm_link:
+                      right_arm_base_link:
+                        Link1R:
+                          Link2R:
+                            Link3R:
+                              Link4R:
+                                Link5R:
+                                  {}
+              right_caster_wheel_link:
+                {}
+              right_wheel_link:
+                {}
+      Update Interval: 0
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -497,25 +366,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.0464000701904297
+      Distance: 3.0025320053100586
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.04711621627211571
-        Y: 0.03941456228494644
-        Z: 0.3579394519329071
+        X: -0.11375018954277039
+        Y: 0.0664270743727684
+        Z: 0.34902223944664
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4949999451637268
+      Pitch: 0.4549999535083771
       Target Frame: base_footprint
       Value: Orbit (rviz_default_plugins)
-      Yaw: 0.06699974834918976
+      Yaw: 3.091996669769287
     Saved: ~
 Window Geometry:
   Displays:
@@ -529,9 +398,9 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002b400000375fc0200000005fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000001600000016fb000000100044006900730070006c006100790073010000003d0000021e000000c900fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000166000001910000017d00fffffffb0000000800480065006c0070000000029a0000006e0000006e00fffffffb0000000a00560069006500770073010000026100000151000000a400ffffff000001f60000037500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002b400000375fc0200000005fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000100044006900730070006c006100790073010000003d0000021e000000c900fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000166000001910000017d00fffffffb0000000800480065006c0070000000029a0000006e0000006e00fffffffb0000000a00560069006500770073010000026100000151000000a400ffffff000001f60000037500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
   Width: 1200
-  X: 720
-  Y: 68
+  X: 344
+  Y: 216

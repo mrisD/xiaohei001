@@ -44,38 +44,38 @@
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>
-            <joint name="jointR1">
+            <joint name="jointr1">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointR1']}</param>
+                  <param name="initial_value">${initial_positions['jointr1']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>
-            <joint name="jointR2">
+            <joint name="jointr2">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointR2']}</param>
+                  <param name="initial_value">${initial_positions['jointr2']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>
-            <joint name="jointR3">
+            <joint name="jointr3">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointR3']}</param>
+                  <param name="initial_value">${initial_positions['jointr3']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>
-            <joint name="jointR4">
+            <joint name="jointr4">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointR4']}</param>
+                  <param name="initial_value">${initial_positions['jointr4']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>
-            <joint name="jointR5">
+            <joint name="jointr5">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointR5']}</param>
+                  <param name="initial_value">${initial_positions['jointr5']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>

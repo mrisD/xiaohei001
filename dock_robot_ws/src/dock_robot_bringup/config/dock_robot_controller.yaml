@@ -39,11 +39,11 @@ left_arm_controller:
 right_arm_controller:
   ros__parameters:
     joints:
-      - jointR1
-      - jointR2
-      - jointR3
-      - jointR4
-      - jointR5
+      - jointr1
+      - jointr2
+      - jointr3
+      - jointr4
+      - jointr5
     command_interfaces:
       - position
       # - velocity

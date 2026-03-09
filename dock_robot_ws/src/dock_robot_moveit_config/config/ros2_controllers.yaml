@@ -1,7 +1,7 @@
 # This config file is used by ros2_control
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz
+    update_rate: 1000  # Hz
 
     left_arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
@@ -11,12 +11,12 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
-    mobile_controller:
-      type: diff_drive_controller/DiffDriveController
-
-
     body_controller:
       type: joint_trajectory_controller/JointTrajectoryController
+
+
+    mobile_controller:
+      type: diff_drive_controller/DiffDriveController
 
 
     joint_state_broadcaster:
@@ -38,11 +38,20 @@ left_arm_controller:
 right_arm_controller:
   ros__parameters:
     joints:
-      - jointR1
-      - jointR2
-      - jointR3
-      - jointR4
-      - jointR5
+      - jointr1
+      - jointr2
+      - jointr3
+      - jointr4
+      - jointr5
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+body_controller:
+  ros__parameters:
+    joints:
+      - base_lift_joint
     command_interfaces:
       - position
     state_interfaces:
@@ -53,7 +62,7 @@ mobile_controller:
     left_wheel_names: ["base_left_wheel_joint"]
     right_wheel_names: ["base_right_wheel_joint"]
 
-    wheel_separation: 0.1615
+    wheel_separation: 0.373
     wheel_radius: 0.1
     
     odom_frame_id: "odom"
@@ -65,19 +74,10 @@ mobile_controller:
     enable_odom_tf: true
     publish_rate: 50.0
 
-    linear.x.has_velocity_limits: true  #humble default fase jazzy default true
-    linear.x.max_velocity: 1.0
-    linear.x.min_velocity: -1.0
+    # linear.x.has_velocity_limits: true  #humble default fase jazzy default true
+    linear.x.max_velocit: 1.0
+    linear.x.min_velocit: -1.0
     
-    angular.z.has_velocity_limits: true
+    # angular.z.has_velocity_limits: true
     angular.z.max_velocity: 1.0
     angular.z.min_velocity: -1.0
-body_controller:
-  ros__parameters:
-    joints:
-      - base_lift_joint
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-      - velocity

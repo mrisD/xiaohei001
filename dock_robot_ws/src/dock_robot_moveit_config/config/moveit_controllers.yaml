@@ -22,11 +22,11 @@ moveit_simple_controller_manager:
   right_arm_controller:
     type: FollowJointTrajectory
     joints:
-      - jointR1
-      - jointR2
-      - jointR3
-      - jointR4
-      - jointR5
+      - jointr1
+      - jointr2
+      - jointr3
+      - jointr4
+      - jointr5
     action_ns: follow_joint_trajectory
     default: true
   mobile_controller:

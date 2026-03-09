@@ -2,15 +2,15 @@
 
 initial_positions:
   joint1: 0
-  jointR1: 0
+  jointr1: 0
   joint2: 0
-  jointR2: 0
+  jointr2: 0
   joint3: 0
-  jointR3: 0
+  jointr3: 0
   joint4: 0
-  jointR4: 0
+  jointr4: 0
   joint5: 0
-  jointR5: 0
+  jointr5: 0
   base_left_wheel_joint: 0
   base_lift_joint: 0
   base_right_wheel_joint: 0

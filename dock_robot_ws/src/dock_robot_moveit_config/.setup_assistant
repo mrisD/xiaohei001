@@ -7,7 +7,7 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: zhul
     author_email: zhul@dockcloud.com
-    generated_timestamp: 1772023570
+    generated_timestamp: 1773043058
   control_xacro:
     command:
       - position

@@ -35,11 +35,11 @@
             <joint_name>joint4</joint_name>
             <joint_name>joint5</joint_name>
 
-            <joint_name>jointR1</joint_name>
-            <joint_name>jointR2</joint_name>
-            <joint_name>jointR3</joint_name>
-            <joint_name>jointR4</joint_name>
-            <joint_name>jointR5</joint_name>
+            <joint_name>jointr1</joint_name>
+            <joint_name>jointr2</joint_name>
+            <joint_name>jointr3</joint_name>
+            <joint_name>jointr4</joint_name>
+            <joint_name>jointr5</joint_name>
 
 
         </plugin>

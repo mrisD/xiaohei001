@@ -100,6 +100,7 @@
       upper="${j1_max}"
       effort="2"
       velocity="3.14" />
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <link
     name="link2">
@@ -158,6 +159,7 @@
       upper="${j2_max}"
       effort="1"
       velocity="3.14" />
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <link
     name="link3">
@@ -216,6 +218,7 @@
       upper="${j3_max}"
       effort="2"
       velocity="3.14" />
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <link
     name="link4">
@@ -274,6 +277,7 @@
       upper="${j4_max}"
       effort="2"
       velocity="3.14" />
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <link
     name="link5">
@@ -332,5 +336,6 @@
       upper="${j5_max}"
       effort="2"
       velocity="3.14" />
+    <dynamics damping="0.1" friction="0.05"/>
   </joint>
 </robot>

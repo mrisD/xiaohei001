@@ -18,15 +18,22 @@ int main(int argc,char** argv)
     left_arm.setMaxAccelerationScalingFactor(1.0);
 
 
-    // //Named Goal
-    // left_arm.setStartStateToCurrentState();
-    // left_arm.setNamedTarget("left_arm_pose1");
-    // moveit::planning_interface::MoveGroupInterface::Plan plan1;
-    // bool success1 = (left_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
-    // if(success1)
-    // {
-    //     left_arm.execute(plan1);
-    // }
+    //Named Goal
+    {
+        left_arm.setStartStateToCurrentState();
+        left_arm.setNamedTarget("left_arm_pose1");
+        moveit::planning_interface::MoveGroupInterface::Plan plan1;
+        bool success1 = (left_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
+        if(success1)
+        {
+            left_arm.execute(plan1);
+        }
+        else
+        {
+            std::cout<<"left_arm_home 失败"<<std::endl;
+        }
+    }
+
 
     // left_arm.setStartStateToCurrentState();
     // left_arm.setNamedTarget("left_arm_home");
@@ -51,23 +58,18 @@ int main(int argc,char** argv)
     //------------------------------------------------------------
     //Pose Goal    
     tf2::Quaternion q;
-    q.setRPY(0.49729,0.44709,0.69818);
+    q.setRPY(0.0,0.0,0.0);
     q=q.normalize();
 
     geometry_msgs::msg::PoseStamped target_pose;
-    target_pose.header.frame_id="arm_base_link";
-    target_pose.pose.position.x=0.38247;
-    target_pose.pose.position.y=0.17095;
-    target_pose.pose.position.z=-0.30462;
-    // target_pose.pose.orientation.w=q.getW();
-    // target_pose.pose.orientation.x=q.getX();
-    // target_pose.pose.orientation.y=q.getY();
-    // target_pose.pose.orientation.z=q.getZ();
-    
-    target_pose.pose.orientation.x=0.497291;
-    target_pose.pose.orientation.y=0.447101;
-    target_pose.pose.orientation.z=0.255864;
-    target_pose.pose.orientation.w=0.698094;
+    target_pose.header.frame_id="base_footprint";
+    target_pose.pose.position.x=-0.00077526;
+    target_pose.pose.position.y=0.67813;
+    target_pose.pose.position.z=0.9531;
+    target_pose.pose.orientation.x=0.56245;
+    target_pose.pose.orientation.y=-0.56235;
+    target_pose.pose.orientation.z=-0.42856;
+    target_pose.pose.orientation.w=-0.42866;
     left_arm.setStartStateToCurrentState();
     left_arm.setPoseTarget(target_pose);
     moveit::planning_interface::MoveGroupInterface::Plan plan1;
@@ -82,12 +84,14 @@ int main(int argc,char** argv)
         std::cout<<"规划失败"<<std::endl;
     }
 
-    rclcpp::sleep_for(std::chrono::seconds(6));
+
+
+
+    //rclcpp::sleep_for(std::chrono::seconds(6));
 
     //Cartesian Path
     std::vector<geometry_msgs::msg::Pose> waypoints;
     geometry_msgs::msg::PoseStamped pose1=left_arm.getCurrentPose();
-    //pose1=target_pose.pose;
 
     std::cout<<"执行 getCurrentPose"<<pose1.pose.position.x<<std::endl;
     std::cout<<"执行 getCurrentPose"<<pose1.pose.position.y<<std::endl;

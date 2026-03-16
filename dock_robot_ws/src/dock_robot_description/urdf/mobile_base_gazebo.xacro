@@ -10,7 +10,7 @@
         <mu2 value="0.1" />
     </gazebo>
     
-    <gazebo>
+    <!-- <gazebo>
         <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive" >
             <left_joint>base_left_wheel_joint</left_joint>
             <right_joint>base_right_wheel_joint</right_joint>
@@ -43,6 +43,6 @@
 
 
         </plugin>
-    </gazebo>
+    </gazebo> -->
 
 </robot>

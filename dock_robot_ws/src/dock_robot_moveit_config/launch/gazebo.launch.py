@@ -5,9 +5,16 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import TimerAction
+import os
 def generate_launch_description():
     packagepath = get_package_share_directory('dock_robot_moveit_config')
     print(packagepath)
+
+    world_path = os.path.join(
+    get_package_share_directory('dock_robot_moveit_config'),
+    'world',
+    'nav_world.sdf'
+    )
 
     # Load the robot configuration
     moveit_config = (
@@ -23,11 +30,13 @@ def generate_launch_description():
         .to_moveit_configs()
     )
     # 启动Gazebo
+
+
     gazebo_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             get_package_share_directory('ros_gz_sim')+'/launch/gz_sim.launch.py'
         ]),
-        launch_arguments=[('gz_args', 'empty.sdf -r')]
+        launch_arguments={'gz_args': f' {world_path} -r'}.items()
     )
 
     # 将机械臂添加到Gazebo
@@ -41,12 +50,18 @@ def generate_launch_description():
         ]
     )
 
-    # Clock Bridge
-    clock_bridge_node = Node(
+    # # Clock Bridge
+    # clock_bridge_node = Node(
+    #     package='ros_gz_bridge',
+    #     executable='parameter_bridge',
+    #     arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]'],
+    #     output='screen'
+    # )
+
+    bridge_node = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]'],
-        output='screen'
+        parameters=[ {'config_file':packagepath+'/config/gazebo_bridge.yaml'},],
     )
 
         # 发布机械臂状态
@@ -129,7 +144,7 @@ def generate_launch_description():
     return LaunchDescription([
         gazebo_node,
         robot_to_gazebo_node,
-        clock_bridge_node,
+        bridge_node,
         robot_desc_node,
         rviz_node,
         # ros2_control_node,

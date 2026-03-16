@@ -5,9 +5,7 @@
     <!-- Import arm urdf file -->
     <xacro:include filename="$(find dock_robot_description)/urdf/dock_robot.urdf.xacro" />
 
-    <!--添加Gazebo所需的专有标签-->
     <gazebo>
-        <!--添加world-joint使机械臂固定在仿真场景中-->
         <!-- <joint name="world_joint" type="fixed">
             <parent>world</parent>
             <child>base_link</child>

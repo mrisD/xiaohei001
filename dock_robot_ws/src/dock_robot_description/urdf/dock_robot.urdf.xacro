@@ -12,6 +12,11 @@
     <xacro:include filename="right_arm.urdf" />
 
      <xacro:include filename="dock_robot.ros2_control.xacro" />
+     <xacro:include filename="camera.urdf.xacro" />
+     <xacro:include filename="imu.urdf.xacro" />
+     <xacro:include filename="laser.urdf.xacro" />
+     <xacro:include filename="sensor_gazebo.xacro" />
+     
      <!-- <xacro:my_robot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/> -->
 
      <!-- <joint name="gripper_base_joint" type="fixed">
@@ -31,6 +36,13 @@
         <child link="right_arm_base_link" />
         <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
+
+    <xacro:laser_xacro xyz="0.0 0.0 0.1" />
+    <xacro:camera_xacro xyz="0.0 0.0 0.02" />
+    <!-- <xacro:imu_xacro xyz="0.0 0.0 0.02" /> -->
+    
+
+
 
 
     

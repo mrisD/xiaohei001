@@ -8,6 +8,16 @@
         <color rgba="0.5 0.5 0.5 1" />
     </material>
 
+    <material name="yellow">
+        <color rgba="1.0 1.0 0.0 1.0"/>
+    </material>
+    
+    <material name="orange">
+        <color rgba="1.0 0.5 0.0 1.0"/>
+    </material>
+
+
+
     <xacro:property name="j1_min" value="-1.57" /> 
     <xacro:property name="j1_max" value="1.57" /> 
     <xacro:property name="j2_min" value="-1.57" /> 

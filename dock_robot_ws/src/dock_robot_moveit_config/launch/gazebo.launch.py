@@ -61,7 +61,10 @@ def generate_launch_description():
     bridge_node = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        parameters=[ {'config_file':packagepath+'/config/gazebo_bridge.yaml'},],
+        parameters=[ 
+            {'config_file':packagepath+'/config/gazebo_bridge.yaml'},
+            {'use_sim_time': True},
+            ],
     )
 
         # 发布机械臂状态
@@ -113,6 +116,9 @@ def generate_launch_description():
             "mobile_controller",
             "body_controller"
         ],
+        parameters=[
+        {'use_sim_time': True}, 
+    ],
     )
 
     # 启动move_group node/action server

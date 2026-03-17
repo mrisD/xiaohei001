@@ -41,6 +41,7 @@
             <update_rate>10</update_rate>
             <frame_id>laser_link</frame_id>
             <gz_frame_id>laser_link</gz_frame_id>
+            <ignition_frame_id>laser_link</ignition_frame_id>
             <ros_frame_id>laser_link</ros_frame_id>
             <lidar>
                 <scan>
@@ -53,8 +54,8 @@
                     <vertical>
                         <samples>16</samples>
                         <resolution>1</resolution>
-                        <min_angle>-0.261799</min_angle>
-                        <max_angle>0.261799</max_angle>
+                        <min_angle>-3.14</min_angle>
+                        <max_angle>3.14</max_angle>
                     </vertical>
                 </scan>
                 <range>
@@ -63,11 +64,11 @@
                     <resolution>0.01</resolution>
                 </range>
                 <!-- 设置噪声 -->
-                 <noise>
+                <noise>
                     <type>gaussian</type>
                     <mean>0.0</mean>
                     <stddev>0.01</stddev>
-                 </noise>
+                </noise>
             </lidar>
             <alwaysOn>1</alwaysOn>
             <visualize>true</visualize>
@@ -77,6 +78,11 @@
                 filename="gz-sim-sensors-system"
                 name="gz::sim::systems::Sensors">
             </plugin> -->
+            <ros>
+                <frame_id>laser_link</frame_id>
+                <topic>scan</topic>
+                <use_sim_time>true</use_sim_time>
+            </ros>
             
         </sensor>
     </gazebo>

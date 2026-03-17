@@ -35,58 +35,51 @@
         </plugin>
     </gazebo>  -->
 
-    <!-- 传感器及参数 -->
-    <!-- <sensor name='gpu_lidar' type='gpu_lidar'> -->
-    <!-- 话题 -->
-    <plugin
-        filename="gz-sim-lidar-system"
-        name="gz::sim::systems::Lidar">
-
-        <topic>lidar</topic>
-        <!-- 传感器数据的更新频率，单位为 Hz（每秒10次） -->
-        <update_rate>10</update_rate>
-        <!-- 激光雷达的参数设置 -->
-        <lidar>
-            <!-- 扫描参数 -->
-            <scan>
-                <!-- 水平扫描设置 -->
-                <horizontal>
-                    <!-- 水平方向采样点数 -->
-                    <samples>120</samples>
-                    <!-- 每个采样点的分辨率 -->
-                    <resolution>1</resolution>
-                    <!-- 起始角度（弧度） -->
-                    <min_angle>0</min_angle>
-                    <!-- 终止角度（弧度，约等于2π） -->
-                    <max_angle>6.2831</max_angle>
-                </horizontal>
-                <!-- 垂直扫描设置 -->
-                <vertical>
-                    <!-- 垂直方向采样点数 -->
-                    <samples>16</samples>
-                    <!-- 分辨率 -->
-                    <resolution>1</resolution>
-                    <!-- 起始角度（约-15度） -->
-                    <min_angle>-0.261799</min_angle>
-                    <!-- 终止角度（约+15度） -->
-                    <max_angle>0.261799</max_angle>
-                </vertical>
-            </scan>
-            <!-- 距离参数 -->
-            <range>
-                <!-- 最小测量距离（米） -->
-                <min>0.08</min>
-                <!-- 最大测量距离（米） -->
-                <max>10.0</max>
-                <!-- 距离分辨率（米） -->
-                <resolution>0.01</resolution>
-            </range>
-        </lidar>
-        <!-- 传感器始终开启 -->
-        <alwaysOn>1</alwaysOn>
-        <!-- 在仿真界面中可视化激光雷达数据 -->
-        <visualize>true</visualize>
-    </plugin>
+    <gazebo reference="laser_link">
+        <sensor name='gpu_lidar' type='gpu_lidar'>
+            <topic>lidar</topic>
+            <update_rate>10</update_rate>
+            <frame_id>laser_link</frame_id>
+            <gz_frame_id>laser_link</gz_frame_id>
+            <lidar>
+                <scan>
+                    <horizontal>
+                        <samples>120</samples>
+                        <resolution>1</resolution>
+                        <min_angle>0</min_angle>
+                        <max_angle>6.2831</max_angle>
+                    </horizontal>
+                    <vertical>
+                        <samples>16</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-0.261799</min_angle>
+                        <max_angle>0.261799</max_angle>
+                    </vertical>
+                </scan>
+                <range>
+                    <min>0.08</min>
+                    <max>10.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+                <!-- 设置噪声 -->
+                 <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.01</stddev>
+                 </noise>
+            </lidar>
+            <alwaysOn>1</alwaysOn>
+            <visualize>true</visualize>
+            
+            <!-- 插件在world文件中已经添加了-->
+            <!-- <plugin
+                filename="gz-sim-sensors-system"
+                name="gz::sim::systems::Sensors">
+            </plugin> -->
+            
+        </sensor>
+    </gazebo>
+    
     <!-- </sensor> -->
 
     <!-- 在 sensor 标签结束后添加 -->

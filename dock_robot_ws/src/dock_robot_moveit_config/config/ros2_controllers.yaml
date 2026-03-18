@@ -62,7 +62,7 @@ mobile_controller:
     left_wheel_names: ["base_left_wheel_joint"]
     right_wheel_names: ["base_right_wheel_joint"]
 
-    wheel_separation: 0.373
+    wheel_separation: 0.1615
     wheel_radius: 0.1
     
     odom_frame_id: "odom"
@@ -74,10 +74,12 @@ mobile_controller:
     enable_odom_tf: true
     publish_rate: 50.0
 
-    # linear.x.has_velocity_limits: true  #humble default fase jazzy default true
-    linear.x.max_velocit: 1.0
-    linear.x.min_velocit: -1.0
+    linear.x.has_velocity_limits: true  #humble default fase jazzy default true
+    linear.x.max_velocity: 1.0
+    linear.x.min_velocity: -1.0
     
-    # angular.z.has_velocity_limits: true
+    angular.z.has_velocity_limits: true
     angular.z.max_velocity: 1.0
     angular.z.min_velocity: -1.0
+
+  

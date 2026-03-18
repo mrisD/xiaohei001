@@ -1,0 +1,36 @@
+slam_toolbox:
+  ros__parameters:
+    # 坐标系
+    odom_frame: odom
+    map_frame: map
+    base_frame: base_footprint
+    scan_topic: /scan
+
+     # 关键：让地图更干净、墙壁更直
+    minimum_travel_distance: 0.05    # 移动5cm才更新，减少频繁小更新
+    minimum_travel_heading: 0.05     # 转3度才更新
+    resolution: 0.05                 # 地图分辨率5cm，更清晰
+    max_laser_range: 10.0            # 限制最大测距，减少远处噪点
+    scan_buffer_size: 10             # 缓存最近10帧做匹配
+    use_scan_matching: true
+    use_loop_closing: true           # 开启回环检测，修正漂移
+    loop_search_maximum_distance: 5.0
+    loop_match_minimum_chain_size: 10
+
+    # 零延迟关键
+    minimum_travel_distance: 0.05    # 动一点就更新
+    minimum_travel_heading: 0.05     # 转一点就更新
+    transform_timeout: 0.1
+    tf_buffer_duration: 1.0
+
+    # IMU 融合
+    use_imu: true
+    imu_topic: /imu
+    imu_assume_calibrated: true
+
+    # 性能优化
+    throttle_scans: 1
+    max_laser_range: 12.0
+    resolution: 0.05
+    mode: mapping
+    use_scan_matching: true

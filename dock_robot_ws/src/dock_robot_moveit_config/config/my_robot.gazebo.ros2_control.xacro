@@ -7,7 +7,7 @@
             <hardware>
                 <!-- By default, set up controllers for simulation. This won't work on real hardware -->
                 <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-                <param name="calculate_dynamics">true</param>
+                <!-- <param name="calculate_dynamics">true</param> -->
             </hardware>
             <joint name="joint1">
                 <command_interface name="position"/>

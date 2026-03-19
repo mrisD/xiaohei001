@@ -34,10 +34,6 @@
       </plugin>
     </gazebo> -->
    
-
-    
-
-
     <!-- <gazebo>
         <plugin 
             filename="gz-sim-joint-state-publisher-system"
@@ -57,7 +53,6 @@
             <joint_name>jointr3</joint_name>
             <joint_name>jointr4</joint_name>
             <joint_name>jointr5</joint_name>
-
         </plugin>
     </gazebo>  -->
 

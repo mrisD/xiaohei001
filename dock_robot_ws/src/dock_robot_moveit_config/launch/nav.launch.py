@@ -6,6 +6,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import TimerAction
 import os
+from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     packagepath = get_package_share_directory('dock_robot_moveit_config')
     print(packagepath)
@@ -27,6 +28,10 @@ def generate_launch_description():
         "maps",                          # 地图文件夹
         "map_1725111373.yaml"                  # 你的地图文件名
     )
+
+    configuration_directory = LaunchConfiguration('configuration_directory',default= os.path.join(packagepath, 'config') )
+
+    configuration_basename = LaunchConfiguration('configuration_basename', default='with_odom_2d.lua')
 
     # Load the robot configuration
     moveit_config = (
@@ -87,6 +92,23 @@ def generate_launch_description():
         ],
     )
 
+    cartographer_node = Node(
+        package='cartographer_ros',
+        executable='cartographer_node',
+        name='cartographer_node',
+        output='screen',
+        parameters=[{'use_sim_time': True}],
+        arguments=['-configuration_directory', configuration_directory,
+                   '-configuration_basename', configuration_basename])
+
+    occupancy_grid_node = Node(
+        package='cartographer_ros',
+        executable='cartographer_occupancy_grid_node',
+        name='occupancy_grid_node',
+        output='screen',
+        parameters=[{'use_sim_time': True}],
+        arguments=['-resolution', '0.05', '-publish_period_sec', '1.0'])
+
     # Launch RViz
     rviz_node = Node(
         package="rviz2",
@@ -105,32 +127,76 @@ def generate_launch_description():
 
 
     # 启动关节状态发布器, arm组控制器, 夹抓控制器
-    controller_spawner_node = Node(
+    # controller_spawner_node = Node(
+    #     package="controller_manager",
+    #     executable="spawner",
+    #     arguments=[
+    #         "joint_state_broadcaster",
+    #         "left_arm_controller",
+    #         "right_arm_controller",
+    #         "mobile_controller",
+    #         "body_controller",
+    #     ],
+    #     parameters=[
+    #     {'use_sim_time': True},],
+    # )
+
+
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster"],
+        parameters=[{'use_sim_time': True}],
+    )
+
+    left_arm_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["left_arm_controller"],
+        parameters=[{'use_sim_time': True}],
+    )
+
+    right_arm_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["right_arm_controller"],
+        parameters=[{'use_sim_time': True}],
+    )
+
+    body_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["body_controller"],
+        parameters=[{'use_sim_time': True}],
+    )
+
+
+    mobile_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "joint_state_broadcaster",
-            "left_arm_controller",
-            "right_arm_controller",
             "mobile_controller",
-            "body_controller",
+            "--controller-manager", "/controller_manager",
         ],
-        parameters=[
-        {'use_sim_time': True},],
+        # remappings=[
+        #     ('/mobile_controller/cmd_vel', '/cmd_vel')
+        # ],
+        parameters=[{'use_sim_time': True}],
+        output="screen",
     )
 
-    # 在你的launch.py文件中
-    mobile_controller_spawner = Node(
-    package="controller_manager",
-    executable="spawner",
-    arguments=[
-        "mobile_controller",
-        "--controller-manager", "/controller_manager",
-        "-r", "/mobile_controller/cmd_vel:=/cmd_vel"  # 关键行：重映射话题
-    ],
-    parameters=[{'use_sim_time': True}],
-    output="screen",
-)
+    # # 在你的launch.py文件中
+    # mobile_controller_spawner = Node(
+    #     package="controller_manager",
+    #     executable="spawner",
+    #     arguments=[
+    #         "mobile_controller",
+    #         "--controller-manager", "/controller_manager",
+    #         "-r", "/mobile_controller/cmd_vel:=/cmd_vel"  # 关键行：重映射话题
+    #     ],
+    #     parameters=[{'use_sim_time': True}],
+    #     output="screen",
+    # )
 
     # 启动move_group node/action server
     move_group_node = Node(
@@ -160,22 +226,22 @@ def generate_launch_description():
     )
 
 
-    # nav_node = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(
-    #             get_package_share_directory("nav2_bringup"),
-    #             "launch",
-    #             "bringup_launch.py"
-    #         )
-    #     ),
-    #     launch_arguments={
-    #         # "map": map_file,                  # 必须空
-    #         "use_sim_time": "True",
-    #         "autostart": "True",
-    #         "slam": "True",               # 必须开
-    #         "use_stamped_costmaps": "False"
-    #     }.items()
-    # )
+    nav_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("nav2_bringup"),
+                "launch",
+                "bringup_launch.py"
+            )
+        ),
+        launch_arguments={
+            "map": "",                  # 必须空
+            "use_sim_time": "True",
+            "autostart": "True",
+            "slam": "True",               # 必须开
+            "use_stamped_costmaps": "False"
+        }.items()
+    )
 
     # nav_node = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource([os.path.join(
@@ -190,12 +256,14 @@ def generate_launch_description():
             '/online_async_launch.py'])
         )
     
-    nav_node = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('nav2_bringup'), 'launch'),
-            '/bringup_launch.py']),
-            launch_arguments=[('use_sim_time','true')]
-        )
+    # nav_node = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([os.path.join(
+    #         get_package_share_directory('nav2_bringup'), 'launch'),
+    #         '/bringup_launch.py']),
+    #         launch_arguments=[('use_sim_time','True')]
+    #     )
+    
+
 
  
 
@@ -207,10 +275,20 @@ def generate_launch_description():
         bridge_node,
         robot_desc_node,
         rviz_node,
-        controller_spawner_node,
+        # controller_spawner_node,
+
+        joint_state_broadcaster_spawner,
+        left_arm_spawner,
+        right_arm_spawner,
+        body_spawner,
+        mobile_controller_spawner,   
+
+
         delayed_move_group_node,
-        slam_node,
-        # nav_node
+        # slam_node,
+        nav_node,
+        cartographer_node,
+        occupancy_grid_node
     ])
 
 

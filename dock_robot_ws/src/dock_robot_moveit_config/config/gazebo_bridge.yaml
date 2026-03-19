@@ -1,4 +1,4 @@
-- ros_topic_name: "/clock0"
+- ros_topic_name: "/clock"
   gz_topic_name: "/clock"
   ros_type_name: "rosgraph_msgs/msg/Clock"
   gz_type_name: "gz.msgs.Clock"
@@ -23,11 +23,11 @@
 #   gz_type_name: "gz.msgs.Pose_V"
 #   direction: "GZ_TO_ROS"
 
-- ros_topic_name: "/mobile_controller/cmd_vel"
-  gz_topic_name: "/model/my_robot/cmd_vel"
-  ros_type_name: "geometry_msgs/msg/Twist"
-  gz_type_name: "gz.msgs.Twist"
-  direction: BIDIRECTIONAL
+# - ros_topic_name: "/mobile_controller/cmd_vel"
+#   gz_topic_name: "/model/my_robot/cmd_vel"
+#   ros_type_name: "geometry_msgs/msg/Twist"
+#   gz_type_name: "gz.msgs.Twist"
+#   direction: BIDIRECTIONAL
 
 - ros_topic_name: "/scan"
   gz_topic_name: "/lidar"

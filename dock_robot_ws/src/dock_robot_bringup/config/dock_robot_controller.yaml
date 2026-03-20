@@ -71,7 +71,6 @@ mobile_controller:
 
     wheel_separation: 0.1615
     wheel_radius: 0.1
-    cmd_vel_topic: /cmd_vel22  
     
     
     odom_frame_id: "odom"

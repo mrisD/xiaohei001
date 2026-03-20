@@ -235,7 +235,7 @@ def generate_launch_description():
             )
         ),
         launch_arguments={
-            "map": map_file,                  # 必须空
+            "map": "",                  # 必须空
             "use_sim_time": "True",
             "autostart": "True",
             "slam": "True",               # 必须开
@@ -263,6 +263,16 @@ def generate_launch_description():
     #         launch_arguments=[('use_sim_time','True')]
     #     )
     
+    relay_node = Node(
+        package='topic_tools',
+        executable='relay',
+        name='cmd_vel_relay',
+        arguments=[
+            '/cmd_vel',
+            '/mobile_controller/cmd_vel_unstamped'
+        ],
+        output='screen'
+    )
 
 
  
@@ -287,8 +297,9 @@ def generate_launch_description():
         delayed_move_group_node,
         # slam_node,
         nav_node,
-        # cartographer_node,
-        # occupancy_grid_node
+        cartographer_node,
+        occupancy_grid_node,
+        relay_node
     ])
 
 

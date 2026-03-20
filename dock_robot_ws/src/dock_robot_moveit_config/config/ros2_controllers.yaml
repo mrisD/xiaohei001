@@ -59,13 +59,13 @@ body_controller:
       - velocity
 mobile_controller:
   ros__parameters:
+    use_stamped_vel: false
     left_wheel_names: ["base_left_wheel_joint"]
     right_wheel_names: ["base_right_wheel_joint"]
 
     wheel_separation: 0.1615
     wheel_radius: 0.1
 
-    cmd_vel_topic: /cmd_vel333
     
     odom_frame_id: "odom"
     base_frame_id: "base_footprint"

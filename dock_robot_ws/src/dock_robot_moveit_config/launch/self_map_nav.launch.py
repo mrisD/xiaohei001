@@ -39,7 +39,7 @@ def generate_launch_description():
     use_sim_time = launch.substitutions.LaunchConfiguration(
         'use_sim_time', default='true')
     map_yaml_path = launch.substitutions.LaunchConfiguration(
-        'map', default=os.path.join(packagepath, 'maps', 'map_1773903490.yaml'))
+        'map', default=os.path.join(packagepath, 'maps', 'map_1774184152.yaml'))
     nav2_param_path = launch.substitutions.LaunchConfiguration(
         'params_file', default=os.path.join(packagepath, 'config', 'nav2_params.yaml'))
 

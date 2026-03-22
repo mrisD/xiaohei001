@@ -10,9 +10,9 @@ default_acceleration_scaling_factor: 2.0.1
 joint_limits:
   base_left_wheel_joint:
     has_velocity_limits: true
-    max_velocity: 2.0
+    max_velocity: 0.2
     has_acceleration_limits: true
-    max_acceleration: 2.0
+    max_acceleration: 0.2
   base_lift_joint:
     has_velocity_limits: true
     max_velocity: 10.0
@@ -20,9 +20,9 @@ joint_limits:
     max_acceleration: 2.0
   base_right_wheel_joint:
     has_velocity_limits: true
-    max_velocity: 2.0
+    max_velocity: 0.2
     has_acceleration_limits: true
-    max_acceleration: 2.0
+    max_acceleration: 0.2
   joint1:
     has_velocity_limits: true
     max_velocity: 3.1400000000000001

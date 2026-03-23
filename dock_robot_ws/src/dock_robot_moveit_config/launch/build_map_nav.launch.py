@@ -7,6 +7,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.actions import TimerAction
 import os
 from launch.substitutions import LaunchConfiguration
+import launch
+
 def generate_launch_description():
     packagepath = get_package_share_directory('dock_robot_moveit_config')
     print(packagepath)
@@ -28,6 +30,13 @@ def generate_launch_description():
         "maps",                          # 地图文件夹
         "map_1773903490.yaml"                  # 你的地图文件名
     )
+
+    use_sim_time = launch.substitutions.LaunchConfiguration(
+        'use_sim_time', default='true')
+    map_yaml_path = launch.substitutions.LaunchConfiguration(
+        'map', default=os.path.join(packagepath, 'maps', 'map_1774184152.yaml'))
+    nav2_param_path = launch.substitutions.LaunchConfiguration(
+        'params_file', default=os.path.join(packagepath, 'config', 'nav2_params.yaml'))
 
     configuration_directory = LaunchConfiguration('configuration_directory',default= os.path.join(packagepath, 'config') )
 
@@ -226,6 +235,23 @@ def generate_launch_description():
     )
 
 
+    # nav_node = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(
+    #             get_package_share_directory("nav2_bringup"),
+    #             "launch",
+    #             "bringup_launch.py"
+    #         )
+    #     ),
+    #     launch_arguments={
+    #         "map": "",                  # 必须空
+    #         "use_sim_time": "True",
+    #         "autostart": "True",
+    #         "slam": "True",               # 必须开
+    #         "use_stamped_costmaps": "False"
+    #     }.items()
+    # )
+
     nav_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -235,20 +261,12 @@ def generate_launch_description():
             )
         ),
         launch_arguments={
-            "map": "",                  # 必须空
-            "use_sim_time": "True",
-            "autostart": "True",
-            "slam": "True",               # 必须开
-            "use_stamped_costmaps": "False"
-        }.items()
+            'map': map_yaml_path,
+            'use_sim_time': use_sim_time,
+            'params_file': nav2_param_path}.items(),
     )
 
-    # nav_node = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource([os.path.join(
-    #         get_package_share_directory('nav2_bringup'), 'launch'),
-    #         '/bringup_launch.py']),
-    #         launch_arguments=[('use_sim_time','True')]
-    #     )    
+    
 
     slam_node = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(

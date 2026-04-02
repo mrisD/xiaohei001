@@ -28,7 +28,7 @@ def generate_launch_description():
     map_file = os.path.join(
         get_package_share_directory("dock_robot_moveit_config"),  # 👈 改这里！
         "maps",                          # 地图文件夹
-        "map_1725111373.yaml"                  # 你的地图文件名
+        "map_007.yaml"                  # 你的地图文件名
     )
 
     configuration_directory = LaunchConfiguration('configuration_directory',default= os.path.join(packagepath, 'config') )
@@ -39,7 +39,9 @@ def generate_launch_description():
     use_sim_time = launch.substitutions.LaunchConfiguration(
         'use_sim_time', default='true')
     map_yaml_path = launch.substitutions.LaunchConfiguration(
-        'map', default=os.path.join(packagepath, 'maps', 'map_1774184152.yaml'))
+        'map', default=os.path.join(packagepath, 'maps', 'map_007.yaml'))
+    # map_yaml_path = launch.substitutions.LaunchConfiguration(
+    #     'map', default=os.path.join(packagepath, 'maps', 'map_1773903490.yaml'))
     nav2_param_path = launch.substitutions.LaunchConfiguration(
         'params_file', default=os.path.join(packagepath, 'config', 'nav2_params.yaml'))
 
@@ -280,6 +282,17 @@ def generate_launch_description():
         ],
         output='screen'
     )
+
+    relay_node2 = Node(
+        package='topic_tools',
+        executable='relay',
+        name='odom_relay',
+        arguments=[
+            '/odom',
+            '/mobile_controller/odom',
+        ],
+        output='screen'
+    )
     
 
 
@@ -307,7 +320,8 @@ def generate_launch_description():
         nav_node,
         # cartographer_node,
         # occupancy_grid_node
-        relay_node
+        relay_node,
+        relay_node2
     ])
 
 

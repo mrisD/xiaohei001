@@ -6,11 +6,14 @@ options = {
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
   tracking_frame = "base_footprint",
-  published_frame = "odom",
+  published_frame = "base_footprint",
   odom_frame = "odom",
 
-  provide_odom_frame = false,
+  provide_odom_frame = true,
   publish_frame_projected_to_2d = true,
+  publish_to_tf=true,   --发布odom到map的变换
+  use_pose_extrapolator = false,
+  
   use_odometry = false,
   use_nav_sat = false,
   use_landmarks = false,
@@ -30,6 +33,7 @@ options = {
   landmarks_sampling_ratio = 1.,
 }
 
+
 MAP_BUILDER.use_trajectory_builder_2d = true
 
 TRAJECTORY_BUILDER_2D.min_range = 0.10
@@ -43,3 +47,4 @@ POSE_GRAPH.constraint_builder.min_score = 0.65
 POSE_GRAPH.constraint_builder.global_localization_min_score = 0.7
 
 return options
+

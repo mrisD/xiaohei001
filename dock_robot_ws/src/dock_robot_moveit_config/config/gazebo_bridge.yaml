@@ -39,7 +39,7 @@
     durability: VOLATILE
   gz_qos:
     reliability: BEST_EFFORT
-  queue_size: 500
+  queue_size: 1000
 
 - ros_topic_name: "/imu"
   gz_topic_name: "/imu"

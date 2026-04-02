@@ -39,7 +39,8 @@
 
     <xacro:laser_xacro xyz="0.1615 0.0 0.212" />
     <xacro:camera_xacro xyz="0.0 0.0 0.02" />
-    <xacro:imu_xacro xyz="0.0 0.0 0.081" />
+    <xacro:imu_xacro xyz="0.0 0.0 0.0" />
+    <!-- <xacro:imu_xacro xyz="0.0 0.0 0.081" /> -->
     
 
 

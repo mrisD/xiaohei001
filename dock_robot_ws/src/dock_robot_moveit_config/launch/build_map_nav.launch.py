@@ -292,6 +292,18 @@ def generate_launch_description():
         output='screen'
     )
 
+    #这个配置是：从 /mobile_controller/odom 读取数据，转发到 /odom
+    relay_node2 = Node(
+        package='topic_tools',
+        executable='relay',
+        name='odom_relay',
+        arguments=[
+            '/mobile_controller/odom',
+            '/odom',
+        ],
+        output='screen'
+    )
+
 
  
 
@@ -314,10 +326,11 @@ def generate_launch_description():
 
         delayed_move_group_node,
         # slam_node,
-        nav_node,
+        # nav_node,
         cartographer_node,
         occupancy_grid_node,
-        relay_node
+        relay_node,
+        relay_node2
     ])
 
 

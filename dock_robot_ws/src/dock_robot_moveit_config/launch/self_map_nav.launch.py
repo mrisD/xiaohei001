@@ -49,6 +49,8 @@ def generate_launch_description():
     rviz_config_dir = os.path.join(
         nav2_bringup_dir, 'rviz', 'nav2_default_view.rviz')
     # Load the robot configuration
+    ekf_path = launch.substitutions.LaunchConfiguration(
+        'ekf', default=os.path.join(packagepath, 'config', 'ekf.yaml'))
     moveit_config = (
         MoveItConfigsBuilder("my_robot", package_name="dock_robot_moveit_config")
         .robot_description('config/my_robot.gazebo.urdf.xacro')
@@ -70,6 +72,8 @@ def generate_launch_description():
         ]),
         launch_arguments={'gz_args': f' {world_path} -r'}.items()
     )
+
+  
 
     # 将机械臂添加到Gazebo
     robot_to_gazebo_node = Node(
@@ -293,6 +297,16 @@ def generate_launch_description():
         ],
         output='screen'
     )
+
+    # 创建一个节点
+    ekf_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',  # 注意：这个名字必须与YAML文件顶层键一致
+        parameters=[ekf_path],  # 参数文件路径
+        output='screen',
+        # remappings=[('/odometry/filtered', '/odom')]  # 可选：话题重映射
+    )
     
 
 
@@ -321,7 +335,8 @@ def generate_launch_description():
         # cartographer_node,
         # occupancy_grid_node
         relay_node,
-        relay_node2
+        relay_node2,
+        ekf_node
     ])
 
 

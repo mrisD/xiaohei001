@@ -73,7 +73,7 @@ mobile_controller:
     pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
     twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
 
-    enable_odom_tf: true
+    enable_odom_tf: false
     publish_rate: 50.0
 
     linear.x.has_velocity_limits: true  #humble default fase jazzy default true

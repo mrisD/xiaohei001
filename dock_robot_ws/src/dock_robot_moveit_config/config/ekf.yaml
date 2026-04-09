@@ -1,32 +1,32 @@
 ekf_filter_node:
   ros__parameters:
     use_sim_time: true
-    frequency: 30.0
+    frequency: 100.0
     sensor_timeout: 0.1
     two_d_mode: true
     map_frame: map
     odom_frame: odom
-    base_link_frame: base_link
+    base_link_frame: base_footprint
     world_frame: odom
     publish_tf: true
-    # ======================
-    # 里程计（odom）
-    # ======================
-    odom0: /odom
-    odom0_config: [true, true, false,
-                   false, false, true,
-                   true, true, false,
-                   false, false, true,
+
+    # ================== 轮速里程计 ==================
+    odom0: /mobile_controller/odom
+    odom0_config: [true,  true,  false,
+                   false, false, false,  # 关闭绝对角度（关键）
+                   true,  true,  false,  # X Y 速度
+                   false, false, true,   # 航向角速度
                    false, false, false]
     odom0_differential: false
-    # ======================
-    # IMU
-    # ======================
+    odom0_queue_size: 100
+
+    # ================== IMU（仿真专用） ==================
     imu0: /imu
     imu0_config: [false, false, false,
-                  true, true, true,
+                  false, false, false,  # 关闭绝对角度
                   false, false, false,
-                  true, true, true,
+                  false, false, true,   # 只开：航向角速度（最稳）
                   false, false, false]
-    imu0_differential: false
+    imu0_differential: false            # 角速度必须为 false
     imu0_remove_gravitational_acceleration: true
+    imu0_queue_size: 100

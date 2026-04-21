@@ -1,9 +1,16 @@
 Ubuntu22.04 ROS2(Humble) Gazebo(Fortress)
+# 安裝ros
+sudo apt update
+sudo apt --upgrade
+wget http://fishros.com/install -O fishros && bash fishros 
+# 按照提示选择安装humble（桌面版）等待安装完成
+
+# 安装gazebo
+sudo apt install ros-humble-ros-gz 
 
 # 安装缺少的程序
 sudo apt install ros-humble-moveit
 sudo apt install ros-humble-ros2-control* 
-sudo apt install ros-humble-ros-gz        # 安装 ROS 2 Humble 与 Gazebo 的桥接包
 sudo apt install ros-humble-gz-ros2-control
 sudo apt install ros-humble-controller-manager
 sudo apt install ros-humble-ros2-control

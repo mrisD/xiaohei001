@@ -6,7 +6,7 @@ wget http://fishros.com/install -O fishros && bash fishros
 # 按照提示选择安装humble（桌面版）等待安装完成
 
 # 安装gazebo
-sudo apt install ros-humble-ros-gz 
+sudo apt install ros-humble-ros-gz
 
 # 安装缺少的程序
 sudo apt install ros-humble-moveit

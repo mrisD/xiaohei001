@@ -1,0 +1,9 @@
+<library path="dock_robot_hardware">
+    <class name="arm_hardware/ArmHardwareInterface"
+        type="arm_hardware::ArmHardwareInterface"
+        base_class_type="hardware_interface::SystemInterface">
+    <description>
+        ArmHardwareInterface
+    </description>
+    </class>
+</library>

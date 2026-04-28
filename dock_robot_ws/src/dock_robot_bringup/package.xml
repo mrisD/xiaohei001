@@ -7,6 +7,13 @@
   <maintainer email="zhul@todo.todo">zhul</maintainer>
   <license>TODO: License declaration</license>
 
+  <depend>controller_manager</depend>
+  <depend>diff_drive_controller</depend>
+  <depend>joint_state_broadcaster</depend>
+  <depend>joint_trajectory_controller</depend>
+  <depend>ros2_control</depend>
+  <depend>ros2_controllers</depend>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <test_depend>ament_lint_auto</test_depend>

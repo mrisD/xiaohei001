@@ -11,7 +11,7 @@
     <xacro:include filename="left_arm.urdf" />
     <xacro:include filename="right_arm.urdf" />
 
-     <xacro:include filename="dock_robot.ros2_control.xacro" />
+     <!-- <xacro:include filename="dock_robot.ros2_control.xacro" /> -->
      <xacro:include filename="camera.urdf.xacro" />
      <xacro:include filename="imu.urdf.xacro" />
      <xacro:include filename="laser.urdf.xacro" />

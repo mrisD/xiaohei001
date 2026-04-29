@@ -99,8 +99,8 @@
     <limit
       lower="${j1_min}"
       upper="${j1_max}"
-      effort="2"
-      velocity="3.14" />
+      effort="10"
+      velocity="0.78" />
     <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <link
@@ -158,8 +158,8 @@
     <limit
       lower="${j2_min}"
       upper="${j2_max}"
-      effort="1"
-      velocity="3.14" />
+      effort="10"
+      velocity="0.78" />
     <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <link
@@ -217,8 +217,8 @@
     <limit
       lower="${j3_min}"
       upper="${j3_max}"
-      effort="2"
-      velocity="3.14" />
+      effort="10"
+      velocity="0.78" />
     <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <link
@@ -276,8 +276,8 @@
     <limit
       lower="${j4_min}"
       upper="${j4_max}"
-      effort="2"
-      velocity="3.14" />
+      effort="10"
+      velocity="0.78" />
     <dynamics damping="0.1" friction="0.05"/>
   </joint>
   <link
@@ -335,8 +335,8 @@
     <limit
       lower="${j5_min}"
       upper="${j5_max}"
-      effort="2"
-      velocity="3.14" />
+      effort="10"
+      velocity="0.78" />
     <dynamics damping="0.1" friction="0.05"/>
   </joint>
 </robot>

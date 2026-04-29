@@ -2,22 +2,67 @@
 
 namespace arm_hardware
 {
-    hardware_interface::CallbackReturn ArmHardwareInterface::on_configure(const rclcpp_lifecycle::State &previous_state)
+    hardware_interface::CallbackReturn ArmHardwareInterface::
+        on_configure(const rclcpp_lifecycle::State &previous_state)
     {
+        (void)previous_state;
+        _can_ptr=std::make_unique<CAN_DRIVER>();
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    hardware_interface::CallbackReturn ArmHardwareInterface::on_activate(const rclcpp_lifecycle::State &previous_state)
+    hardware_interface::CallbackReturn ArmHardwareInterface::
+        on_activate(const rclcpp_lifecycle::State &previous_state)
     {
+        (void)previous_state;
+        //Todo 设置初始值
+        for(int i=0;i<6;i++){//初始化变量
+            _jnt_position_command[i] = 0;
+            _jnt_velocity_command[i] = 0;
+            _jnt_torque_command[i] = 0;
+            _jnt_position_state[i] = 0;
+            _jnt_velocity_state[i] = 0;
+            _jnt_torque_state[i] = 0;
+        }
+        _control_mode = 0;//默认是位置控制,0-位置控制，1-扭矩控制 2-速度控制
+        m_isCANOpened=_can_ptr->can_open();
+        if (!m_isCANOpened) {
+            RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 设备未连接，运行模拟模式+++++++++++++++++++++++++");
+            return hardware_interface::CallbackReturn::FAILURE;
+        } else {
+            RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 初始化成功+++++++++++++++");
+        }
+        //Todo 此时硬件已初始化，设置电机模式 位置、速度、力矩等
+        //做第一步的工作，读取当前状态数据
+        /*
+        获取反馈位置后同步到指令位置以维持当前状态，如果发现读取失败，那么就无法激活插件，
+        因为错误的反馈位置会导致初始指令位置下发出现严重偏差导致事故
+        */
+        double left_motor1=_can_ptr->motor_read_angle(LEFT_MOTOR1) * M_PI / 180.0;;//Todo 从硬件读取数据
+        double left_motor2=_can_ptr->motor_read_angle(LEFT_MOTOR2) * M_PI / 180.0;;//Todo 从硬件读取数据
+        double left_motor3=_can_ptr->motor_read_angle(LEFT_MOTOR3) * M_PI / 180.0;;//Todo 从硬件读取数据
+        double left_motor4=_can_ptr->motor_read_angle(LEFT_MOTOR4) * M_PI / 180.0;;//Todo 从硬件读取数据
+        double left_motor5=_can_ptr->motor_read_angle(LEFT_MOTOR5) * M_PI / 180.0;;//Todo 从硬件读取数据
+       
+        _jnt_position_command[0] = left_motor1;//注意单位转换，moveit统一用弧度
+        _jnt_position_command[1] = left_motor2;//注意单位转换，moveit统一用弧度
+        _jnt_position_command[2] = left_motor3;//注意单位转换，moveit统一用弧度
+        _jnt_position_command[3] = left_motor4;//注意单位转换，moveit统一用弧度
+        _jnt_position_command[4] = left_motor5;//注意单位转换，moveit统一用弧度
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    hardware_interface::CallbackReturn ArmHardwareInterface::on_deactivate(const rclcpp_lifecycle::State &previous_state)
+    hardware_interface::CallbackReturn ArmHardwareInterface::
+        on_deactivate(const rclcpp_lifecycle::State &previous_state)
     {
+        (void)previous_state;
+        RCLCPP_INFO(rclcpp::get_logger("FairinoHardwareInterface"), "Stopping ...please wait...");
+        //Todo 关闭硬件，断开连接等
+        RCLCPP_INFO(rclcpp::get_logger("FairinoHardwareInterface"), "System successfully stopped!");
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    hardware_interface::CallbackReturn ArmHardwareInterface::on_init(const hardware_interface::HardwareInfo &info)
+    hardware_interface::CallbackReturn ArmHardwareInterface::
+        on_init(const hardware_interface::HardwareInfo &info)
     {
         if(hardware_interface::SystemInterface::on_init(info) != 
             hardware_interface::CallbackReturn::SUCCESS)
@@ -28,17 +73,76 @@ namespace arm_hardware
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    hardware_interface::return_type ArmHardwareInterface::read(const rclcpp::Time &time, const rclcpp::Duration &period)
+    hardware_interface::return_type ArmHardwareInterface::
+        read(const rclcpp::Time &time, const rclcpp::Duration &period)
     {
+
+        (void)time;
+        (void)period;
+        if(m_isCANOpened)
+        {
+            double left_motor1=_can_ptr->motor_read_angle(LEFT_MOTOR1) * M_PI / 180.0;;//Todo 从硬件读取数据
+            double left_motor2=_can_ptr->motor_read_angle(LEFT_MOTOR2) * M_PI / 180.0;;//Todo 从硬件读取数据
+            double left_motor3=_can_ptr->motor_read_angle(LEFT_MOTOR3) * M_PI / 180.0;;//Todo 从硬件读取数据
+            double left_motor4=_can_ptr->motor_read_angle(LEFT_MOTOR4) * M_PI / 180.0;;//Todo 从硬件读取数据
+            double left_motor5=_can_ptr->motor_read_angle(LEFT_MOTOR5) * M_PI / 180.0;;//Todo 从硬件读取数据
+            _jnt_position_state[0] = left_motor1;//注意单位转换，moveit统一用弧度
+            _jnt_position_state[1] = left_motor2;//注意单位转换，moveit统一用弧度
+            _jnt_position_state[2] = left_motor3;//注意单位转换，moveit统一用弧度
+            _jnt_position_state[3] = left_motor4;//注意单位转换，moveit统一用弧度
+            _jnt_position_state[4] = left_motor5;//注意单位转换，moveit统一用弧度
+    
+        }  
+        // RCLCPP_INFO(get_logger(), "STATE arm_base_forearm_joint_pos: %lf, forearm_hand_joint_pos: %lf",
+        //             get_state("arm_base_forearm_joint/position"), get_state("forearm_hand_joint/position"));
+
         return hardware_interface::return_type::OK;
     }
 
-    hardware_interface::return_type ArmHardwareInterface::write(const rclcpp::Time &time, const rclcpp::Duration &period)
+    hardware_interface::return_type ArmHardwareInterface::
+        write(const rclcpp::Time &time, const rclcpp::Duration &period)
     {
+        (void)time;
+        (void)period;
+        if(!m_isCANOpened)
+            return hardware_interface::return_type::ERROR;
+        if(_control_mode == 0)//位置控制模式
+        {
+            double left_motor1=0.0;
+            double left_motor2=0.0;
+            double left_motor3=0.0;
+            double left_motor4=0.0;
+            double left_motor5=0.0;
+            if(m_isCANOpened)
+            {
+                left_motor1=_jnt_position_command[0]/M_PI*180;
+                left_motor2=_jnt_position_command[1]/M_PI*180;
+                left_motor3=_jnt_position_command[2]/M_PI*180;
+                left_motor4=_jnt_position_command[3]/M_PI*180;
+                left_motor5=_jnt_position_command[4]/M_PI*180;
+                //将命令发送到硬件
+                _can_ptr->motor_set_angle(LEFT_MOTOR1,left_motor1);
+                _can_ptr->motor_set_angle(LEFT_MOTOR2,left_motor2);
+                _can_ptr->motor_set_angle(LEFT_MOTOR3,left_motor3);
+                _can_ptr->motor_set_angle(LEFT_MOTOR4,left_motor4);
+                _can_ptr->motor_set_angle(LEFT_MOTOR5,left_motor5);
+            }
+            else
+            {
+                // arm_base_forearm_joint_cmd_pos=get_command("arm_base_forearm_joint/position");
+                // forearm_hand_joint_cmd_pos=get_command("forearm_hand_joint/position");
+            }
+        }
+        
+        
+
+        // RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "COMMAND arm_base_forearm_joint: %lf, forearm_hand_joint: %lf",
+        //             _jnt_position_command[0]/M_PI*180, _jnt_position_command[1]/M_PI*180);
         return hardware_interface::return_type::OK;
     }
 
-    std::vector<hardware_interface::StateInterface> ArmHardwareInterface::export_state_interfaces()
+    std::vector<hardware_interface::StateInterface> ArmHardwareInterface::
+        export_state_interfaces()
     {
         std::vector<hardware_interface::StateInterface> state_interfaces;
         //导出关节相关的状态接口(位置，速度，扭矩)
@@ -47,7 +151,7 @@ namespace arm_hardware
                 info_.joints[i].name, hardware_interface::HW_IF_POSITION, &_jnt_position_state[i]));
 
             // state_interfaces.emplace_back(hardware_interface::StateInterface(
-            //     info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &_jnt_velocity_state.at(i)));
+            //     info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &_jnt_velocity_state[i]));
 
             // state_interfaces.emplace_back(hardware_interface::StateInterface(
             //     info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &_jnt_torque_state.at(i)));
@@ -57,7 +161,8 @@ namespace arm_hardware
         return state_interfaces;
     }
 
-    std::vector<hardware_interface::CommandInterface> ArmHardwareInterface::export_command_interfaces()
+    std::vector<hardware_interface::CommandInterface> ArmHardwareInterface::
+        export_command_interfaces()
     {
         std::vector<hardware_interface::CommandInterface> command_interfaces;
         for (size_t i = 0; i < info_.joints.size(); ++i) {

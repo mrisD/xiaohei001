@@ -21,7 +21,7 @@ def generate_launch_description():
     # URDF
     robot_description = Command(['xacro ', urdf_path])
 
-    # 1️⃣ robot_state_publisher
+    #robot_state_publisher
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
@@ -29,7 +29,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # 2️⃣ ros2_control_node（⚠️关键：必须带 robot_description）
+    #ros2_control_node（⚠️关键：必须带 robot_description）
     ros2_control_node = Node(
         package='controller_manager',
         executable='ros2_control_node',
@@ -40,7 +40,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # ⏱ 延迟启动 controllers（Humble必须）
+    #延迟启动 controllers（Humble必须）
     delayed_spawners = TimerAction(
         period=3.0,
         actions=[
@@ -97,7 +97,7 @@ def generate_launch_description():
         ]
     )
 
-    # 4️⃣ RViz
+    #RViz
     rviz2 = Node(
         package='rviz2',
         executable='rviz2',

@@ -34,3 +34,15 @@ ros2 launch dock_robot_moveit_config build_map_nav.launch.py
 ros2 launch dock_robot_moveit_config self_map_nav.launch.py  
 ### 启动键盘控制
 ros2 run teleop_twist_keyboard teleop_twist_keyboard  
+
+
+### HARDWARE 控制电机转动
+ros2 topic pub -1 /left_arm_controller/joint_trajectory trajectory_msgs/msg/JointTrajectory "
+joint_names: ['joint1', 'joint2', 'joint3', 'joint4', 'joint5']
+points:
+- positions: [0.6, 1.57, 1.57, 0.0, 3.14]
+  velocities: [0.0, 0.0, 0.0, 0.0, 0.0]
+  time_from_start:
+    sec: 2
+    nanosec: 0
+"

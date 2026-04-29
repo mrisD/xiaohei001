@@ -57,6 +57,7 @@ namespace arm_hardware
         (void)previous_state;
         RCLCPP_INFO(rclcpp::get_logger("FairinoHardwareInterface"), "Stopping ...please wait...");
         //Todo 关闭硬件，断开连接等
+        _can_ptr->can_close();
         RCLCPP_INFO(rclcpp::get_logger("FairinoHardwareInterface"), "System successfully stopped!");
         return hardware_interface::CallbackReturn::SUCCESS;
     }

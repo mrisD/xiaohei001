@@ -39,6 +39,8 @@ public:
 
     bool can_open();
 
+    bool can_close();
+
     /*设置角度*/
     bool motor_set_angle(unsigned int motor_id,float angle);
 
@@ -46,6 +48,7 @@ public:
     float motor_read_angle(unsigned int motor_id);
 
 private:
+    bool is_canOpened=false;
 
 };
 

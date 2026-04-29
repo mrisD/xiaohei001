@@ -67,7 +67,35 @@ bool CAN_DRIVER::can_open()
     if (VCI_StartCAN(VCI_USBCAN2, 0, CAN_CHANNEL) != STATUS_OK) return false;
 
     printf("CAN初始化成功\n");
-    return true;
+    is_canOpened=true;
+    return is_canOpened;
+}
+
+bool CAN_DRIVER::can_close()
+{
+    if (!is_canOpened) {
+        printf("CAN设备未打开，无需关闭\n");
+        return true;
+    }
+    
+    printf("正在关闭CAN设备...\n");
+    
+    // 停止CAN通信
+    // if (VCI_StopCAN(VCI_USBCAN2, 0, CAN_CHANNEL) != STATUS_OK) {
+    //     printf("警告：停止CAN失败\n");
+    // }
+    
+    // 关闭设备
+    int ret = VCI_CloseDevice(VCI_USBCAN2, 0);
+    
+    if (ret == STATUS_OK) {
+        is_canOpened = false;
+        printf("CAN设备关闭成功\n");
+        return true;
+    } else {
+        printf("CAN设备关闭失败，错误码: %d\n", ret);
+        return false;
+    }
 }
 
 // 电机设置角度

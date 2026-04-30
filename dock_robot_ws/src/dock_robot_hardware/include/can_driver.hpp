@@ -17,12 +17,12 @@
 #define STATUS_OK         1
 #define CAN_CHANNEL       1
 
-//LEFT ARM 对应硬件右侧手臂（以X正方向看过去）
-#define LEFT_MOTOR1 0x06
-#define LEFT_MOTOR2 0x07
-#define LEFT_MOTOR3 0x08
-#define LEFT_MOTOR4 0x09
-#define LEFT_MOTOR5 0x05
+
+#define RIGHT_MOTOR1 0x06
+#define RIGHT_MOTOR2 0x07
+#define RIGHT_MOTOR3 0x08
+#define RIGHT_MOTOR4 0x09
+#define RIGHT_MOTOR5 0x05
 class CAN_DRIVER
 {
 public:

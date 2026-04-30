@@ -30,24 +30,25 @@ namespace arm_hardware
             return hardware_interface::CallbackReturn::FAILURE;
         } else {
             RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 初始化成功+++++++++++++++");
+            //Todo 此时硬件已初始化，设置电机模式 位置、速度、力矩等
+            //做第一步的工作，读取当前状态数据
+            /*
+            获取反馈位置后同步到指令位置以维持当前状态，如果发现读取失败，那么就无法激活插件，
+            因为错误的反馈位置会导致初始指令位置下发出现严重偏差导致事故
+            */
+            double right_motor1=_can_ptr->motor_read_angle(RIGHT_MOTOR1) * M_PI / 180.0;//Todo 从硬件读取数据
+            double right_motor2=_can_ptr->motor_read_angle(RIGHT_MOTOR2) * M_PI / 180.0;//Todo 从硬件读取数据
+            double right_motor3=_can_ptr->motor_read_angle(RIGHT_MOTOR3) * M_PI / 180.0;//Todo 从硬件读取数据
+            double right_motor4=_can_ptr->motor_read_angle(RIGHT_MOTOR4) * M_PI / 180.0;//Todo 从硬件读取数据
+            double right_motor5=_can_ptr->motor_read_angle(RIGHT_MOTOR5) * M_PI / 180.0;//Todo 从硬件读取数据
+        
+            _jnt_position_command[0] = right_motor1;//注意单位转换，moveit统一用弧度
+            _jnt_position_command[1] = right_motor2;//注意单位转换，moveit统一用弧度
+            _jnt_position_command[2] = right_motor3;//注意单位转换，moveit统一用弧度
+            _jnt_position_command[3] = right_motor4;//注意单位转换，moveit统一用弧度
+            _jnt_position_command[4] = right_motor5;//注意单位转换，moveit统一用弧度
         }
-        //Todo 此时硬件已初始化，设置电机模式 位置、速度、力矩等
-        //做第一步的工作，读取当前状态数据
-        /*
-        获取反馈位置后同步到指令位置以维持当前状态，如果发现读取失败，那么就无法激活插件，
-        因为错误的反馈位置会导致初始指令位置下发出现严重偏差导致事故
-        */
-        double left_motor1=_can_ptr->motor_read_angle(LEFT_MOTOR1) * M_PI / 180.0;;//Todo 从硬件读取数据
-        double left_motor2=_can_ptr->motor_read_angle(LEFT_MOTOR2) * M_PI / 180.0;;//Todo 从硬件读取数据
-        double left_motor3=_can_ptr->motor_read_angle(LEFT_MOTOR3) * M_PI / 180.0;;//Todo 从硬件读取数据
-        double left_motor4=_can_ptr->motor_read_angle(LEFT_MOTOR4) * M_PI / 180.0;;//Todo 从硬件读取数据
-        double left_motor5=_can_ptr->motor_read_angle(LEFT_MOTOR5) * M_PI / 180.0;;//Todo 从硬件读取数据
-       
-        _jnt_position_command[0] = left_motor1;//注意单位转换，moveit统一用弧度
-        _jnt_position_command[1] = left_motor2;//注意单位转换，moveit统一用弧度
-        _jnt_position_command[2] = left_motor3;//注意单位转换，moveit统一用弧度
-        _jnt_position_command[3] = left_motor4;//注意单位转换，moveit统一用弧度
-        _jnt_position_command[4] = left_motor5;//注意单位转换，moveit统一用弧度
+        
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
@@ -82,16 +83,16 @@ namespace arm_hardware
         (void)period;
         if(m_isCANOpened)
         {
-            double left_motor1=_can_ptr->motor_read_angle(LEFT_MOTOR1) * M_PI / 180.0;;//Todo 从硬件读取数据
-            double left_motor2=_can_ptr->motor_read_angle(LEFT_MOTOR2) * M_PI / 180.0;;//Todo 从硬件读取数据
-            double left_motor3=_can_ptr->motor_read_angle(LEFT_MOTOR3) * M_PI / 180.0;;//Todo 从硬件读取数据
-            double left_motor4=_can_ptr->motor_read_angle(LEFT_MOTOR4) * M_PI / 180.0;;//Todo 从硬件读取数据
-            double left_motor5=_can_ptr->motor_read_angle(LEFT_MOTOR5) * M_PI / 180.0;;//Todo 从硬件读取数据
-            _jnt_position_state[0] = left_motor1;//注意单位转换，moveit统一用弧度
-            _jnt_position_state[1] = left_motor2;//注意单位转换，moveit统一用弧度
-            _jnt_position_state[2] = left_motor3;//注意单位转换，moveit统一用弧度
-            _jnt_position_state[3] = left_motor4;//注意单位转换，moveit统一用弧度
-            _jnt_position_state[4] = left_motor5;//注意单位转换，moveit统一用弧度
+            double right_motor1=_can_ptr->motor_read_angle(RIGHT_MOTOR1) * M_PI / 180.0;//Todo 从硬件读取数据
+            double right_motor2=_can_ptr->motor_read_angle(RIGHT_MOTOR2) * M_PI / 180.0;//Todo 从硬件读取数据
+            double right_motor3=_can_ptr->motor_read_angle(RIGHT_MOTOR3) * M_PI / 180.0;//Todo 从硬件读取数据
+            double right_motor4=_can_ptr->motor_read_angle(RIGHT_MOTOR4) * M_PI / 180.0;//Todo 从硬件读取数据
+            double right_motor5=_can_ptr->motor_read_angle(RIGHT_MOTOR5) * M_PI / 180.0;//Todo 从硬件读取数据
+            _jnt_position_state[0] = right_motor1;//注意单位转换，moveit统一用弧度
+            _jnt_position_state[1] = right_motor2;//注意单位转换，moveit统一用弧度
+            _jnt_position_state[2] = right_motor3;//注意单位转换，moveit统一用弧度
+            _jnt_position_state[3] = right_motor4;//注意单位转换，moveit统一用弧度
+            _jnt_position_state[4] = right_motor5;//注意单位转换，moveit统一用弧度
     
         }  
         // RCLCPP_INFO(get_logger(), "STATE arm_base_forearm_joint_pos: %lf, forearm_hand_joint_pos: %lf",
@@ -106,34 +107,41 @@ namespace arm_hardware
         (void)time;
         (void)period;
         if(!m_isCANOpened)
-            return hardware_interface::return_type::ERROR;
-        if(_control_mode == 0)//位置控制模式
         {
-            double left_motor1=0.0;
-            double left_motor2=0.0;
-            double left_motor3=0.0;
-            double left_motor4=0.0;
-            double left_motor5=0.0;
-            if(m_isCANOpened)
+            return hardware_interface::return_type::ERROR;
+        }
+        else
+        {
+            if(_control_mode == 0)//位置控制模式
             {
-                left_motor1=_jnt_position_command[0]/M_PI*180;
-                left_motor2=_jnt_position_command[1]/M_PI*180;
-                left_motor3=_jnt_position_command[2]/M_PI*180;
-                left_motor4=_jnt_position_command[3]/M_PI*180;
-                left_motor5=_jnt_position_command[4]/M_PI*180;
-                //将命令发送到硬件
-                _can_ptr->motor_set_angle(LEFT_MOTOR1,left_motor1);
-                _can_ptr->motor_set_angle(LEFT_MOTOR2,left_motor2);
-                _can_ptr->motor_set_angle(LEFT_MOTOR3,left_motor3);
-                _can_ptr->motor_set_angle(LEFT_MOTOR4,left_motor4);
-                _can_ptr->motor_set_angle(LEFT_MOTOR5,left_motor5);
-            }
-            else
-            {
-                // arm_base_forearm_joint_cmd_pos=get_command("arm_base_forearm_joint/position");
-                // forearm_hand_joint_cmd_pos=get_command("forearm_hand_joint/position");
+                double right_motor1=0.0;
+                double right_motor2=0.0;
+                double right_motor3=0.0;
+                double right_motor4=0.0;
+                double right_motor5=0.0;
+                if(m_isCANOpened)
+                {
+                    right_motor1=_jnt_position_command[0]/M_PI*180;
+                    right_motor2=_jnt_position_command[1]/M_PI*180;
+                    right_motor3=_jnt_position_command[2]/M_PI*180;
+                    right_motor4=_jnt_position_command[3]/M_PI*180;
+                    right_motor5=_jnt_position_command[4]/M_PI*180;
+                    //将命令发送到硬件
+                    _can_ptr->motor_set_angle(RIGHT_MOTOR1,right_motor1);
+                    _can_ptr->motor_set_angle(RIGHT_MOTOR2,right_motor2);
+                    _can_ptr->motor_set_angle(RIGHT_MOTOR3,right_motor3);
+                    _can_ptr->motor_set_angle(RIGHT_MOTOR4,right_motor4);
+                    _can_ptr->motor_set_angle(RIGHT_MOTOR5,right_motor5);
+                }
+                else
+                {
+                    // arm_base_forearm_joint_cmd_pos=get_command("arm_base_forearm_joint/position");
+                    // forearm_hand_joint_cmd_pos=get_command("forearm_hand_joint/position");
+                }
             }
         }
+
+
         
         
 

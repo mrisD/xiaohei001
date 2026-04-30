@@ -142,7 +142,7 @@ float CAN_DRIVER::motor_read_angle(unsigned int motor_id)
 
     if (len <= 0) {
         printf("未收到数据\n");
-        return -999;
+        return 0;
     }
 
     for (ULONG i = 0; i < len; i++) {
@@ -161,5 +161,5 @@ float CAN_DRIVER::motor_read_angle(unsigned int motor_id)
     }
 
     printf("解析失败\n");
-    return -999;
+    return 0;
 }

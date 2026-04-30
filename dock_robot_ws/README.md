@@ -40,9 +40,20 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ros2 topic pub -1 /left_arm_controller/joint_trajectory trajectory_msgs/msg/JointTrajectory "
 joint_names: ['joint1', 'joint2', 'joint3', 'joint4', 'joint5']
 points:
-- positions: [0.6, 1.57, 1.57, 0.0, 3.14]
+- positions: [0.0, 0.0, 0.0, 0.0, 0.0]
   velocities: [0.0, 0.0, 0.0, 0.0, 0.0]
   time_from_start:
-    sec: 2
+    sec: 1
+    nanosec: 0
+"
+
+
+ros2 topic pub -1 /right_arm_controller/joint_trajectory trajectory_msgs/msg/JointTrajectory "
+joint_names: ['jointr1', 'jointr2', 'jointr3', 'jointr4', 'jointr5']
+points:
+- positions: [0.0, 0.0, 0.0, 0.0, 0.0]
+  velocities: [0.0, 0.0, 0.0, 0.0, 0.0]
+  time_from_start:
+    sec: 1
     nanosec: 0
 "

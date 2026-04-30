@@ -36,17 +36,12 @@ namespace arm_hardware
             获取反馈位置后同步到指令位置以维持当前状态，如果发现读取失败，那么就无法激活插件，
             因为错误的反馈位置会导致初始指令位置下发出现严重偏差导致事故
             */
-            double right_motor1=_can_ptr->motor_read_angle(RIGHT_MOTOR1) * M_PI / 180.0;//Todo 从硬件读取数据
-            double right_motor2=_can_ptr->motor_read_angle(RIGHT_MOTOR2) * M_PI / 180.0;//Todo 从硬件读取数据
-            double right_motor3=_can_ptr->motor_read_angle(RIGHT_MOTOR3) * M_PI / 180.0;//Todo 从硬件读取数据
-            double right_motor4=_can_ptr->motor_read_angle(RIGHT_MOTOR4) * M_PI / 180.0;//Todo 从硬件读取数据
-            double right_motor5=_can_ptr->motor_read_angle(RIGHT_MOTOR5) * M_PI / 180.0;//Todo 从硬件读取数据
-        
-            _jnt_position_command[0] = right_motor1;//注意单位转换，moveit统一用弧度
-            _jnt_position_command[1] = right_motor2;//注意单位转换，moveit统一用弧度
-            _jnt_position_command[2] = right_motor3;//注意单位转换，moveit统一用弧度
-            _jnt_position_command[3] = right_motor4;//注意单位转换，moveit统一用弧度
-            _jnt_position_command[4] = right_motor5;//注意单位转换，moveit统一用弧度
+            // 非阻塞读取最新值
+            _jnt_position_state[0] = _can_ptr->motor_get_angle(RIGHT_MOTOR1) * M_PI / 180.0;
+            _jnt_position_state[1] = _can_ptr->motor_get_angle(RIGHT_MOTOR2) * M_PI / 180.0;
+            _jnt_position_state[2] = _can_ptr->motor_get_angle(RIGHT_MOTOR3) * M_PI / 180.0;
+            _jnt_position_state[3] = _can_ptr->motor_get_angle(RIGHT_MOTOR4) * M_PI / 180.0;
+            _jnt_position_state[4] = _can_ptr->motor_get_angle(RIGHT_MOTOR5) * M_PI / 180.0;
         }
         
         return hardware_interface::CallbackReturn::SUCCESS;
@@ -83,17 +78,12 @@ namespace arm_hardware
         (void)period;
         if(m_isCANOpened)
         {
-            double right_motor1=_can_ptr->motor_read_angle(RIGHT_MOTOR1) * M_PI / 180.0;//Todo 从硬件读取数据
-            double right_motor2=_can_ptr->motor_read_angle(RIGHT_MOTOR2) * M_PI / 180.0;//Todo 从硬件读取数据
-            double right_motor3=_can_ptr->motor_read_angle(RIGHT_MOTOR3) * M_PI / 180.0;//Todo 从硬件读取数据
-            double right_motor4=_can_ptr->motor_read_angle(RIGHT_MOTOR4) * M_PI / 180.0;//Todo 从硬件读取数据
-            double right_motor5=_can_ptr->motor_read_angle(RIGHT_MOTOR5) * M_PI / 180.0;//Todo 从硬件读取数据
-            _jnt_position_state[0] = right_motor1;//注意单位转换，moveit统一用弧度
-            _jnt_position_state[1] = right_motor2;//注意单位转换，moveit统一用弧度
-            _jnt_position_state[2] = right_motor3;//注意单位转换，moveit统一用弧度
-            _jnt_position_state[3] = right_motor4;//注意单位转换，moveit统一用弧度
-            _jnt_position_state[4] = right_motor5;//注意单位转换，moveit统一用弧度
-    
+            // 非阻塞读取最新值
+            _jnt_position_state[0] = _can_ptr->motor_get_angle(RIGHT_MOTOR1) * M_PI / 180.0;
+            _jnt_position_state[1] = _can_ptr->motor_get_angle(RIGHT_MOTOR2) * M_PI / 180.0;
+            _jnt_position_state[2] = _can_ptr->motor_get_angle(RIGHT_MOTOR3) * M_PI / 180.0;
+            _jnt_position_state[3] = _can_ptr->motor_get_angle(RIGHT_MOTOR4) * M_PI / 180.0;
+            _jnt_position_state[4] = _can_ptr->motor_get_angle(RIGHT_MOTOR5) * M_PI / 180.0;
         }  
         // RCLCPP_INFO(get_logger(), "STATE arm_base_forearm_joint_pos: %lf, forearm_hand_joint_pos: %lf",
         //             get_state("arm_base_forearm_joint/position"), get_state("forearm_hand_joint/position"));
@@ -114,24 +104,17 @@ namespace arm_hardware
         {
             if(_control_mode == 0)//位置控制模式
             {
-                double right_motor1=0.0;
-                double right_motor2=0.0;
-                double right_motor3=0.0;
-                double right_motor4=0.0;
-                double right_motor5=0.0;
                 if(m_isCANOpened)
                 {
-                    right_motor1=_jnt_position_command[0]/M_PI*180;
-                    right_motor2=_jnt_position_command[1]/M_PI*180;
-                    right_motor3=_jnt_position_command[2]/M_PI*180;
-                    right_motor4=_jnt_position_command[3]/M_PI*180;
-                    right_motor5=_jnt_position_command[4]/M_PI*180;
-                    //将命令发送到硬件
-                    _can_ptr->motor_set_angle(RIGHT_MOTOR1,right_motor1);
-                    _can_ptr->motor_set_angle(RIGHT_MOTOR2,right_motor2);
-                    _can_ptr->motor_set_angle(RIGHT_MOTOR3,right_motor3);
-                    _can_ptr->motor_set_angle(RIGHT_MOTOR4,right_motor4);
-                    _can_ptr->motor_set_angle(RIGHT_MOTOR5,right_motor5);
+                    // 批量发送所有电机命令
+                    std::map<unsigned int, float> commands;
+                    commands[RIGHT_MOTOR1] = _jnt_position_command[0] * 180.0 / M_PI;
+                    commands[RIGHT_MOTOR2] = _jnt_position_command[1] * 180.0 / M_PI;
+                    commands[RIGHT_MOTOR3] = _jnt_position_command[2] * 180.0 / M_PI;
+                    commands[RIGHT_MOTOR4] = _jnt_position_command[3] * 180.0 / M_PI;
+                    commands[RIGHT_MOTOR5] = _jnt_position_command[4] * 180.0 / M_PI;
+                    
+                    _can_ptr->motor_set_angle_batch(commands);
                 }
                 else
                 {

@@ -31,7 +31,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    #ros2_control_node（⚠️关键：必须带 robot_description）
+    #ros2_control_node（关键：必须带 robot_description）
     ros2_control_node = Node(
         package='controller_manager',
         executable='ros2_control_node',

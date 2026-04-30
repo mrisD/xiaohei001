@@ -17,7 +17,7 @@ def generate_launch_description():
 
     # 文件路径
     urdf_path = os.path.join(dock_robot_description, 'config', 'my_robot.urdf.xacro')
-    rviz_config_path = os.path.join(dock_robot_description2, 'rviz', 'urdf_config.rviz')
+    rviz_config_path = os.path.join(dock_robot_description2, 'rviz', 'moveit_config.rviz')
     controllers_config_path = os.path.join(dock_robot_bringup, 'config', 'dock_robot_controllers.yaml')
 
     # URDF

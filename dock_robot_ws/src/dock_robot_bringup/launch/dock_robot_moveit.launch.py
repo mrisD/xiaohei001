@@ -19,7 +19,6 @@ def generate_launch_description():
     urdf_path = os.path.join(dock_robot_description, 'config', 'my_robot.urdf.xacro')
     rviz_config_path = os.path.join(dock_robot_description2, 'rviz', 'moveit_config.rviz')
     controllers_config_path = os.path.join(dock_robot_bringup, 'config', 'dock_robot_controllers.yaml')
-
     # URDF
     robot_description = Command(['xacro ', urdf_path])
 
@@ -99,20 +98,15 @@ def generate_launch_description():
         ]
     )
 
-    #RViz
-    rviz2 = Node(
-        package='rviz2',
-        executable='rviz2',
-        arguments=['-d', rviz_config_path],
-        output='screen'
-    )
+
 
     moveit_config = (
         MoveItConfigsBuilder("my_robot", package_name="dock_robot_moveit_config")
-        .robot_description('config/my_robot.gazebo.urdf.xacro')
-        .robot_description_semantic('config/my_robot.srdf')
-        .robot_description_kinematics('config/kinematics.yaml')
-        
+        .robot_description(file_path='config/my_robot.urdf.xacro')
+        .robot_description_semantic(file_path='config/my_robot.srdf')
+        .robot_description_kinematics(file_path='config/kinematics.yaml')
+        .joint_limits(file_path="config/joint_limits.yaml")
+        .planning_pipelines(pipelines=["ompl", "pilz_industrial_motion_planner"])
         .planning_scene_monitor(
             publish_robot_description=True,           # 在这里设置
             publish_robot_description_semantic=True   # 在这里设置
@@ -120,18 +114,31 @@ def generate_launch_description():
         .to_moveit_configs()
     )
 
+    # 获取配置字典
+    moveit_config_dict = moveit_config.to_dict()
+
+
+
     moveit_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        parameters=[moveit_config.to_dict(),
-                    {'use_sim_time': False}],
+        parameters=[moveit_config_dict,{'use_sim_time': False}],
+    )
+
+    # RViz 节点也需要相同的 kinematics 配置！
+    rviz2 = Node(
+        package="rviz2",
+        executable="rviz2",
+        output="screen",
+        arguments=["-d", rviz_config_path],
+        parameters=[moveit_config_dict,{'use_sim_time': False}],
     )
 
     return LaunchDescription([
         robot_state_publisher,
         ros2_control_node,
         delayed_spawners,
+        moveit_group_node,
         rviz2,
-        moveit_group_node
     ])

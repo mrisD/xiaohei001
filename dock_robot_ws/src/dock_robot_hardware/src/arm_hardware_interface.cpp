@@ -27,7 +27,7 @@ namespace arm_hardware
         m_isCANOpened=_can_ptr->can_open();
         if (!m_isCANOpened) {
             RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 设备未连接，运行模拟模式+++++++++++++++++++++++++");
-            return hardware_interface::CallbackReturn::FAILURE;
+            // return hardware_interface::CallbackReturn::FAILURE;
         } else {
             RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 初始化成功+++++++++++++++");
             //Todo 此时硬件已初始化，设置电机模式 位置、速度、力矩等
@@ -98,7 +98,7 @@ namespace arm_hardware
         (void)period;
         if(!m_isCANOpened)
         {
-            return hardware_interface::return_type::ERROR;
+            // return hardware_interface::return_type::ERROR;
         }
         else
         {

@@ -9,7 +9,7 @@ Panels:
         - /RobotModel1
         - /RobotModel1/Description Topic1
       Splitter Ratio: 0.5
-    Tree Height: 70
+    Tree Height: 159
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -208,108 +208,20 @@ Visualization Manager:
       Value: true
       Visual Enabled: true
     - Class: rviz_default_plugins/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        arm_base_link:
-          Value: true
-        base_footprint:
-          Value: true
-        base_link:
-          Value: true
-        camera_link:
-          Value: true
-        controller_link:
-          Value: true
-        head_link:
-          Value: true
-        imu_link:
-          Value: true
-        laser_cylinder_link:
-          Value: true
-        laser_link:
-          Value: true
-        left_arm_link:
-          Value: true
-        left_caster_wheel_link:
-          Value: true
-        left_wheel_link:
-          Value: true
-        lift_link:
-          Value: true
-        link1:
-          Value: true
-        link2:
-          Value: true
-        link3:
-          Value: true
-        link4:
-          Value: true
-        link5:
-          Value: true
-        linkr1:
-          Value: true
-        linkr2:
-          Value: true
-        linkr3:
-          Value: true
-        linkr4:
-          Value: true
-        linkr5:
-          Value: true
-        right_arm_base_link:
-          Value: true
-        right_arm_link:
-          Value: true
-        right_caster_wheel_link:
-          Value: true
-        right_wheel_link:
-          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          base_link:
-            imu_link:
-              {}
-            laser_cylinder_link:
-              laser_link:
-                camera_link:
-                  {}
-            left_caster_wheel_link:
-              {}
-            left_wheel_link:
-              {}
-            lift_link:
-              controller_link:
-                head_link:
-                  left_arm_link:
-                    arm_base_link:
-                      link1:
-                        link2:
-                          link3:
-                            link4:
-                              link5:
-                                {}
-                  right_arm_link:
-                    right_arm_base_link:
-                      linkr1:
-                        linkr2:
-                          linkr3:
-                            linkr4:
-                              linkr5:
-                                {}
-            right_caster_wheel_link:
-              {}
-            right_wheel_link:
-              {}
+        {}
       Update Interval: 0
-      Value: true
-    - Acceleration_Scaling_Factor: 0.1
+      Value: false
+    - Acceleration_Scaling_Factor: 1
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Move Group Namespace: ""
@@ -495,7 +407,7 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: body
+        Planning Group: right_arm
         Query Goal State: true
         Query Start State: false
         Show Workspace: false
@@ -654,7 +566,7 @@ Visualization Manager:
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
-      Velocity_Scaling_Factor: 0.1
+      Velocity_Scaling_Factor: 1
     - Class: moveit_rviz_plugin/PlanningScene
       Enabled: true
       Move Group Namespace: ""
@@ -865,30 +777,30 @@ Visualization Manager:
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.19508899748325348
-        Y: -0.06946507096290588
-        Z: 0.298435240983963
+        X: 0.08748586475849152
+        Y: -0.20988714694976807
+        Z: 0.8126378059387207
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.41039836406707764
+      Pitch: 0.6903982162475586
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.27039843797683716
+      Yaw: 3.0303993225097656
     Saved: ~
 Window Geometry:
-  "":
-    collapsed: false
-  " - Trajectory Slider":
-    collapsed: false
   Displays:
     collapsed: false
-  Height: 752
+  Height: 1016
   Hide Left Dock: false
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001f300000257fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d000000c9000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffbffffffff010000010c000001880000017d00ffffff000000010000010f00000257fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d00000257000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000057100000039fc0100000002fb0000000800540069006d0065010000000000000571000002fb00fffffffb0000000800540069006d00650100000000000004500000000000000000000002630000025700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  MotionPlanning:
+    collapsed: false
+  MotionPlanning - Trajectory Slider:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd0000000400000000000001f30000035ffc020000000bfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000122000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000165000002370000017d00ffffff000000010000010f0000035ffc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003d0000035f000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073a00000039fc0100000002fb0000000800540069006d006501000000000000073a000002fb00fffffffb0000000800540069006d006501000000000000045000000000000000000000042c0000035f00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -897,6 +809,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1393
-  X: 206
-  Y: 55
+  Width: 1850
+  X: 70
+  Y: 27

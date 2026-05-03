@@ -13,76 +13,76 @@ int main(int argc,char** argv)
         executor.spin();
     });
 
-    auto left_arm =moveit::planning_interface::MoveGroupInterface(node,"left_arm");
-    left_arm.setMaxVelocityScalingFactor(1.0);
-    left_arm.setMaxAccelerationScalingFactor(1.0);
+    auto right_arm =moveit::planning_interface::MoveGroupInterface(node,"right_arm");
+    right_arm.setMaxVelocityScalingFactor(1.0);
+    right_arm.setMaxAccelerationScalingFactor(1.0);
 
 
     //Named Goal
     {
-        left_arm.setStartStateToCurrentState();
-        left_arm.setNamedTarget("left_arm_pose1");
+        right_arm.setStartStateToCurrentState();
+        right_arm.setNamedTarget("right_arm_pose1");
         moveit::planning_interface::MoveGroupInterface::Plan plan1;
-        bool success1 = (left_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
+        bool success1 = (right_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
         if(success1)
         {
-            left_arm.execute(plan1);
+            right_arm.execute(plan1);
         }
         else
         {
-            std::cout<<"left_arm_home 失败"<<std::endl;
+            std::cout<<"right_arm_home 失败"<<std::endl;
         }
     }
 
 
-    // left_arm.setStartStateToCurrentState();
-    // left_arm.setNamedTarget("left_arm_home");
-    // moveit::planning_interface::MoveGroupInterface::Plan plan2;
-    // bool success2 = (left_arm.plan(plan2) == moveit::core::MoveItErrorCode::SUCCESS);
-    // if(success2)
-    // {
-    //     left_arm.execute(plan2);
-    // }
-    // //-------------------------------------------------------------
-    // //Joint Goal
-    // std::vector<double> joints={1.5,0.5,1.5,0.5,1.5};
-    // left_arm.setStartStateToCurrentState();
-    // left_arm.setJointValueTarget(joints);
-    // moveit::planning_interface::MoveGroupInterface::Plan plan1;
-    // bool success1 = (left_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
-    // if(success1)
-    // {
-    //     left_arm.execute(plan1);
-    // }
+    right_arm.setStartStateToCurrentState();
+    right_arm.setNamedTarget("right_arm_home");
+    moveit::planning_interface::MoveGroupInterface::Plan plan2;
+    bool success2 = (right_arm.plan(plan2) == moveit::core::MoveItErrorCode::SUCCESS);
+    if(success2)
+    {
+        right_arm.execute(plan2);
+    }
+    //-------------------------------------------------------------
+    //Joint Goal
+    std::vector<double> joints={1.5,0.5,1.5,0.5,1.5};
+    right_arm.setStartStateToCurrentState();
+    right_arm.setJointValueTarget(joints);
+    moveit::planning_interface::MoveGroupInterface::Plan plan1;
+    bool success1 = (right_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
+    if(success1)
+    {
+        right_arm.execute(plan1);
+    }
 
     //------------------------------------------------------------
     //Pose Goal    
-    tf2::Quaternion q;
-    q.setRPY(0.0,0.0,0.0);
-    q=q.normalize();
+    // tf2::Quaternion q;
+    // q.setRPY(0.0,0.0,0.0);
+    // q=q.normalize();
 
-    geometry_msgs::msg::PoseStamped target_pose;
-    target_pose.header.frame_id="base_footprint";
-    target_pose.pose.position.x=-0.00077526;
-    target_pose.pose.position.y=0.67813;
-    target_pose.pose.position.z=0.9531;
-    target_pose.pose.orientation.x=0.56245;
-    target_pose.pose.orientation.y=-0.56235;
-    target_pose.pose.orientation.z=-0.42856;
-    target_pose.pose.orientation.w=-0.42866;
-    left_arm.setStartStateToCurrentState();
-    left_arm.setPoseTarget(target_pose);
-    moveit::planning_interface::MoveGroupInterface::Plan plan1;
+    // geometry_msgs::msg::PoseStamped target_pose;
+    // target_pose.header.frame_id="base_footprint";
+    // target_pose.pose.position.x=-0.00077526;
+    // target_pose.pose.position.y=0.67813;
+    // target_pose.pose.position.z=0.9531;
+    // target_pose.pose.orientation.x=0.56245;
+    // target_pose.pose.orientation.y=-0.56235;
+    // target_pose.pose.orientation.z=-0.42856;
+    // target_pose.pose.orientation.w=-0.42866;
+    // right_arm.setStartStateToCurrentState();
+    // right_arm.setPoseTarget(target_pose);
+    // moveit::planning_interface::MoveGroupInterface::Plan plan1;
     
-    bool success1 = (left_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
-    if(success1)
-    {
-        left_arm.execute(plan1);
-    }
-    else
-    {
-        std::cout<<"规划失败"<<std::endl;
-    }
+    // bool success1 = (right_arm.plan(plan1) == moveit::core::MoveItErrorCode::SUCCESS);
+    // if(success1)
+    // {
+    //     right_arm.execute(plan1);
+    // }
+    // else
+    // {
+    //     std::cout<<"规划失败"<<std::endl;
+    // }
 
 
 
@@ -91,12 +91,12 @@ int main(int argc,char** argv)
 
     //Cartesian Path
     std::vector<geometry_msgs::msg::Pose> waypoints;
-    geometry_msgs::msg::PoseStamped pose1=left_arm.getCurrentPose();
+    geometry_msgs::msg::PoseStamped pose1=right_arm.getCurrentPose();
 
     std::cout<<"执行 getCurrentPose"<<pose1.pose.position.x<<std::endl;
     std::cout<<"执行 getCurrentPose"<<pose1.pose.position.y<<std::endl;
     std::cout<<"执行 getCurrentPose"<<pose1.pose.position.z<<std::endl;
-    std::cout<<"执行 getCurrentPose"<< left_arm.getEndEffectorLink()<<std::endl;
+    std::cout<<"执行 getCurrentPose"<< right_arm.getEndEffectorLink()<<std::endl;
 
 
     pose1.header.frame_id="arm_base_link";
@@ -105,12 +105,12 @@ int main(int argc,char** argv)
     waypoints.push_back(pose1.pose);
 
     moveit_msgs::msg::RobotTrajectory trajectory;
-    double fraction=left_arm.computeCartesianPath(waypoints,0.01,0.01,trajectory);
+    double fraction=right_arm.computeCartesianPath(waypoints,0.01,0.01,trajectory);
 
     std::cout<<"fraction"<< fraction<<std::endl;
     if(fraction == 1)
     {
-        left_arm.execute(trajectory);
+        right_arm.execute(trajectory);
     }
 
     rclcpp::shutdown();

@@ -41,6 +41,32 @@ def generate_launch_description():
         output='screen'
     )
 
+    moveit_config = (
+        MoveItConfigsBuilder("my_robot", package_name="dock_robot_moveit_config")
+        .robot_description(file_path='config/my_robot.urdf.xacro')
+        .robot_description_semantic(file_path='config/my_robot.srdf')
+        .robot_description_kinematics(file_path='config/kinematics.yaml')
+        .joint_limits(file_path="config/joint_limits.yaml")
+        .planning_pipelines(pipelines=["ompl", "pilz_industrial_motion_planner"])
+        .planning_scene_monitor(
+            publish_robot_description=True,           # 在这里设置
+            publish_robot_description_semantic=True   # 在这里设置
+        )
+        .to_moveit_configs()
+    )
+
+    # 获取配置字典
+    moveit_config_dict = moveit_config.to_dict()
+
+
+
+    moveit_group_node = Node(
+        package="moveit_ros_move_group",
+        executable="move_group",
+        output="screen",
+        parameters=[moveit_config_dict,{'use_sim_time': False}],
+    )
+
     #延迟启动 controllers（Humble必须）
     delayed_spawners = TimerAction(
         period=3.0,
@@ -95,36 +121,13 @@ def generate_launch_description():
                 ],
                 output='screen'
             ),
+            moveit_group_node,
         ]
     )
 
 
 
-    moveit_config = (
-        MoveItConfigsBuilder("my_robot", package_name="dock_robot_moveit_config")
-        .robot_description(file_path='config/my_robot.urdf.xacro')
-        .robot_description_semantic(file_path='config/my_robot.srdf')
-        .robot_description_kinematics(file_path='config/kinematics.yaml')
-        .joint_limits(file_path="config/joint_limits.yaml")
-        .planning_pipelines(pipelines=["ompl", "pilz_industrial_motion_planner"])
-        .planning_scene_monitor(
-            publish_robot_description=True,           # 在这里设置
-            publish_robot_description_semantic=True   # 在这里设置
-        )
-        .to_moveit_configs()
-    )
-
-    # 获取配置字典
-    moveit_config_dict = moveit_config.to_dict()
-
-
-
-    moveit_group_node = Node(
-        package="moveit_ros_move_group",
-        executable="move_group",
-        output="screen",
-        parameters=[moveit_config_dict,{'use_sim_time': False}],
-    )
+    
 
     # RViz 节点也需要相同的 kinematics 配置！
     rviz2 = Node(
@@ -139,6 +142,5 @@ def generate_launch_description():
         robot_state_publisher,
         ros2_control_node,
         delayed_spawners,
-        moveit_group_node,
         rviz2,
     ])

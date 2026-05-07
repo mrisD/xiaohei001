@@ -65,7 +65,7 @@
         <joint name="jointr1" value="0"/>
         <joint name="jointr4" value="0"/>
         <joint name="jointr5" value="0"/>
-        <joint name="jointr2" value="-1.57"/>
+        <joint name="jointr2" value="1.57"/>
         <joint name="jointr3" value="0"/>
     </group_state>
     <group_state name="mobile_home" group="mobile">

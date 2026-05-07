@@ -27,7 +27,7 @@ namespace arm_hardware
         m_isCANOpened=_can_ptr->can_open();
         if (!m_isCANOpened) {
             RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 设备未连接，运行模拟模式+++++++++++++++++++++++++");
-            // return hardware_interface::CallbackReturn::FAILURE;
+            return hardware_interface::CallbackReturn::FAILURE;
         } else {
             RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 初始化成功+++++++++++++++");
             //Todo 此时硬件已初始化，设置电机模式 位置、速度、力矩等
@@ -42,6 +42,9 @@ namespace arm_hardware
             _jnt_position_state[2] = _can_ptr->motor_get_angle(RIGHT_MOTOR3) * M_PI / 180.0;
             _jnt_position_state[3] = _can_ptr->motor_get_angle(RIGHT_MOTOR4) * M_PI / 180.0;
             _jnt_position_state[4] = _can_ptr->motor_get_angle(RIGHT_MOTOR5) * M_PI / 180.0;
+            // for(int i = 0; i < 5; i++) {
+            //     _jnt_position_command[i] = _jnt_position_state[i];
+            // }
         }
         
         return hardware_interface::CallbackReturn::SUCCESS;
@@ -76,6 +79,7 @@ namespace arm_hardware
 
         (void)time;
         (void)period;
+        //  static int read_count = 0;
         if(m_isCANOpened)
         {
             // 非阻塞读取最新值
@@ -84,6 +88,17 @@ namespace arm_hardware
             _jnt_position_state[2] = _can_ptr->motor_get_angle(RIGHT_MOTOR3) * M_PI / 180.0;
             _jnt_position_state[3] = _can_ptr->motor_get_angle(RIGHT_MOTOR4) * M_PI / 180.0;
             _jnt_position_state[4] = _can_ptr->motor_get_angle(RIGHT_MOTOR5) * M_PI / 180.0;
+            // 添加调试输出（每100次读取打印一次）
+            // if(++read_count % 100 == 0) {
+            //     RCLCPP_INFO(rclcpp::get_logger("my_hardware"), 
+            //         "State: j0=%.2f, j1=%.2f, j2=%.2f, j3=%.2f, j4=%.2f",
+            //         _jnt_position_state[0] * 180.0 / M_PI,
+            //         _jnt_position_state[1] * 180.0 / M_PI,
+            //         _jnt_position_state[2] * 180.0 / M_PI,
+            //         _jnt_position_state[3] * 180.0 / M_PI,
+            //         _jnt_position_state[4] * 180.0 / M_PI);
+            // }
+        
         }  
         // RCLCPP_INFO(get_logger(), "STATE arm_base_forearm_joint_pos: %lf, forearm_hand_joint_pos: %lf",
         //             get_state("arm_base_forearm_joint/position"), get_state("forearm_hand_joint/position"));
@@ -115,6 +130,7 @@ namespace arm_hardware
                     commands[RIGHT_MOTOR5] = _jnt_position_command[4] * 180.0 / M_PI;
                     
                     _can_ptr->motor_set_angle_batch(commands);
+                    _can_ptr->update_states();
                 }
                 else
                 {
@@ -142,11 +158,11 @@ namespace arm_hardware
             state_interfaces.emplace_back(hardware_interface::StateInterface(
                 info_.joints[i].name, hardware_interface::HW_IF_POSITION, &_jnt_position_state[i]));
 
-            // state_interfaces.emplace_back(hardware_interface::StateInterface(
-            //     info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &_jnt_velocity_state[i]));
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &_jnt_velocity_state[i]));
 
-            // state_interfaces.emplace_back(hardware_interface::StateInterface(
-            //     info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &_jnt_torque_state.at(i)));
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+                info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &_jnt_torque_state[i]));
         }
 
         //导出

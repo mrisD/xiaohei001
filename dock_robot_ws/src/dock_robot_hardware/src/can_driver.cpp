@@ -42,6 +42,7 @@ bool CAN_DRIVER::can_open()
     
     
     is_canOpened_ = true;
+    // update_states();
     printf("CAN初始化成功，启动接收线程\n");
     return true;
 }
@@ -67,7 +68,7 @@ bool CAN_DRIVER::can_close()
 void CAN_DRIVER::receive_thread_func()
 {
     printf("CAN接收线程启动\n");
-    // auto last_query_time = std::chrono::steady_clock::now();
+    auto last_query_time = std::chrono::steady_clock::now();
     while (is_running_) {
         // 非阻塞接收，等待时间1ms
         ULONG len = VCI_Receive(VCI_USBCAN2, 0, CAN_CHANNEL, recv_buffers, 100, 1);
@@ -80,18 +81,19 @@ void CAN_DRIVER::receive_thread_func()
         }
 
         // ===================== 自动定时请求电机位置 =====================
-        // auto now = std::chrono::steady_clock::now();
-        // if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_query_time).count() >= 20) {
-        //     update_states(); // 每20ms主动读一次所有电机
-        //     last_query_time = now;
-        // }
+        auto now = std::chrono::steady_clock::now();
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_query_time).count() >= 20) {
+            update_states(); // 每20ms主动读一次所有电机
+            last_query_time = now;
+        }
 
         
         // 发送待处理的命令
         send_pending_commands();
         
         // 小延时避免CPU占用过高
-        std::this_thread::sleep_for(std::chrono::microseconds(500));
+        // std::this_thread::sleep_for(std::chrono::microseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
 

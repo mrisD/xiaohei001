@@ -70,3 +70,14 @@ points:
       <!-- <param name="calculate_dynamics">true</param> -->    
       <plugin>arm_hardware/ArmHardwareInterface</plugin>    
     </hardware>    
+
+### dock_robot_commander  commander 机器人控制API
+先启动程序
+ros2 run dock_robot_commander_cpp commander 
+发送控制关节话题  
+ros2 topic pub -1 /joint_command example_interfaces/msg/Float64MultiArray {"data: [0.0, 0.0, 0.0, 0.0, 0.0]"}
+
+发送控制pose话题    
+自定义的接口类型    
+source install/setup.bash     
+ros2 topic pub -1 /pose_command my_robot_interfaces/msg/PoseCommand "{x: 0.7, y: 0.0, z: 0.4, roll: 3.14, pitch: 0.0, yaw: 0.0, cartesian_path: false}"

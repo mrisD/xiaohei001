@@ -71,6 +71,10 @@ private:
     // 命令队列（可选，用于更平滑的控制）
     std::mutex cmd_mutex_;
     std::map<unsigned int, float> pending_commands_;
+
+    // 添加定时查询相关
+    std::chrono::steady_clock::time_point last_query_time_;
+    std::chrono::milliseconds query_interval_{20};  // 默认20ms查询一次
     
     // 辅助函数
     int32_t angle_to_cnt(float angle);

@@ -19,6 +19,13 @@
 #define CAN_CHANNEL       1
 
 // 电机ID定义
+
+#define LEFT_MOTOR1 0x01
+#define LEFT_MOTOR2 0x02
+#define LEFT_MOTOR3 0x03
+#define LEFT_MOTOR4 0x04
+#define LEFT_MOTOR5 0x010
+
 #define RIGHT_MOTOR1 0x06
 #define RIGHT_MOTOR2 0x07
 #define RIGHT_MOTOR3 0x08

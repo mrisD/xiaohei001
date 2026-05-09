@@ -2,7 +2,6 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:macro name="my_robot_ros2_control" params="name initial_positions_file">
         <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
-
         <ros2_control name="${name}" type="system">
             <hardware>
                 <!-- By default, set up controllers for simulation. This won't work on real hardware -->
@@ -10,41 +9,6 @@
                 <!-- <param name="calculate_dynamics">true</param> -->
                 <plugin>arm_hardware/ArmHardwareInterface</plugin>
             </hardware>
-            <joint name="jointr1">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointr1']}</param>
-                </state_interface>
-                <!-- <state_interface name="velocity"/> -->
-            </joint>
-            <joint name="jointr2">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointr2']}</param>
-                </state_interface>
-                <!-- <state_interface name="velocity"/> -->
-            </joint>
-            <joint name="jointr3">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointr3']}</param>
-                </state_interface>
-                <!-- <state_interface name="velocity"/> -->
-            </joint>
-            <joint name="jointr4">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointr4']}</param>
-                </state_interface>
-                <!-- <state_interface name="velocity"/> -->
-            </joint>
-            <joint name="jointr5">
-                <command_interface name="position"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['jointr5']}</param>
-                </state_interface>
-                <!-- <state_interface name="velocity"/> -->
-            </joint>
             <joint name="joint1">
                 <command_interface name="position"/>
                 <state_interface name="position">
@@ -80,7 +44,41 @@
                 </state_interface>
                 <!-- <state_interface name="velocity"/> -->
             </joint>
-            
+            <joint name="jointr1">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['jointr1']}</param>
+                </state_interface>
+                <!-- <state_interface name="velocity"/> -->
+            </joint>
+            <joint name="jointr2">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['jointr2']}</param>
+                </state_interface>
+                <!-- <state_interface name="velocity"/> -->
+            </joint>
+            <joint name="jointr3">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['jointr3']}</param>
+                </state_interface>
+                <!-- <state_interface name="velocity"/> -->
+            </joint>
+            <joint name="jointr4">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['jointr4']}</param>
+                </state_interface>
+                <!-- <state_interface name="velocity"/> -->
+            </joint>
+            <joint name="jointr5">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['jointr5']}</param>
+                </state_interface>
+                <!-- <state_interface name="velocity"/> -->
+            </joint>
             <joint name="base_left_wheel_joint">
                 <command_interface name="position"/>
                 <state_interface name="position">
@@ -102,7 +100,6 @@
                 </state_interface>
                 <!-- <state_interface name="velocity"/> -->
             </joint>
-
         </ros2_control>
     </xacro:macro>
 </robot>

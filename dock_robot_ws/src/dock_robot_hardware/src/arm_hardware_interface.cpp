@@ -106,12 +106,8 @@ namespace arm_hardware
                 else
                 {
                     RCLCPP_INFO(rclcpp::get_logger("my_hardware"),"读取到right电机位置NG");
-                }
-                    
-
+                } 
             }
-
-
             //Todo 此时硬件已初始化，设置电机模式 位置、速度、力矩等
             //做第一步的工作，读取当前状态数据
             /*

@@ -58,8 +58,8 @@ body_controller:
       # - velocity
 mobile_controller:
   ros__parameters:
-    left_wheel_names: ["base_left_wheel_joint"]
-    right_wheel_names: ["base_right_wheel_joint"]
+    left_wheel_names: ["lf_wheel_joint"]
+    right_wheel_names: ["rf_wheel_joint"]
 
     wheel_separation: 0.1615
     wheel_radius: 0.1

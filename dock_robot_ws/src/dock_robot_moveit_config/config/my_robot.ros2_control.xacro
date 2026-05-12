@@ -79,14 +79,14 @@
                 </state_interface>
                 <!-- <state_interface name="velocity"/> -->
             </joint>
-            <joint name="base_left_wheel_joint">
+            <joint name="lf_wheel_joint">
                 <command_interface name="position"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['base_left_wheel_joint']}</param>
                 </state_interface>
                 <!-- <state_interface name="velocity"/> -->
             </joint>
-            <joint name="base_right_wheel_joint">
+            <joint name="rf_wheel_joint">
                 <command_interface name="position"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['base_right_wheel_joint']}</param>

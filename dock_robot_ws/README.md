@@ -13,28 +13,60 @@ sudo apt install ros-humble-controller-manager
 sudo apt install ros-humble-ros2-control  
 sudo apt install ros-humble-ros2-controllers  
 sudo apt install ros-humble-ros-gz  
+sudo apt install ros-humble-joint-state-publisher  
+sudo apt install ros-humble-joint-state-publisher-gui  
+sudo apt install ros-humble-robot-state-publisher  
+sudo apt install ros-humble-xacro  
+sudo apt install ros-humble-tf2-tools  
+sudo apt install ros-humble-rviz2  
+sudo apt install ros-humble-robot-localization
+
 
 ### 安装常用的控制器
 sudo apt install ros-humble-joint-state-broadcaster  
 sudo apt install ros-humble-joint-trajectory-controller  
 sudo apt install ros-humble-diff-drive-controller  
-sudo apt install ros-humble-teleop-twist-keyboard  
+sudo apt install ros-humble-teleop-twist-keyboard   
+
+### 安装导航框架
+sudo apt install ros-humble-navigation2  
+sudo apt install ros-humble-nav2-bringup  
+
+
+### 其他  
+sudo apt install libpcap-dev #lsdriver 依赖  
+
+### 更换DDS
+sudo apt install ros-$ROS_DISTRO-rmw-cyclonedds-cpp  
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp  
+gedit ~/.bashrc  
+在调用ros2前加上 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp  
+查询版本 echo $RMW_IMPLEMENTATION  
+
+### USB_CAN权限问题  
+下面创建一个新的 udev 规则。名称取为：99-myusb.rules  
+sudo vi /etc/udev/rules.d/99-myusb.rules  
+输入内容如下:  
+"##" //此处为两个井号  
+ACTION=="add",SUBSYSTEMS=="usb", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="0053",
+GROUP="users", MODE="0777"  
+插拔一下 USBCAN 设备或重启一下电脑后
 
 ### 编译
-### 在src同级目录下执行colocn build 
-### 编译完成后生成 build install log 三个目录
-### 执行source install/setup.bash
+在src同级目录下执行colocn build 
+编译完成后生成 build install log 三个目录
+执行source install/setup.bash
 
 ### 启动脚本
-### 启动机械臂MoveIt2/仿真  
+启动机械臂MoveIt2/仿真  
 ros2 launch dock_robot_moveit_config demo.launch.py  
-### 启动机械臂MoveIt2/真实硬件    
+启动机械臂MoveIt2/真实硬件    
 ros2 launch dock_robot_bringup dock_robot_moveit.launch.py 
-### 启动建图
+启动建图
 ros2 launch dock_robot_moveit_config build_map_nav.launch.py  
-### 启动地图导航
+启动地图导航
 ros2 launch dock_robot_moveit_config self_map_nav.launch.py  
-### 启动键盘控制
+启动键盘控制
 ros2 run teleop_twist_keyboard teleop_twist_keyboard  
 
 
@@ -61,10 +93,10 @@ points:
 "  
 
 ### 仿真与硬件控制切换    
-### 找到dock_robot_moveit_config    
-###    -config    
-###    --my_robot.ros2_control.xacro    
-### 打开文件，修改<hardware>中的内容，第一第二行打开时使用模拟硬件，第三行打开时使用真实硬件      
+找到dock_robot_moveit_config    
+    -config    
+    --my_robot.ros2_control.xacro    
+打开文件，修改<hardware>中的内容，第一第二行打开时使用模拟硬件，第三行打开时使用真实硬件      
     <hardware>    
       <!-- <plugin>mock_components/GenericSystem</plugin> -->    
       <!-- <param name="calculate_dynamics">true</param> -->    
@@ -79,5 +111,12 @@ ros2 topic pub -1 /joint_command example_interfaces/msg/Float64MultiArray {"data
 
 发送控制pose话题    
 自定义的接口类型    
-source install/setup.bash     
-ros2 topic pub -1 /pose_command my_robot_interfaces/msg/PoseCommand "{x: 0.7, y: 0.0, z: 0.4, roll: 3.14, pitch: 0.0, yaw: 0.0, cartesian_path: false}"
+source install/setup.bash       
+ros2 topic pub -1 /pose_command my_robot_interfaces/msg/PoseCommand "{x: 0.7, y: 0.0, z: 0.4, roll: 3.14, pitch: 0.0, yaw: 0.0, cartesian_path: false}"  
+
+---------------------------------------------------------------------------------------------
+### pyorbbecsdk-v2-main 深度摄像头使用示例
+安装pyorbbecsdk2-2.0.18-cp310-cp310-linux_aarch64.whl
+pip install pyorbbecsdk2-2.0.18-cp310-cp310-linux_aarch64.whl
+安装utils
+pip install utils

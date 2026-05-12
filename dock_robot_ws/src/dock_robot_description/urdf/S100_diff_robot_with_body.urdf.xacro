@@ -1,0 +1,443 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+    <xacro:property name="lift_length" value="0.144" /> 
+    <xacro:property name="lift_width" value="0.144" /> 
+    <xacro:property name="lift_height" value="0.465" /> 
+    <xacro:property name="lift_max" value="2.2" />
+    <xacro:property name="controller_length" value="0.14" /> 
+    <xacro:property name="controller_width" value="0.14" /> 
+    <xacro:property name="controller_height" value="0.315" /> 
+    <xacro:property name="head_radius" value="0.04" /> 
+    <xacro:property name="head_length" value="0.1" /> 
+    <!-- <xacro:include filename="common_properties.xacro" /> -->
+    <xacro:property name="base_height" value="0.162" /> 
+    <xacro:property name="footprint_height" value="0.00" />  
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.0251070620224986 0.00614048061720733 0.0609796911194103"
+        rpy="0 0 0" />
+      <mass
+        value="3.04966217910594" />
+      <inertia
+        ixx="0.0170838543964428"
+        ixy="8.97603896378E-06"
+        ixz="-0.000103914094165596"
+        iyy="0.022263579823766"
+        iyz="-1.53816933043532E-07"
+        izz="0.0374090687091319" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="camera_link">
+    <inertial>
+      <origin
+        xyz="5.09861291242419E-08 -3.47825186031378E-07 1.07581484304342E-07"
+        rpy="0 0 0" />
+      <mass
+        value="0.0559842504443458" />
+      <inertia
+        ixx="0.000130810956607069"
+        ixy="1.20255882163315E-07"
+        ixz="1.62335432754277E-06"
+        iyy="1.91148632550972E-05"
+        iyz="-2.80018266441135E-08"
+        izz="0.000131387466610814" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/camera_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/camera_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="camera_joint"
+    type="fixed">
+    <origin
+      xyz="0.168159832813867 7.79999967115969E-05 0.186704"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="camera_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="laser_link">
+    <inertial>
+      <origin
+        xyz="0.0025063031131769 -4.56584106021334E-06 -0.0193246896050287"
+        rpy="0 0 0" />
+      <mass
+        value="0.0374307357771753" />
+      <inertia
+        ixx="2.80476450261731E-05"
+        ixy="-2.19900342508599E-09"
+        ixz="1.07118438627127E-06"
+        iyy="3.36164872401846E-05"
+        iyz="6.83963621545873E-10"
+        izz="4.50845485902709E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/laser.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.376470588235294 0.376470588235294 0.376470588235294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/laser.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="laser_joint"
+    type="fixed">
+    <origin
+      xyz="0.156198832813867 0 0.118431525059384"
+      rpy="0 0 3.14159265358979" />
+    <parent
+      link="base_link" />
+    <child
+      link="laser_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="lf_wheel_link">
+    <inertial>
+      <origin
+        xyz="-5.20829168682013E-09 -4.4527808014394E-07 2.77555756156289E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.595489655285518" />
+      <inertia
+        ixx="0.000649719212067496"
+        ixy="-1.0192314240505E-10"
+        ixz="-4.88390115836518E-23"
+        iyy="0.001048172608967"
+        iyz="-1.49485089493572E-19"
+        izz="0.000649697264639401" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/lf_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.741176470588235 0.901960784313726 0.956862745098039 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/lf_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="lf_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0.130698832813868 0.115083999996712 0.035"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="lf_wheel_link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="rf_wheel_link">
+    <inertial>
+      <origin
+        xyz="-5.20829163130898E-09 4.45278080227207E-07 -2.77555756156289E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.595489655285517" />
+      <inertia
+        ixx="0.000649719212067496"
+        ixy="1.01923148006776E-10"
+        ixz="4.28254399334126E-23"
+        iyy="0.001048172608967"
+        iyz="-1.50279014522297E-19"
+        izz="0.000649697264639401" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/rf_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.741176470588235 0.901960784313726 0.956862745098039 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/rf_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rf_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0.130698832813866 -0.115084000003288 0.035"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rf_wheel_link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="recharge_link">
+    <inertial>
+      <origin
+        xyz="0.00583105178285179 -0.0240208454934916 0.0444304401244179"
+        rpy="0 0 0" />
+      <mass
+        value="0.00411313318852136" />
+      <inertia
+        ixx="2.15892449167341E-06"
+        ixy="-5.31277368114172E-10"
+        ixz="2.98032018347492E-10"
+        iyy="1.08631853692317E-07"
+        iyz="-5.53081160674339E-10"
+        izz="2.0879889233084E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/recharge_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.741176470588235 0.901960784313726 0.956862745098039 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheeltec_robot_urdf/meshes/S100_diff_robot_meshes/recharge_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="recharge_joint"
+    type="fixed">
+    <origin
+      xyz="-0.194551167186133 0 0.06025"
+      rpy="0 0 3.14159265358979" />
+    <parent
+      link="base_link" />
+    <child
+      link="recharge_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link name="lift_link">
+        <visual>
+            <geometry>
+                <box size="${lift_length} ${lift_width} ${lift_height}" />
+            </geometry>
+            <origin xyz="0 0 ${lift_height/2}" rpy="0 0 0" />
+            <material name="grey" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${lift_length} ${lift_width} ${lift_height}" />
+            </geometry>
+            <origin xyz="0 0 ${lift_height/2}" rpy="0 0 0" />
+        </collision>
+        <xacro:box_inertia m="2.0" x="${lift_length}" y="${lift_width}" z="${lift_height}" 
+                            o_xyz="0 0 ${lift_height/2}" o_rpy="0 0 0" />
+    </link>
+
+    <link name="controller_link">
+        <visual>
+            <geometry>
+                <box size="${controller_length} ${controller_width} ${controller_height}" />
+            </geometry>
+            <origin xyz="0 0 ${controller_height/2}" rpy="0 0 0" />
+            <material name="green" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${controller_length} ${controller_width} ${controller_height}" />
+            </geometry>
+            <origin xyz="0 0 ${controller_height/2}" rpy="0 0 0" />
+        </collision>
+        <xacro:box_inertia m="2.0" x="${controller_length}" y="${controller_width}" z="${controller_height}" 
+                            o_xyz="0 0 ${controller_height/2}" o_rpy="0 0 0" />
+    </link>
+
+    <link name="head_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${head_radius}" length="${head_length}" />
+            </geometry>
+            <origin xyz="0 0 ${head_length/2}" rpy="0 0 0" />
+            <material name="grey" />
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${head_radius}" length="${head_length}" />
+            </geometry>
+            <origin xyz="0 0 ${head_length/2}" rpy="0 0 0" />
+        </collision>
+        <xacro:cylinder_inertia m="0.5" r="${head_radius}" l="${head_length}" o_xyz="0 0 ${head_length/2}" o_rpy="0 0 0" />
+    </link>
+
+    <link name="left_arm_link">
+        <!-- <origin xyz="0 0 -0.15" rpy="0 0 0" /> -->
+    </link>
+
+    <link name="right_arm_link" >
+        <!-- <origin xyz="0 -0.05 0.05" rpy="0 0 0" /> -->
+    </link>
+
+    <link name="base_footprint" />
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_footprint" />
+        <child link="base_link" />
+        <origin xyz="0 0 ${footprint_height}" rpy="0 0 0" />
+    </joint>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    
+
+    
+
+   
+
+    
+
+    <joint name="base_lift_joint" type="prismatic">
+        <parent link ="base_link" />
+        <child link="lift_link" />
+        <axis xyz="0 0 1" />
+        <origin xyz="0 0 ${base_height}" rpy="0 0 0" />
+        <limit lower="0" upper="2.2" effort="100.0" velocity="100.0" />
+    </joint>
+
+    <joint name="lift_controller_joint" type="fixed">
+        <parent link ="lift_link" />
+        <child link="controller_link" />
+        <origin xyz="0 0 ${lift_height}" rpy="0 0 0" />
+    </joint>
+
+    <joint name="controller_head_joint" type="fixed">
+        <parent link ="controller_link" />
+        <child link="head_link" />
+        <origin xyz="0 0 ${controller_height}" rpy="0 0 0" />
+    </joint>
+
+    <joint name="head_left_arm_joint" type="fixed">
+        <parent link="head_link" />
+        <child link="left_arm_link" />
+        <origin xyz="0 0.03 0.05" rpy=" ${-pi/2} ${pi/2} 0" />
+    </joint>
+
+    <joint name="head_right_arm_joint" type="fixed">
+        <parent link="head_link" />
+        <child link="right_arm_link" />
+        <origin xyz="0 -0.03 0.05" rpy="${pi/2} ${-pi/2} 0" />
+    </joint>
+    
+</robot>

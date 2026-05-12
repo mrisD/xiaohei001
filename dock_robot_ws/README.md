@@ -36,11 +36,13 @@ sudo apt install ros-humble-nav2-bringup
 ### 其他  
 sudo apt install libpcap-dev #lsdriver 依赖  
 
-### 更换DDS
-sudo apt install ros-$ROS_DISTRO-rmw-cyclonedds-cpp    
-export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp    
-gedit ~/.bashrc    
-在调用ros2前加上 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp    
+### 更换DDS  
+sudo apt install ros-humble-rmw-cyclonedds-cpp  
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp  
+gedit ~/.bashrc  
+  在调用ros2前加上  
+  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+保存退出重新打开终端  
 查询版本 echo $RMW_IMPLEMENTATION    
 
 ### USB_CAN权限问题  

@@ -37,17 +37,17 @@ sudo apt install ros-humble-nav2-bringup
 sudo apt install libpcap-dev #lsdriver 依赖  
 
 ### 更换DDS
-sudo apt install ros-$ROS_DISTRO-rmw-cyclonedds-cpp  
-export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp  
-gedit ~/.bashrc  
-在调用ros2前加上 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp  
-查询版本 echo $RMW_IMPLEMENTATION  
+sudo apt install ros-$ROS_DISTRO-rmw-cyclonedds-cpp    
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp    
+gedit ~/.bashrc    
+在调用ros2前加上 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp    
+查询版本 echo $RMW_IMPLEMENTATION    
 
 ### USB_CAN权限问题  
 下面创建一个新的 udev 规则。名称取为：99-myusb.rules  
 sudo vi /etc/udev/rules.d/99-myusb.rules  
 输入内容如下:  
-"##" //此处为两个井号  
+"##" //此处为两个井号,不包括""  
 ACTION=="add",SUBSYSTEMS=="usb", ATTRS{idVendor}=="04d8", ATTRS{idProduct}=="0053",
 GROUP="users", MODE="0777"  
 插拔一下 USBCAN 设备或重启一下电脑后

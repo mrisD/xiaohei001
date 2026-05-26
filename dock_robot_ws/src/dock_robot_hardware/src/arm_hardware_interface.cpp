@@ -50,11 +50,11 @@ namespace arm_hardware
                 // 检查是否读取到有效数据（假设有效位置范围是 -360 到 360 度）
                 if (l_pos1 != 0 || l_pos2 != 0 || l_pos3 != 0 || l_pos4 != 0 || l_pos5 != 0)
                 {
-                    _jnt_position_state[5] = l_pos1 * M_PI / 180.0;
-                    _jnt_position_state[6] = l_pos2 * M_PI / 180.0;
-                    _jnt_position_state[7] = l_pos3 * M_PI / 180.0;
-                    _jnt_position_state[8] = l_pos4 * M_PI / 180.0;
-                    _jnt_position_state[9] = l_pos5 * M_PI / 180.0;
+                    _jnt_position_state[0] = l_pos1 * M_PI / 180.0;
+                    _jnt_position_state[1] = l_pos2 * M_PI / 180.0;
+                    _jnt_position_state[2] = l_pos3 * M_PI / 180.0;
+                    _jnt_position_state[3] = l_pos4 * M_PI / 180.0;
+                    _jnt_position_state[4] = l_pos5 * M_PI / 180.0;
 
                     RCLCPP_INFO(rclcpp::get_logger("my_hardware"),
                                 "读取到left电机位置: [%.2f, %.2f, %.2f, %.2f, %.2f] 度",

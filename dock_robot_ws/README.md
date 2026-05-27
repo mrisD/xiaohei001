@@ -59,17 +59,45 @@ GROUP="users", MODE="0777"
 编译完成后生成 build install log 三个目录
 执行source install/setup.bash
 
+### 机械臂仿真与硬件控制切换    
+找到dock_robot_moveit_config    
+    -config    
+    --my_robot.ros2_control.xacro    
+打开文件，修改<hardware>中的内容，第一第二行打开时使用模拟硬件，第三行打开时使用真实硬件      
+    <hardware>    
+      <!-- <plugin>mock_components/GenericSystem</plugin> -->    
+      <!-- <param name="calculate_dynamics">true</param> -->    
+      <plugin>arm_hardware/ArmHardwareInterface</plugin>    
+    </hardware>   
+
 ### 启动脚本
 启动机械臂MoveIt2/仿真  
 ros2 launch dock_robot_moveit_config demo.launch.py  
 启动机械臂MoveIt2/真实硬件    
 ros2 launch dock_robot_bringup dock_robot_moveit.launch.py 
-启动建图
+仿真启动建图
 ros2 launch dock_robot_moveit_config build_map_nav.launch.py  
-启动地图导航
+仿真启动地图导航
 ros2 launch dock_robot_moveit_config self_map_nav.launch.py  
 启动键盘控制
 ros2 run teleop_twist_keyboard teleop_twist_keyboard  
+
+打开机器人底盘  
+ros2 launch turn_on_wheeltec_robot turn_on_wheeltec_robot.launch.py  
+打开小车键盘控制  
+ros2 run wheeltec_robot_keyboard wheeltec_keyboard  
+打开雷达  
+ros2 launch turn_on_wheeltec_robot wheeltec_lidar.launch.py  
+打开雷达、相机和底盘  
+ros2 launch turn_on_wheeltec_robot wheeltec_sensors.launch.py  
+
+启动硬件建图  
+  ros2 launch wheeltec_slam_toolbox online_async_launch.py  
+  启动rviz2->添加map，MobotModel  
+保存地图  
+ros2 launch wheeltec_nav2 save_map.launch.py  
+2D导航  
+ros2 launch wheeltec_nav2 wheeltec_nav2.launch.py  
 
 
 
@@ -94,16 +122,7 @@ points:
     nanosec: 0  
 "  
 
-### 仿真与硬件控制切换    
-找到dock_robot_moveit_config    
-    -config    
-    --my_robot.ros2_control.xacro    
-打开文件，修改<hardware>中的内容，第一第二行打开时使用模拟硬件，第三行打开时使用真实硬件      
-    <hardware>    
-      <!-- <plugin>mock_components/GenericSystem</plugin> -->    
-      <!-- <param name="calculate_dynamics">true</param> -->    
-      <plugin>arm_hardware/ArmHardwareInterface</plugin>    
-    </hardware>    
+ 
 
 ### dock_robot_commander  commander 机器人控制API
 先启动程序

@@ -24,6 +24,15 @@ def generate_launch_description():
 
     robot_nav = LaunchConfiguration('robot_nav', default='False')
     robot_nav_dec = DeclareLaunchArgument('robot_nav',default_value='False')
+
+    # 是否启动 joint_state_publisher。
+    # 和机械臂 ros2_control 的 joint_state_broadcaster 同时启动会抢发 /joint_states，导致 RViz 机械臂跳动。
+    start_joint_state_publisher = LaunchConfiguration('start_joint_state_publisher', default='true')
+    start_joint_state_publisher_dec = DeclareLaunchArgument(
+        'start_joint_state_publisher',
+        default_value='true',
+        description='Start joint_state_publisher for standalone wheeltec model display'
+    )
  
     imu_config = Path(get_package_share_directory('turn_on_wheeltec_robot'), 'config', 'imu.yaml')
                     
@@ -37,9 +46,10 @@ def generate_launch_description():
     )                                                       
                            
     joint_state_publisher_node = launch_ros.actions.Node(
-            package='joint_state_publisher', 
-            executable='joint_state_publisher', 
+            package='joint_state_publisher',
+            executable='joint_state_publisher',
             name='joint_state_publisher',
+            condition=IfCondition(start_joint_state_publisher),
     )
     
 
@@ -50,9 +60,9 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(carto_slam_dec)
     ld.add_action(robot_nav_dec)
+    ld.add_action(start_joint_state_publisher_dec)
     ld.add_action(wheeltec_robot)
     ld.add_action(joint_state_publisher_node)
     ld.add_action(robot_ekf)
     ld.add_action(car_mode_type)
     return ld
-

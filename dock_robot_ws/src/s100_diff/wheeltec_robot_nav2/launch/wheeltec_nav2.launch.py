@@ -54,7 +54,12 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 [wheeltec_launch_dir, '/turn_on_wheeltec_robot.launch.py']),
-            launch_arguments={'carto_slam': 'false','robot_nav':'false'}.items(),
+            launch_arguments={
+                'carto_slam': 'false',
+                'robot_nav': 'false',
+                # 同时启动 MoveIt/真实机械臂时，禁止小车 joint_state_publisher 抢发 /joint_states
+                'start_joint_state_publisher': 'false',
+            }.items(),
         ),
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(

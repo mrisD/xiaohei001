@@ -34,7 +34,7 @@ left_arm_controller:
       - position
     state_interfaces:
       - position
-      - velocity
+      # - velocity
 right_arm_controller:
   ros__parameters:
     joints:
@@ -47,7 +47,7 @@ right_arm_controller:
       - position
     state_interfaces:
       - position
-      - velocity
+      # - velocity
 body_controller:
   ros__parameters:
     joints:

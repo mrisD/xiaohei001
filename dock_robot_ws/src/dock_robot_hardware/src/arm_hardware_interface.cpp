@@ -30,96 +30,41 @@ namespace arm_hardware
             return hardware_interface::CallbackReturn::FAILURE;
         } else {
             RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 初始化成功+++++++++++++++");
-           
-            const int max_attempts = 50; // 最多尝试50次
-            const int sleep_ms = 50;     // 每次等待20ms
-            // bool got_valid_position = false;
-            // 处理左臂启动程序自动归零的问题
-            for (int attempt = 0; attempt < max_attempts; attempt++)
-            {
-                // 主动请求电机状态
-                _can_ptr->update_states();
-                // 等待接收线程处理
-                std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
-                // 尝试读取位置
-                float l_pos1 = _can_ptr->motor_get_angle(LEFT_MOTOR1);
-                float l_pos2 = _can_ptr->motor_get_angle(LEFT_MOTOR2);
-                float l_pos3 = _can_ptr->motor_get_angle(LEFT_MOTOR3);
-                float l_pos4 = _can_ptr->motor_get_angle(LEFT_MOTOR4);
-                float l_pos5 = _can_ptr->motor_get_angle(LEFT_MOTOR5);
-                // 检查是否读取到有效数据（假设有效位置范围是 -360 到 360 度）
-                if (l_pos1 != 0 || l_pos2 != 0 || l_pos3 != 0 || l_pos4 != 0 || l_pos5 != 0)
-                {
-                    _jnt_position_state[0] = l_pos1 * M_PI / 180.0;
-                    _jnt_position_state[1] = l_pos2 * M_PI / 180.0;
-                    _jnt_position_state[2] = l_pos3 * M_PI / 180.0;
-                    _jnt_position_state[3] = l_pos4 * M_PI / 180.0;
-                    _jnt_position_state[4] = l_pos5 * M_PI / 180.0;
 
-                    RCLCPP_INFO(rclcpp::get_logger("my_hardware"),
-                                "读取到left电机位置: [%.2f, %.2f, %.2f, %.2f, %.2f] 度",
-                                l_pos1, l_pos2, l_pos3, l_pos4, l_pos5);
-                    for (int i = 0; i < 5; i++)
-                    {
-                        _jnt_position_command[i] = _jnt_position_state[i];
+            const unsigned int motor_ids[10] = {
+                LEFT_MOTOR1, LEFT_MOTOR2, LEFT_MOTOR3, LEFT_MOTOR4, LEFT_MOTOR5,
+                RIGHT_MOTOR1, RIGHT_MOTOR2, RIGHT_MOTOR3, RIGHT_MOTOR4, RIGHT_MOTOR5
+            };
+            bool synced[10] = {};
+            int remaining = 10;
+            _can_ptr->update_states();
+            const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
+
+            while (remaining > 0 && std::chrono::steady_clock::now() < deadline) {
+                for (int i = 0; i < 10; ++i) {
+                    if (synced[i]) {
+                        continue;
                     }
-                    // got_valid_position = true;
-                    break;
+                    const MotorState state = _can_ptr->motor_get_state(motor_ids[i]);
+                    if (!state.updated) {
+                        continue;
+                    }
+                    _jnt_position_state[i] = state.position_deg * M_PI / 180.0;
+                    _jnt_position_command[i] = _jnt_position_state[i];
+                    synced[i] = true;
+                    --remaining;
                 }
-                else
-                {
-                    RCLCPP_INFO(rclcpp::get_logger("my_hardware"),"读取到left电机位置NG");
+                if (remaining > 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(5));
                 }
             }
-            // 处理右臂启动程序自动归零的问题
-            for (int attempt = 0; attempt < max_attempts; attempt++)
-            {
-                // 主动请求电机状态
-                _can_ptr->update_states();
-                // 等待接收线程处理
-                std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
-                // 尝试读取位置
-                float r_pos1 = _can_ptr->motor_get_angle(RIGHT_MOTOR1);
-                float r_pos2 = _can_ptr->motor_get_angle(RIGHT_MOTOR2);
-                float r_pos3 = _can_ptr->motor_get_angle(RIGHT_MOTOR3);
-                float r_pos4 = _can_ptr->motor_get_angle(RIGHT_MOTOR4);
-                float r_pos5 = _can_ptr->motor_get_angle(RIGHT_MOTOR5);
-                // 检查是否读取到有效数据（假设有效位置范围是 -360 到 360 度）
-                if (r_pos1 != 0 || r_pos2 != 0 || r_pos3 != 0 || r_pos4 != 0 || r_pos5 != 0)
-                {
-                    _jnt_position_state[5] = r_pos1 * M_PI / 180.0;
-                    _jnt_position_state[6] = r_pos2 * M_PI / 180.0;
-                    _jnt_position_state[7] = r_pos3 * M_PI / 180.0;
-                    _jnt_position_state[8] = r_pos4 * M_PI / 180.0;
-                    _jnt_position_state[9] = r_pos5 * M_PI / 180.0;
 
-                    RCLCPP_INFO(rclcpp::get_logger("my_hardware"),
-                                "读取到right电机位置: [%.2f, %.2f, %.2f, %.2f, %.2f] 度",
-                                r_pos1, r_pos2, r_pos3, r_pos4, r_pos5);
-                    for (int i = 5; i < 10; i++)
-                    {
-                        _jnt_position_command[i] = _jnt_position_state[i];
-                    }
-                    // got_valid_position = true;
-                    break;
-                }
-                else
-                {
-                    RCLCPP_INFO(rclcpp::get_logger("my_hardware"),"读取到right电机位置NG");
-                } 
+            if (remaining > 0) {
+                RCLCPP_ERROR(rclcpp::get_logger("my_hardware"), "电机初始位置读取失败，硬件插件激活失败");
+                _can_ptr->can_close();
+                m_isCANOpened = false;
+                return hardware_interface::CallbackReturn::FAILURE;
             }
-            //Todo 此时硬件已初始化，设置电机模式 位置、速度、力矩等
-            //做第一步的工作，读取当前状态数据
-            /*
-            获取反馈位置后同步到指令位置以维持当前状态，如果发现读取失败，那么就无法激活插件，
-            因为错误的反馈位置会导致初始指令位置下发出现严重偏差导致事故
-            */
-            // 非阻塞读取最新值
-            // _jnt_position_state[0] = _can_ptr->motor_get_angle(RIGHT_MOTOR1) * M_PI / 180.0;
-            // _jnt_position_state[1] = _can_ptr->motor_get_angle(RIGHT_MOTOR2) * M_PI / 180.0;
-            // _jnt_position_state[2] = _can_ptr->motor_get_angle(RIGHT_MOTOR3) * M_PI / 180.0;
-            // _jnt_position_state[3] = _can_ptr->motor_get_angle(RIGHT_MOTOR4) * M_PI / 180.0;
-            // _jnt_position_state[4] = _can_ptr->motor_get_angle(RIGHT_MOTOR5) * M_PI / 180.0;
         }
         
         return hardware_interface::CallbackReturn::SUCCESS;

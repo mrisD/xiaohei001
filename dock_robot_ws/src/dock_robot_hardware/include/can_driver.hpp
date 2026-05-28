@@ -42,7 +42,7 @@
 #define LEFT_MOTOR2 0x02
 #define LEFT_MOTOR3 0x03
 #define LEFT_MOTOR4 0x04
-#define LEFT_MOTOR5 0x10
+#define LEFT_MOTOR5 0x0A
 
 // ==========================
 // 右臂电机 ID

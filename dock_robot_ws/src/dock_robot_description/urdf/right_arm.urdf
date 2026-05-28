@@ -154,7 +154,7 @@
     <child
       link="linkr2" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="${j2_min}"
       upper="${j2_max}"
@@ -272,7 +272,7 @@
     <child
       link="linkr4" />
     <axis
-      xyz="0 0 -1" />
+      xyz="0 0 1" />
     <limit
       lower="${j4_min}"
       upper="${j4_max}"

@@ -35,13 +35,13 @@ private:
     std::unique_ptr<CAN_DRIVER> _can_ptr;
     bool m_isCANOpened=false;
 
-    double _jnt_position_command[15];
-    double _jnt_velocity_command[15];
-    double _jnt_torque_command[15];
-    double _jnt_position_state[15];
-    double _jnt_velocity_state[15];
-    double _jnt_torque_state[15];
-    int _control_mode;
+    double _jnt_position_command[15]{0.0};
+    double _jnt_velocity_command[15]{0.0};
+    double _jnt_torque_command[15]{0.0};
+    double _jnt_position_state[15]{0.0};
+    double _jnt_velocity_state[15]{0.0};
+    double _jnt_torque_state[15]{0.0};
+    int _control_mode=0;
 };    
 }
 

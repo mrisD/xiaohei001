@@ -10,65 +10,182 @@ namespace arm_hardware
         return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    hardware_interface::CallbackReturn ArmHardwareInterface::
-        on_activate(const rclcpp_lifecycle::State &previous_state)
+    hardware_interface::CallbackReturn ArmHardwareInterface::on_activate(
+    const rclcpp_lifecycle::State &previous_state)
+{
+    (void)previous_state;
+
+    auto logger = rclcpp::get_logger("my_hardware");
+
+    RCLCPP_INFO(logger, "开始激活 ArmHardwareInterface...");
+
+    // ==============================
+    // 1. 初始化关节变量
+    // ==============================
+    for (int i = 0; i < 10; i++)
     {
-        (void)previous_state;
-        //Todo 设置初始值
-        for(int i=0;i<10;i++){//初始化变量
-            _jnt_position_command[i] = 0;
-            _jnt_velocity_command[i] = 0;
-            _jnt_torque_command[i] = 0;
-            _jnt_position_state[i] = 0;
-            _jnt_velocity_state[i] = 0;
-            _jnt_torque_state[i] = 0;
-        }
-        _control_mode = 0;//默认是位置控制,0-位置控制，1-扭矩控制 2-速度控制
-        m_isCANOpened=_can_ptr->can_open();
-        if (!m_isCANOpened) {
-            RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 设备未连接，运行模拟模式+++++++++++++++++++++++++");
-            return hardware_interface::CallbackReturn::FAILURE;
-        } else {
-            RCLCPP_INFO(rclcpp::get_logger("my_hardware"), "CAN 初始化成功+++++++++++++++");
+        _jnt_position_command[i] = 0.0;
+        _jnt_velocity_command[i] = 0.0;
+        _jnt_torque_command[i] = 0.0;
 
-            const unsigned int motor_ids[10] = {
-                LEFT_MOTOR1, LEFT_MOTOR2, LEFT_MOTOR3, LEFT_MOTOR4, LEFT_MOTOR5,
-                RIGHT_MOTOR1, RIGHT_MOTOR2, RIGHT_MOTOR3, RIGHT_MOTOR4, RIGHT_MOTOR5
-            };
-            bool synced[10] = {};
-            int remaining = 10;
-            _can_ptr->update_states();
-            const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(200);
+        _jnt_position_state[i] = 0.0;
+        _jnt_velocity_state[i] = 0.0;
+        _jnt_torque_state[i] = 0.0;
+    }
 
-            while (remaining > 0 && std::chrono::steady_clock::now() < deadline) {
-                for (int i = 0; i < 10; ++i) {
-                    if (synced[i]) {
-                        continue;
-                    }
-                    const MotorState state = _can_ptr->motor_get_state(motor_ids[i]);
-                    if (!state.updated) {
-                        continue;
-                    }
-                    _jnt_position_state[i] = state.position_deg * M_PI / 180.0;
-                    _jnt_position_command[i] = _jnt_position_state[i];
-                    synced[i] = true;
-                    --remaining;
-                }
-                if (remaining > 0) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(5));
-                }
-            }
+    // 默认位置控制：0-位置控制，1-扭矩控制，2-速度控制
+    _control_mode = 0;
 
-            if (remaining > 0) {
-                RCLCPP_ERROR(rclcpp::get_logger("my_hardware"), "电机初始位置读取失败，硬件插件激活失败");
-                _can_ptr->can_close();
-                m_isCANOpened = false;
-                return hardware_interface::CallbackReturn::FAILURE;
-            }
-        }
-        
+    // ==============================
+    // 2. 打开 CAN
+    // ==============================
+    m_isCANOpened = _can_ptr->can_open();
+
+    if (!m_isCANOpened)
+    {
+        RCLCPP_ERROR(logger, "CAN 设备打开失败，硬件未连接");
+
+        /*
+         * 重要：
+         * 这里不要 return FAILURE。
+         * 如果返回 FAILURE，ros2_control_node 可能直接退出，
+         * 后续 joint_state_broadcaster / MoveIt / RViz 都会启动失败。
+         *
+         * 让硬件接口保持 SUCCESS，但 m_isCANOpened=false。
+         * 后续 read()/write() 里面需要根据 m_isCANOpened 做保护。
+         */
+        RCLCPP_WARN(logger, "进入安全模拟状态：controller_manager 保持运行，但不发送真实硬件命令");
+
         return hardware_interface::CallbackReturn::SUCCESS;
     }
+
+    RCLCPP_INFO(logger, "CAN 初始化成功+++++++++++++++");
+
+    // ==============================
+    // 3. 电机 ID 表
+    // ==============================
+    const unsigned int motor_ids[10] = {
+        LEFT_MOTOR1, LEFT_MOTOR2, LEFT_MOTOR3, LEFT_MOTOR4, LEFT_MOTOR5,
+        RIGHT_MOTOR1, RIGHT_MOTOR2, RIGHT_MOTOR3, RIGHT_MOTOR4, RIGHT_MOTOR5
+    };
+
+    const char *joint_names[10] = {
+        "joint1", "joint2", "joint3", "joint4", "joint5",
+        "jointr1", "jointr2", "jointr3", "jointr4", "jointr5"
+    };
+
+    bool synced[10] = {};
+    int remaining = 10;
+
+    // ==============================
+    // 4. 等待电机反馈初始位置
+    // ==============================
+    const auto deadline =
+        std::chrono::steady_clock::now() + std::chrono::milliseconds(3000);
+
+    while (remaining > 0 && std::chrono::steady_clock::now() < deadline)
+    {
+        /*
+         * 关键修复：
+         * update_states() 必须放在 while 循环里面。
+         * 你原来的代码只调用了一次，后面一直读旧状态。
+         */
+        _can_ptr->update_states();
+
+        for (int i = 0; i < 10; ++i)
+        {
+            if (synced[i])
+            {
+                continue;
+            }
+
+            const MotorState state = _can_ptr->motor_get_state(motor_ids[i]);
+
+            if (!state.updated)
+            {
+                continue;
+            }
+
+            _jnt_position_state[i] = state.position_deg * M_PI / 180.0;
+            _jnt_velocity_state[i] = 0.0;
+            _jnt_torque_state[i] = 0.0;
+
+            /*
+             * 很重要：
+             * 激活时 command 必须等于当前 state。
+             * 否则 controller 一激活，可能立即把电机拉回 0 位。
+             */
+            _jnt_position_command[i] = _jnt_position_state[i];
+            _jnt_velocity_command[i] = 0.0;
+            _jnt_torque_command[i] = 0.0;
+
+            synced[i] = true;
+            --remaining;
+
+            RCLCPP_INFO(
+                logger,
+                "读取初始位置成功: %s, motor_id=0x%02X, position=%.3f deg, %.6f rad",
+                joint_names[i],
+                motor_ids[i],
+                state.position_deg,
+                _jnt_position_state[i]);
+        }
+
+        if (remaining > 0)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }
+
+    // ==============================
+    // 5. 处理未同步的电机
+    // ==============================
+    if (remaining > 0)
+    {
+        RCLCPP_ERROR(
+            logger,
+            "有 %d 个电机初始位置读取失败，但不让 ros2_control_node 崩溃",
+            remaining);
+
+        for (int i = 0; i < 10; ++i)
+        {
+            if (!synced[i])
+            {
+                RCLCPP_ERROR(
+                    logger,
+                    "未收到电机反馈: joint=%s, motor_id=0x%02X",
+                    joint_names[i],
+                    motor_ids[i]);
+
+                /*
+                 * 没读到真实位置的关节，先保持 0。
+                 * 注意：这种情况下建议 write() 不要真正下发运动命令。
+                 */
+                _jnt_position_state[i] = 0.0;
+                _jnt_velocity_state[i] = 0.0;
+                _jnt_torque_state[i] = 0.0;
+
+                _jnt_position_command[i] = _jnt_position_state[i];
+                _jnt_velocity_command[i] = 0.0;
+                _jnt_torque_command[i] = 0.0;
+            }
+        }
+
+        /*
+         * 不关闭 CAN，不 return FAILURE。
+         * 让 controller_manager、joint_state_broadcaster、MoveIt、RViz 正常启动。
+         */
+        RCLCPP_WARN(
+            logger,
+            "硬件部分电机未同步，系统进入保护状态。请检查电机 ID、CAN 通道、电源、波特率和接线。");
+
+        return hardware_interface::CallbackReturn::SUCCESS;
+    }
+
+    RCLCPP_INFO(logger, "全部电机初始位置读取成功，硬件插件激活完成");
+
+    return hardware_interface::CallbackReturn::SUCCESS;
+}
 
     hardware_interface::CallbackReturn ArmHardwareInterface::
         on_deactivate(const rclcpp_lifecycle::State &previous_state)

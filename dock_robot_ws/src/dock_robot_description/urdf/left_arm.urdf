@@ -338,4 +338,5 @@
       velocity="0.78" />
     <dynamics damping="0.1" friction="0.05"/>
   </joint>
+  
 </robot>

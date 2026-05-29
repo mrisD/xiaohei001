@@ -18,7 +18,7 @@
     </xacro:if>
 
     <!-- <xacro:include filename="arm1.xacro" /> -->
-    <!-- <xacro:include filename="gripper.xacro" /> -->
+    <xacro:include filename="gripper.xacro" />
     <xacro:include filename="left_arm.urdf" />
     <xacro:include filename="right_arm.urdf" />
 
@@ -30,11 +30,11 @@
      
      <!-- <xacro:my_robot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/> -->
 
-     <!-- <joint name="gripper_base_joint" type="fixed">
-        <parent link="left_arm_link" />
+    <joint name="gripper_base_joint" type="fixed">
+        <parent link="link5" />
         <child link="gripper_base_link" />
-        <origin xyz="0 0 0" rpy="-1.57 0 0" />
-    </joint> -->
+        <origin xyz="0 0 0" rpy="0 0 1.57" />
+    </joint>
 
     <joint name="left_arm_joint" type="fixed">
         <parent link="left_arm_link" />
@@ -47,6 +47,10 @@
         <child link="right_arm_base_link" />
         <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
+
+    
+
+
 
     <!-- <xacro:laser_xacro xyz="0.1615 0.0 0.212" />
     <xacro:camera_xacro xyz="0.0 0.0 0.02" />

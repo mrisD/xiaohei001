@@ -171,6 +171,16 @@ def generate_launch_description():
         ],
     )
 
+    mtc_task_node = Node(
+        package="dock_robot_mtc_pick_place",
+        executable="mtc_task_node",
+        output="screen",
+        parameters=[
+            moveit_all_params,
+            {"use_sim_time": False},
+        ],
+    )
+
     # ==============================
     # 启动顺序
     # ==============================
@@ -230,7 +240,7 @@ def generate_launch_description():
                     TimerAction(
                         period=12.0,
                         actions=[
-                            alternative_path_costs_node,
+                            mtc_task_node,
                         ],
                     ),
                 ],

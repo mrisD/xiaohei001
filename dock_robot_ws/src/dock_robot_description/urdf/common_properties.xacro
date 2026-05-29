@@ -16,6 +16,10 @@
         <color rgba="1.0 0.5 0.0 1.0"/>
     </material>
 
+    <material name="dark_green">
+        <color rgba="1.0 0.5 0.0 1.0"/>
+    </material>
+
 
 
     <xacro:property name="j1_min" value="-1.57" /> 

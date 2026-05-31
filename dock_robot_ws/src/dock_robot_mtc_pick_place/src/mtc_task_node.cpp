@@ -132,7 +132,7 @@ MTCTaskNode::MTCTaskNode(const rclcpp::NodeOptions& options)
   // For cylinder: [height, radius]. For box: [x, y, z].
   declare_parameter("object_dimensions", std::vector<double>{0.05, 0.025}, "Dimensions of the object. Cylinder: [height, radius], box: [x, y, z]");
   // The pose is the primitive center pose, not the bottom pose.
-  declare_parameter("object_pose", std::vector<double>{0.28, 0.20, 0.81, 0.0, 0.0, 0.0}, "Initial pose of the object center [x, y, z, roll, pitch, yaw]");
+  declare_parameter("object_pose", std::vector<double>{0.28, 0.20, 1.0, 0.0, 0.0, 0.0}, "Initial pose of the object center [x, y, z, roll, pitch, yaw]");
   declare_parameter("support_surface_id", "", "Optional support surface collision object id. Empty disables support-surface collision stages");
 
   // Grasp and place parameters
@@ -639,7 +639,10 @@ mtc::Task MTCTaskNode::createTask()
       auto wrapper = std::make_unique<mtc::stages::ComputeIK>("grasp pose IK", std::move(stage));
       wrapper->setMaxIKSolutions(grasp_pose_max_ik_solutions);
       wrapper->setMinSolutionDistance(grasp_pose_min_solution_distance);
-      wrapper->setIKFrame(vectorToEigen(grasp_frame_transform), gripper_frame); // Transform from gripper frame to tool center point (TCP)
+     
+      wrapper->setIKFrame("left_gripper_tcp");
+      
+      // wrapper->setIKFrame(vectorToEigen(grasp_frame_transform), gripper_frame); // Transform from gripper frame to tool center point (TCP)
       wrapper->properties().configureInitFrom(mtc::Stage::PARENT, { "eef", "group" });
       wrapper->properties().configureInitFrom(mtc::Stage::INTERFACE, { "target_pose" });
       grasp->insert(std::move(wrapper));

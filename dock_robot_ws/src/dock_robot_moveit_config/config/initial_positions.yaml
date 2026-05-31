@@ -16,3 +16,4 @@ initial_positions:
   # jointr2: -1.57
   jointr2: 0
   jointr3: 0
+  gripper_left_finger_joint: 0

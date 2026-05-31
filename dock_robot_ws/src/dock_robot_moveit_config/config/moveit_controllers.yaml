@@ -8,6 +8,7 @@ moveit_simple_controller_manager:
     - right_arm_controller
     - mobile_controller
     - body_controller
+    - left_gripper_controller
 
   left_arm_controller:
     type: FollowJointTrajectory
@@ -42,3 +43,10 @@ moveit_simple_controller_manager:
       - base_lift_joint
     action_ns: follow_joint_trajectory
     default: true
+
+  left_gripper_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - gripper_left_finger_joint

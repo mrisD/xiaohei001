@@ -22,7 +22,7 @@ namespace arm_hardware
     // ==============================
     // 1. 初始化关节变量
     // ==============================
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < info_.joints.size(); i++)
     {
         _jnt_position_command[i] = 0.0;
         _jnt_velocity_command[i] = 0.0;
@@ -234,6 +234,14 @@ namespace arm_hardware
         // RCLCPP_INFO(get_logger(), "STATE arm_base_forearm_joint_pos: %lf, forearm_hand_joint_pos: %lf",
         //             get_state("arm_base_forearm_joint/position"), get_state("forearm_hand_joint/position"));
 
+        // 对非 CAN 真实关节做虚拟状态回读。
+        // 当前前 10 个是左右机械臂真实 CAN 关节。
+        // 后面的 wheel / lift / gripper 如果没有真实读取，就让 state 跟随 command，
+        // 避免 joint_state_broadcaster 不发布或控制器一直认为没有到位。
+        for (size_t i = 10; i < info_.joints.size() && i < 15; ++i)
+        {
+            _jnt_position_state[i] = _jnt_position_command[i];
+        }
         return hardware_interface::return_type::OK;
     }
 

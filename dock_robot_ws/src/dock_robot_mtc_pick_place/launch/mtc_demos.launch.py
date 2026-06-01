@@ -158,7 +158,7 @@ def generate_launch_description():
 
             # Conservative first test.
             {"execute": False},
-            {"max_solutions": 20},
+            {"max_solutions": 5},
             {"grasp_pose_angle_delta": 0.1309}, # 7.5 degrees
             {"grasp_pose_max_ik_solutions": 20},
             {"cartesian_step_size": 0.005},

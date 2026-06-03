@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!--
+    Independent ros2_control hardware component for the gripper.
+    Do NOT put this joint inside arm_hardware/ArmHardwareInterface.
+
+    Joint convention:
+      gripper_left_finger_joint = 0.00 -> open
+      gripper_left_finger_joint = 0.06 -> close
+
+    Keep gripper_right_finger_joint as a mimic joint in URDF, not a commanded ros2_control joint.
+  -->
+  <xacro:macro name="gripper_ros2_control" params="
+      name:=GripperSystem
+      serial_port:=/dev/ttyACM0
+      baudrate:=115200
+      speed:=80
+      initial_position:=0.0">
+
+    <ros2_control name="${name}" type="system">
+      <hardware>
+        <!-- <plugin>mock_components/GenericSystem</plugin> -->
+        <!-- <param name="calculate_dynamics">true</param> -->
+        <plugin>dock_robot_gripper_hardware/GripperHardwareInterface</plugin>
+        <param name="serial_port">${serial_port}</param>
+        <param name="baudrate">${baudrate}</param>
+        <param name="speed">${speed}</param>
+        <param name="initial_position">${initial_position}</param>
+
+        <!-- ROS joint position range. Match your URDF joint limit. -->
+        <param name="min_joint_position">0.0</param>
+        <param name="max_joint_position">0.06</param>
+
+        <!-- 0x49 0x20 = 18720, from your original open/close command. -->
+        <param name="max_position_count">18720</param>
+
+        <!-- true: increasing joint position means close. -->
+        <param name="positive_is_close">true</param>
+
+        <!-- true is recommended for open/close gripper with JointTrajectoryController. -->
+        <param name="binary_control">true</param>
+
+        <!-- true means the position count is a movement stroke count, not an absolute target count. -->
+        <param name="use_delta_position_count">true</param>
+
+        <!-- Start with feedback disabled. Enable only after confirming status-frame parsing. -->
+        <param name="use_feedback">false</param>
+        <param name="feedback_period_ms">100</param>
+        <param name="feedback_timeout_ms">5</param>
+        <param name="feedback_position_low_index">5</param>
+
+        <!-- true lets controller_manager start even when /dev/ttyACM0 is temporarily missing. -->
+        <param name="simulate_when_not_connected">true</param>
+      </hardware>
+
+      <joint name="gripper_left_finger_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+</robot>

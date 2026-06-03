@@ -96,6 +96,14 @@ left_gripper_controller:
       - position
 
     allow_partial_joints_goal: false
-    open_loop_control: false
+    open_loop_control: true
+    allow_nonzero_velocity_at_trajectory_end: true
+
+    constraints:
+      goal_time: 2.0
+      stopped_velocity_tolerance: 0.01
+      gripper_left_finger_joint:
+        trajectory: 0.02
+        goal: 0.02
 
   

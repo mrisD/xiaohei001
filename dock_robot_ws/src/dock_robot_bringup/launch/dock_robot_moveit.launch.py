@@ -87,6 +87,13 @@ def generate_launch_description():
         output="screen",
     )
 
+    left_gripper_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["left_gripper_controller", "--controller-manager", "/controller_manager"],
+        output="screen",
+    )
+
     # ==============================
     # 4. move_group
     # ==============================
@@ -140,12 +147,17 @@ def generate_launch_description():
         
         RegisterEventHandler(
             OnProcessExit(target_action=right_arm_controller_spawner,
+                          on_exit=[left_gripper_controller_spawner])
+        ),
+
+        RegisterEventHandler(
+            OnProcessExit(target_action=left_gripper_controller_spawner,
                           on_exit=[move_group_node])
         ),
 
         # 直接等 move_group 启动后开 RViz，不用 ros2 wait
         RegisterEventHandler(
-            OnProcessStart(target_action=move_group_node,
+            OnProcessStart(target_action=left_gripper_controller_spawner,
                           on_start=[rviz_node])
         ),
     ])

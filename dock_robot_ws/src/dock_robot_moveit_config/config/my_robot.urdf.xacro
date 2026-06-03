@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="my_robot">
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
-
+    <xacro:arg name="gripper_serial_port" default="/dev/ttyACM0" />
+    <xacro:arg name="gripper_baudrate" default="115200" />
+    <xacro:arg name="gripper_speed" default="80" />
+    <xacro:arg name="gripper_initial_position" default="0.0" />
     <!-- Import my_robot urdf file -->
     <xacro:include filename="$(find dock_robot_description)/urdf/dock_robot.urdf.xacro" />
 
@@ -10,5 +13,14 @@
 
 
     <xacro:my_robot_ros2_control name="DockSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+    <xacro:include filename="$(find dock_robot_gripper_hardware)/config/gripper_ros2_control.xacro" />
+
+    <xacro:gripper_ros2_control
+        name="GripperSystem"
+        serial_port="$(arg gripper_serial_port)"
+        baudrate="$(arg gripper_baudrate)"
+        speed="$(arg gripper_speed)"
+        initial_position="$(arg gripper_initial_position)"/>
 
 </robot>

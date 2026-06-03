@@ -158,12 +158,12 @@ def generate_launch_description():
 
             # Conservative first test.
             {"execute": False},
-            {"max_solutions": 5},
+            {"max_solutions": 1},
             {"grasp_pose_angle_delta": 0.1309}, # 7.5 degrees
             {"grasp_pose_max_ik_solutions": 20},
-            {"cartesian_step_size": 0.005},
-            {"cartesian_max_velocity_scaling": 1.0},
-            {"cartesian_max_acceleration_scaling": 1.0},
+            {"cartesian_step_size": 0.0001},
+            {"cartesian_max_velocity_scaling": 0.3},
+            {"cartesian_max_acceleration_scaling": 0.3},
 
             {"approach_object_min_dist": 0.005},
             {"approach_object_max_dist": 0.06},
@@ -173,7 +173,6 @@ def generate_launch_description():
             {"lower_object_max_dist": 0.08},
             {"retreat_min_distance": 0.005},
             {"retreat_max_distance": 0.08},
-            {"grasp_pose_max_ik_solutions": 25},
             
         ],
     )

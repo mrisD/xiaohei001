@@ -148,12 +148,12 @@ MTCTaskNode::MTCTaskNode(const rclcpp::NodeOptions& options)
   declare_parameter("lower_object_max_dist", 0.4, "Maximum distance for lowering object");
 
   // Timeout parameters
-  declare_parameter("move_to_pick_timeout", 10.0, "Timeout for move to pick stage (seconds)");
-  declare_parameter("move_to_place_timeout", 10.0, "Timeout for move to place stage (seconds)");
+  declare_parameter("move_to_pick_timeout", 2.0, "Timeout for move to pick stage (seconds)");
+  declare_parameter("move_to_place_timeout", 2.0, "Timeout for move to place stage (seconds)");
 
   // Grasp generation parameters
   declare_parameter("grasp_pose_angle_delta", 0.1309, "Angular resolution for sampling grasp poses (radians)");
-  declare_parameter("grasp_pose_max_ik_solutions", 100, "Maximum number of IK solutions for grasp pose generation");
+  declare_parameter("grasp_pose_max_ik_solutions", 4, "Maximum number of IK solutions for grasp pose generation");
   declare_parameter("grasp_pose_min_solution_distance", 0.05, "Minimum distance in joint-space units between IK solutions for grasp pose");
 
   // Place generation parameters
@@ -162,7 +162,7 @@ MTCTaskNode::MTCTaskNode(const rclcpp::NodeOptions& options)
   // Cartesian planner parameters
   declare_parameter("cartesian_max_velocity_scaling", 1.0, "Max velocity scaling factor for Cartesian planner");
   declare_parameter("cartesian_max_acceleration_scaling", 1.0, "Max acceleration scaling factor for Cartesian planner");
-  declare_parameter("cartesian_step_size", 0.00025, "Step size for Cartesian planner");
+  declare_parameter("cartesian_step_size", 0.005, "Step size for Cartesian planner");
 
   // Direction vector parameters
   declare_parameter("approach_object_direction_z", 1.0, "Z component of approach object direction vector");
@@ -502,9 +502,11 @@ mtc::Task MTCTaskNode::createTask()
   // Pipeline planner for complex movements
   // OMPL planner
   auto ompl_planner_arm = std::make_shared<mtc::solvers::PipelinePlanner>(
-    this->shared_from_this());
+  this->shared_from_this());
 
   ompl_planner_arm->setPlannerId("RRTConnectkConfigDefault");
+  ompl_planner_arm->setMaxVelocityScalingFactor(0.30);
+  ompl_planner_arm->setMaxAccelerationScalingFactor(0.3); 
   RCLCPP_INFO(this->get_logger(), "OMPL planner created for the arm group");
 
   // JointInterpolation is a basic planner that is used for simple motions

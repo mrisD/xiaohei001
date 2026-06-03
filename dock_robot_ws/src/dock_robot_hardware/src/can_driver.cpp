@@ -329,7 +329,7 @@ void CAN_DRIVER::send_pending_commands()
         );
 
         if (ret != 1) {
-            printf("发送失败：motor_id=0x%X channel=%d angle=%.3f cnt=%d ret=%lu\n",
+            printf("发送失败：motor_id=0x%X channel=%d angle=%.3f cnt=%d ret=%u\n",
                    motor_id,
                    channel,
                    target_angle,
@@ -423,7 +423,7 @@ void CAN_DRIVER::update_states()
         );
 
         if (ret != 1) {
-            printf("查询失败：motor_id=0x%X channel=%d ret=%lu\n",
+            printf("查询失败：motor_id=0x%X channel=%d ret=%u\n",
                    id,
                    channel,
                    ret);

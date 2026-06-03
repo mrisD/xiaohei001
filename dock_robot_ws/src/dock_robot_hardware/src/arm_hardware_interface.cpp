@@ -22,7 +22,7 @@ namespace arm_hardware
     // ==============================
     // 1. 初始化关节变量
     // ==============================
-    for (int i = 0; i < info_.joints.size(); i++)
+    for (size_t i = 0; i < info_.joints.size(); ++i)
     {
         _jnt_position_command[i] = 0.0;
         _jnt_velocity_command[i] = 0.0;

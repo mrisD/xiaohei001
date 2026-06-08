@@ -20,6 +20,7 @@ sudo apt install ros-humble-xacro
 sudo apt install ros-humble-tf2-tools  
 sudo apt install ros-humble-rviz2  
 sudo apt install ros-humble-robot-localization
+sudo apt install ros-humble-moveit-task-constructor-*
 
 
 ### 安装常用的控制器

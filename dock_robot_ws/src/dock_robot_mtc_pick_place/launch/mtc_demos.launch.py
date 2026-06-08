@@ -149,8 +149,8 @@ def generate_launch_description():
             {"object_name": "object"},
             {"object_type": "cylinder"},
             {"object_dimensions": [0.35, 0.0125]},
-            {"object_pose": [0.35, 0.35, 0.85, 0.0, 0.0, 0.0]},
-            # {"object_pose": [0.6, 0.8, 0.7, 0.0, 0.0, 0.0]},
+            # {"object_pose": [0.35, 0.35, 0.85, 0.0, 0.0, 0.0]},
+            {"object_pose": [0.46, 0.76, 0.71, 0.0, 0.0, 0.0]},
             {"place_pose": [0.25, 0.45, 0.675, 0.0, 0.0, 0.0]},
 
             # # TCP offset from gripper_base_link to the grasp point between fingers.

@@ -2,6 +2,51 @@
 
 namespace arm_hardware
 {
+    // ==========================================================
+    // 关节正方向映射表
+    //
+    //   +1.0 : 电机正方向 == URDF 中该关节 <axis> 的正方向
+    //   -1.0 : 相反（需要取反）
+    //
+    // 全部 10 个臂关节的电机转向与 URDF 正方向整体相反，故统一取 -1。
+    // 这样仿真(mock/Gazebo，直接用 URDF)与真机的运动方向一致。
+    //
+    // 注意：这里必须同时对「读」和「写」生效。
+    //   read()  : state = SIGN * 电机角度
+    //   write() : 电机角度 = SIGN * command
+    // 如果只改一边会形成正反馈，关节会越跑越快冲到底。
+    //
+    // 以后若某个电机重新接线/改 DIP 方向，只改对应一项即可，
+    // 不用动 URDF，也就不影响已经调好的 SRDF 位姿和 MTC 参数。
+    // ==========================================================
+    namespace
+    {
+        constexpr size_t JOINT_SIGN_NUM = 15;
+        constexpr double JOINT_SIGN[JOINT_SIGN_NUM] = {
+            -1.0, -1.0, -1.0, -1.0, -1.0,   // 0..4   joint1..joint5   (CAN1 左臂)
+            +1.0, -1.0, +1.0, -1.0, -1.0,   // 5..9   jointr1..jointr5
+                                            //        jointr1(5)、jointr3(7) 的电机方向
+                                            //        与其余关节相反，单独取 +1.0
+             1.0,  1.0,  1.0,  1.0,  1.0    // 10..14 轮子/升降/夹爪：不走 CAN，保持原样
+        };
+
+        inline double jointSign(size_t i)
+        {
+            return (i < JOINT_SIGN_NUM) ? JOINT_SIGN[i] : 1.0;
+        }
+
+        // 关节下标 -> 电机 CAN ID，与 URDF/ros2_control 里 <joint> 的声明顺序一致
+        constexpr unsigned int MOTOR_IDS[10] = {
+            LEFT_MOTOR1,  LEFT_MOTOR2,  LEFT_MOTOR3,  LEFT_MOTOR4,  LEFT_MOTOR5,
+            RIGHT_MOTOR1, RIGHT_MOTOR2, RIGHT_MOTOR3, RIGHT_MOTOR4, RIGHT_MOTOR5
+        };
+
+        constexpr const char *JOINT_NAMES[10] = {
+            "joint1", "joint2", "joint3", "joint4", "joint5",
+            "jointr1", "jointr2", "jointr3", "jointr4", "jointr5"
+        };
+    }
+
     hardware_interface::CallbackReturn ArmHardwareInterface::
         on_configure(const rclcpp_lifecycle::State &previous_state)
     {
@@ -62,17 +107,9 @@ namespace arm_hardware
     RCLCPP_INFO(logger, "CAN 初始化成功+++++++++++++++");
 
     // ==============================
-    // 3. 电机 ID 表
+    // 3. 电机 ID / 关节名 表
+    //    统一使用文件顶部的 MOTOR_IDS / JOINT_NAMES，避免两处表不一致
     // ==============================
-    const unsigned int motor_ids[10] = {
-        LEFT_MOTOR1, LEFT_MOTOR2, LEFT_MOTOR3, LEFT_MOTOR4, LEFT_MOTOR5,
-        RIGHT_MOTOR1, RIGHT_MOTOR2, RIGHT_MOTOR3, RIGHT_MOTOR4, RIGHT_MOTOR5
-    };
-
-    const char *joint_names[10] = {
-        "joint1", "joint2", "joint3", "joint4", "joint5",
-        "jointr1", "jointr2", "jointr3", "jointr4", "jointr5"
-    };
 
     bool synced[10] = {};
     int remaining = 10;
@@ -99,14 +136,14 @@ namespace arm_hardware
                 continue;
             }
 
-            const MotorState state = _can_ptr->motor_get_state(motor_ids[i]);
+            const MotorState state = _can_ptr->motor_get_state(MOTOR_IDS[i]);
 
             if (!state.updated)
             {
                 continue;
             }
 
-            _jnt_position_state[i] = state.position_deg * M_PI / 180.0;
+            _jnt_position_state[i] = jointSign(i) * state.position_deg * M_PI / 180.0;
             _jnt_velocity_state[i] = 0.0;
             _jnt_torque_state[i] = 0.0;
 
@@ -125,8 +162,8 @@ namespace arm_hardware
             RCLCPP_INFO(
                 logger,
                 "读取初始位置成功: %s, motor_id=0x%02X, position=%.3f deg, %.6f rad",
-                joint_names[i],
-                motor_ids[i],
+                JOINT_NAMES[i],
+                MOTOR_IDS[i],
                 state.position_deg,
                 _jnt_position_state[i]);
         }
@@ -154,8 +191,8 @@ namespace arm_hardware
                 RCLCPP_ERROR(
                     logger,
                     "未收到电机反馈: joint=%s, motor_id=0x%02X",
-                    joint_names[i],
-                    motor_ids[i]);
+                    JOINT_NAMES[i],
+                    MOTOR_IDS[i]);
 
                 /*
                  * 没读到真实位置的关节，先保持 0。
@@ -218,18 +255,12 @@ namespace arm_hardware
         (void)period;
         if(m_isCANOpened)
         {
-            // 非阻塞读取最新值
-            _jnt_position_state[0] = _can_ptr->motor_get_angle(LEFT_MOTOR1) * M_PI / 180.0;
-            _jnt_position_state[1] = _can_ptr->motor_get_angle(LEFT_MOTOR2) * M_PI / 180.0;
-            _jnt_position_state[2] = _can_ptr->motor_get_angle(LEFT_MOTOR3) * M_PI / 180.0;
-            _jnt_position_state[3] = _can_ptr->motor_get_angle(LEFT_MOTOR4) * M_PI / 180.0;
-            _jnt_position_state[4] = _can_ptr->motor_get_angle(LEFT_MOTOR5) * M_PI / 180.0;
-
-            _jnt_position_state[5] = _can_ptr->motor_get_angle(RIGHT_MOTOR1) * M_PI / 180.0;
-            _jnt_position_state[6] = _can_ptr->motor_get_angle(RIGHT_MOTOR2) * M_PI / 180.0;
-            _jnt_position_state[7] = _can_ptr->motor_get_angle(RIGHT_MOTOR3) * M_PI / 180.0;
-            _jnt_position_state[8] = _can_ptr->motor_get_angle(RIGHT_MOTOR4) * M_PI / 180.0;
-            _jnt_position_state[9] = _can_ptr->motor_get_angle(RIGHT_MOTOR5) * M_PI / 180.0;
+            // 非阻塞读取最新值，并用 JOINT_SIGN 从「电机正方向」换算到「ROS 关节正方向」
+            for (size_t i = 0; i < 10; ++i)
+            {
+                _jnt_position_state[i] =
+                    jointSign(i) * _can_ptr->motor_get_angle(MOTOR_IDS[i]) * M_PI / 180.0;
+            }
         }  
         // RCLCPP_INFO(get_logger(), "STATE arm_base_forearm_joint_pos: %lf, forearm_hand_joint_pos: %lf",
         //             get_state("arm_base_forearm_joint/position"), get_state("forearm_hand_joint/position"));
@@ -252,20 +283,16 @@ namespace arm_hardware
             {
                 if(m_isCANOpened)
                 {
-                    // 批量发送所有电机命令
+                    // 批量发送所有电机命令。
+                    // 先用 JOINT_SIGN 把「ROS 关节正方向」换算回「电机正方向」，再由度转编码器。
+                    // 必须和 read() 用同一套符号，否则会形成正反馈。
                     std::map<unsigned int, float> commands;
-                    commands[LEFT_MOTOR1] = _jnt_position_command[0] * 180.0 / M_PI;
-                    commands[LEFT_MOTOR2] = _jnt_position_command[1] * 180.0 / M_PI;
-                    commands[LEFT_MOTOR3] = _jnt_position_command[2] * 180.0 / M_PI;
-                    commands[LEFT_MOTOR4] = _jnt_position_command[3] * 180.0 / M_PI;
-                    commands[LEFT_MOTOR5] = _jnt_position_command[4] * 180.0 / M_PI;
+                    for (size_t i = 0; i < 10; ++i)
+                    {
+                        commands[MOTOR_IDS[i]] = static_cast<float>(
+                            jointSign(i) * _jnt_position_command[i] * 180.0 / M_PI);
+                    }
 
-                    commands[RIGHT_MOTOR1] = _jnt_position_command[5] * 180.0 / M_PI;
-                    commands[RIGHT_MOTOR2] = _jnt_position_command[6] * 180.0 / M_PI;
-                    commands[RIGHT_MOTOR3] = _jnt_position_command[7] * 180.0 / M_PI;
-                    commands[RIGHT_MOTOR4] = _jnt_position_command[8] * 180.0 / M_PI;
-                    commands[RIGHT_MOTOR5] = _jnt_position_command[9] * 180.0 / M_PI;
-                    
                     _can_ptr->motor_set_angle_batch(commands);
                 }
                 else

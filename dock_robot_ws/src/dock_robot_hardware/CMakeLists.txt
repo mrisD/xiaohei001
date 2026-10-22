@@ -98,6 +98,26 @@ install(
 endif()
 
 
+# ------------------------------------------------------------------
+# CAN 总线诊断工具：原始报文嗅探 + 自发自收自检
+# 用法: ros2 run dock_robot_hardware can_probe [--baud 1000|500|250|125]
+#                                            [--seconds N] [--loopback]
+# ------------------------------------------------------------------
+add_executable(can_probe src/can_probe.cpp)
+target_include_directories(
+  can_probe
+  PRIVATE
+  ${CAN_INCLUDE_DIR}
+)
+target_link_libraries(
+  can_probe
+  ${CAN_LIBRARY}/libcontrolcan.so
+)
+install(
+  TARGETS can_probe
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 # 导出项目
 ament_export_libraries(
   ${PROJECT_NAME}

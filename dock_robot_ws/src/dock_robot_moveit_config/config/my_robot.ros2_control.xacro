@@ -4,10 +4,12 @@
         <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
         <ros2_control name="${name}" type="system">
             <hardware>
-                <!-- By default, set up controllers for simulation. This won't work on real hardware -->
-                <plugin>mock_components/GenericSystem</plugin>
-                <param name="calculate_dynamics">true</param>
-                <!-- <plugin>arm_hardware/ArmHardwareInterface</plugin> -->
+                <!-- 真机：走 ZLG USBCAN-II 驱动 10 个臂关节电机 -->
+                <plugin>arm_hardware/ArmHardwareInterface</plugin>
+
+                <!-- 纯仿真（demo.launch.py 无 Gazebo 时）改回下面这两行： -->
+                <!-- <plugin>mock_components/GenericSystem</plugin> -->
+                <!-- <param name="calculate_dynamics">true</param> -->
             </hardware>
             <joint name="joint1">
                 <command_interface name="position"/>
